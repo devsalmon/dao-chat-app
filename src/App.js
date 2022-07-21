@@ -2,6 +2,9 @@ import { useEffect, useReducer, useState } from "react";
 import Gun from "gun";
 import "./App.css";
 import SideBar from "./components/SideBar";
+import { getAllTokenOwnerRecords } from "@solana/spl-governance";
+import mainnetBetaRealms from "./mainnet-beta.json";
+import { Connection, PublicKey, clusterApiUrl } from "@solana/web3.js";
 
 // initialize gun locally
 // sync with as many peers as you would like by passing in an array of network uris
@@ -21,7 +24,24 @@ function reducer(state, message) {
   };
 }
 
+const MAINNET_REALMS = parseCertifiedRealms(mainnetBetaRealms);
+
+function parseCertifiedRealms(realms) {
+  return realms.map((realm) => ({
+    ...realm,
+    programId: new PublicKey(realm.programId),
+    realmId: new PublicKey(realm.realmId),
+    sharedWalletId: realm.sharedWalletId && new PublicKey(realm.sharedWalletId),
+    isCertified: true,
+    programVersion: realm.programVersion,
+    enableNotifi: realm.enableNotifi ?? true, // enable by default
+  }));
+}
+
 export default function App() {
+  const NETWORK = clusterApiUrl("mainnet-beta");
+  const connection = new Connection(NETWORK);
+
   // the form state manages the form input for creating a new message
   const [formState, setForm] = useState({
     name: "",
@@ -34,6 +54,7 @@ export default function App() {
   // when the app loads, fetch the current messages and load them into the state
   // this also subscribes to new data as it changes and updates the local state
   useEffect(() => {
+    console.log(MAINNET_REALMS);
     const messages = gun.get("messages");
     messages.map().on((m) => {
       dispatch({
@@ -44,7 +65,20 @@ export default function App() {
     });
   }, []);
 
+  // async function getRealmMembers() {
+  //   const members = await getAllTokenOwnerRecords(
+  //     connection,
+  //     getProvider().publicKey,
+  //     MAINNET_REALMS[0].realmId
+  //   );
+  //   console.log(members);
+  // }
+
   // set a new message in gun, update the local state to reset the form field
+  function onChange(e) {
+    setForm({ ...formState, [e.target.name]: e.target.value });
+  }
+
   function saveMessage() {
     const messages = gun.get("messages");
     messages.set({
@@ -63,11 +97,25 @@ export default function App() {
     setForm({ ...formState, [e.target.name]: e.target.value });
   }
 
+  const getProvider = () => {
+    if ("solana" in window) {
+      const provider = window.solana;
+      if (provider.isPhantom) {
+        return provider;
+      }
+    } else if ("solflare" in window) {
+      const provider = window.solflare;
+      if (provider.isSolflare) {
+        return provider;
+      }
+    }
+  };
+
   return (
     <div className="flex">
       <SideBar />
-      <div style={{ padding: 30 }}>
-        <p className="text-center font-bold text-green-500">Test</p>
+      <div className="App">
+        hello
         <input
           onChange={onChange}
           placeholder="Name"
@@ -80,12 +128,12 @@ export default function App() {
           name="message"
           value={formState.message}
         />
-        <button onClick={saveMessage}>Send Message</button>
+        <button onClick={saveMessage}>Send message</button>
         {state.messages.map((message) => (
           <div key={message.createdAt}>
-            <h2>{message.message}</h2>
-            <h3>From: {message.name}</h3>
-            <p>Date: {message.createdAt}</p>
+            <div>{message.message}</div>
+            <div>From: {message.name}</div>
+            <div>Date: {message.createdAt}</div>
           </div>
         ))}
       </div>
