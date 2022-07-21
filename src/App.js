@@ -1,27 +1,38 @@
 import { useEffect, useReducer, useState } from "react";
 import Gun from "gun";
 import "./App.css";
+import SideBar from "./components/SideBar";
 
+// initialize gun locally
+// sync with as many peers as you would like by passing in an array of network uris
 const gun = Gun({
-  peers: ["https://localhost:3030/gun"],
+  peers: ["http://localhost:3030/gun"],
 });
 
+// create the initial state to hold the messages
 const initialState = {
   messages: [],
 };
 
+// Create a reducer that will update the messages array
 function reducer(state, message) {
-  return { messages: [message, ...state.messages] };
+  return {
+    messages: [message, ...state.messages],
+  };
 }
 
 export default function App() {
+  // the form state manages the form input for creating a new message
   const [formState, setForm] = useState({
     name: "",
     message: "",
   });
 
+  // initialize the reducer & state for holding the messages array
   const [state, dispatch] = useReducer(reducer, initialState);
 
+  // when the app loads, fetch the current messages and load them into the state
+  // this also subscribes to new data as it changes and updates the local state
   useEffect(() => {
     const messages = gun.get("messages");
     messages.map().on((m) => {
@@ -33,10 +44,7 @@ export default function App() {
     });
   }, []);
 
-  function onChange(e) {
-    setForm({ ...formState, [e.target.name]: e.target.value });
-  }
-
+  // set a new message in gun, update the local state to reset the form field
   function saveMessage() {
     const messages = gun.get("messages");
     messages.set({
@@ -44,31 +52,43 @@ export default function App() {
       message: formState.message,
       createdAt: Date.now(),
     });
-    setForm({ name: "", message: "" });
+    setForm({
+      name: "",
+      message: "",
+    });
+  }
+
+  // update the form state as the user types
+  function onChange(e) {
+    setForm({ ...formState, [e.target.name]: e.target.value });
   }
 
   return (
-    <div className="App">
-      <input
-        onChange={onChange}
-        placeholder="Name"
-        name="name"
-        value={formState.name}
-      />
-      <input
-        onChange={onChange}
-        placeholder="Message"
-        name="message"
-        value={formState.message}
-      />
-      <button onClick={saveMessage}>Send message</button>
-      {state.messages.map((message) => (
-        <div key={message.createdAt}>
-          <div>{message.message}</div>
-          <div>From: {message.name}</div>
-          <div>Date: {message.createdAt}</div>
-        </div>
-      ))}
+    <div className="flex">
+      <SideBar />
+      <div style={{ padding: 30 }}>
+        <p className="text-center font-bold text-green-500">Test</p>
+        <input
+          onChange={onChange}
+          placeholder="Name"
+          name="name"
+          value={formState.name}
+        />
+        <input
+          onChange={onChange}
+          placeholder="Message"
+          name="message"
+          value={formState.message}
+        />
+        <button onClick={saveMessage}>Send Message</button>
+        {state.messages.map((message) => (
+          <div key={message.createdAt}>
+            <h2>{message.message}</h2>
+            <h3>From: {message.name}</h3>
+            <p>Date: {message.createdAt}</p>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
