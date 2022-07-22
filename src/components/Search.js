@@ -1,6 +1,7 @@
 import { useState } from "react";
 import mainnetBetaRealms from "../mainnet-beta.json";
 import { PublicKey } from "@solana/web3.js";
+import Input from "./Input";
 
 const MAINNET_REALMS = parseCertifiedRealms(mainnetBetaRealms);
 
@@ -35,8 +36,7 @@ export default function Search({}) {
 
   return (
     <div className="w-max h-full p-2">
-      <input
-        className="rounded-full p-2 mb-2"
+      <Input
         placeholder="Search Realms"
         onChange={(e) => filterRealms(e.target.value)}
       />

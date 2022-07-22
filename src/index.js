@@ -6,7 +6,13 @@ import reportWebVitals from "./reportWebVitals";
 import Gun from "gun";
 import "gun/sea";
 import SignIn from "./pages/SignIn";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
+import Realm from "./pages/Realm";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
@@ -34,15 +40,21 @@ function Main() {
     <Router>
       <Routes>
         <Route
-          path="/"
+          path="sign-in"
           element={<SignIn gun={gun} user={gunUser} setUser={setUser} />}
         />
+        <Route path="*" element={<Navigate to="/sign-in" replace />} />
       </Routes>
     </Router>
   ) : (
     <Router>
       <Routes>
-        <Route path="/" element={<App gun={gun} signOut={signOut} />} />
+        <Route path="/" element={<App gun={gun} signOut={signOut} />}>
+          <Route path="/realms">
+            <Route path=":realmId" element={<Realm gun={gun} />} />
+          </Route>
+        </Route>
+        <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </Router>
   );

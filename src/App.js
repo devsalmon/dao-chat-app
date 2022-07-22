@@ -1,13 +1,10 @@
 import React, { useEffect, useReducer, useState } from "react";
 import "./App.css";
 import SideBar from "./components/SideBar";
-import Realm from "./pages/Realm";
-
-import Realms from "./pages/Realms";
 import { getAllTokenOwnerRecords } from "@solana/spl-governance";
 import { Connection, PublicKey, clusterApiUrl } from "@solana/web3.js";
 import { GiHamburgerMenu } from "react-icons/gi";
-import { Routes, Route } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 
 export default function App({ gun, signOut }) {
   const NETWORK = clusterApiUrl("mainnet-beta");
@@ -60,11 +57,7 @@ export default function App({ gun, signOut }) {
             Sign out
           </div>
         </div>
-        <Routes>
-          <Route path="realms" element={<Realms gun={gun} />}>
-            <Route path=":realmId" element={<Realm gun={gun} />} />
-          </Route>
-        </Routes>
+        <Outlet />
       </div>
     </div>
   );
