@@ -43,7 +43,7 @@ export default function App({ gun, signOut }) {
           showSidebar ? `max-w-[1000px]` : `max-w-0 overflow-hidden`
         }`}
       >
-        <SideBar />
+        <SideBar gun={gun} />
       </div>
       <div className="relative flex flex-col gap-4 p-4 w-full">
         <div className="relative items-center justify-between flex gap-4 w-full">
