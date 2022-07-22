@@ -50,9 +50,7 @@ function Main() {
     <Router>
       <Routes>
         <Route path="/" element={<App gun={gun} signOut={signOut} />}>
-          <Route path="/realms">
-            <Route path=":realmId" element={<Realm gun={gun} />} />
-          </Route>
+          <Route path=":realmId" element={<Realm gun={gun} />} />
         </Route>
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
