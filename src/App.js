@@ -1,41 +1,18 @@
 import React, { useEffect, useReducer, useState } from "react";
-import {
-  BrowserRouter as Router,
-  Route,
-  Routes,
-  Navigate,
-} from "react-router-dom";
-import Gun from "gun";
-import { useEffect, useState } from "react";
 import "./App.css";
 import SideBar from "./components/SideBar";
-import Chat from "./components/Chat";
+import Realm from "./pages/Realm";
+
+import Realms from "./pages/Realms";
 import { getAllTokenOwnerRecords } from "@solana/spl-governance";
 import { Connection, PublicKey, clusterApiUrl } from "@solana/web3.js";
-import SignIn from "./pages/SignIn";
-import Chat from "./pages/Chat";
-
-function App() {
-  return (
-    <>
-      <Router>
-        <Routes>
-          <Route path="/" element={<SignIn />} />
-          <Route path="/chat" element={<Chat />} />
-        </Routes>
-      </Router>
-    </>
 import { GiHamburgerMenu } from "react-icons/gi";
+import { Routes, Route } from "react-router-dom";
 
-// initialize gun locally
-// sync with as many peers as you would like by passing in an array of network uris
-const gun = Gun({
-  peers: ["http://localhost:3030/gun"],
-});
-
-export default function App() {
+export default function App({ gun, signOut }) {
   const NETWORK = clusterApiUrl("mainnet-beta");
   const connection = new Connection(NETWORK);
+  const user = gun.user();
 
   const [showSidebar, setShowSidebar] = useState(false);
 
@@ -72,16 +49,23 @@ export default function App() {
         <SideBar />
       </div>
       <div className="relative flex flex-col gap-4 p-4 w-full">
-        <div
-          onClick={() => setShowSidebar(!showSidebar)}
-          className="cursor-pointer"
-        >
-          <GiHamburgerMenu />
+        <div className="relative items-center justify-between flex gap-4 w-full">
+          <div
+            onClick={() => setShowSidebar(!showSidebar)}
+            className="cursor-pointer"
+          >
+            <GiHamburgerMenu />
+          </div>
+          <div onClick={signOut} className="cursor-pointer">
+            Sign out
+          </div>
         </div>
-        <Chat gun={gun} />
+        <Routes>
+          <Route path="realms" element={<Realms gun={gun} />}>
+            <Route path=":realmId" element={<Realm gun={gun} />} />
+          </Route>
+        </Routes>
       </div>
     </div>
   );
 }
-
-export default App;

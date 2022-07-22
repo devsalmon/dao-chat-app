@@ -1,4 +1,5 @@
 import { BiSend } from "react-icons/bi";
+import Input from "./Input";
 
 export default function MessageInput({ gun, formState, setForm }) {
   function onChange(e) {
@@ -17,8 +18,7 @@ export default function MessageInput({ gun, formState, setForm }) {
 
   return (
     <div className="relative w-full flex items-center justify-end shadow-lg">
-      <input
-        className="w-full rounded-full p-2 pr-8"
+      <Input
         onChange={onChange}
         placeholder="Message"
         name="message"

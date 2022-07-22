@@ -1,21 +1,15 @@
-import React, { useState } from "react";
-import Gun from "gun";
-import "gun/sea";
+import React, { useState, useEffect } from "react";
+import Input from "../components/Input";
+import Button from "../components/Button";
 
-function SignIn() {
+function SignIn({ gun, user }) {
   const [username, setUsername] = useState();
   const [password, setPassword] = useState();
 
-  // Database
-  const gun = Gun({
-    peers: ["http://localhost:3030/gun"],
-  });
-  const user = gun.user(); //.recall({ sessionStorage: true });
-
-  // https://gun.eco/docs/User
-
   const signIn = () => {
-    user.auth(username, password, ({ err }) => err && alert(err));
+    user.auth(username, password, ({ err }) => {
+      if (err) alert(err);
+    });
   };
 
   // Create user
@@ -29,56 +23,30 @@ function SignIn() {
     });
   };
 
-  gun.on("auth", (ack) =>
-    console.log(user.get("alias"), " authentication was successful: ", ack)
-  );
-
   return (
-    <>
-      <label>
-        Enter username:{" "}
-        <input
-          onChange={(e) => setUsername(e.target.value)}
-          placeholder="Username"
-          name="name"
-          value={username}
-        />
-      </label>
-      <br />
-      <label>
-        Enter password:{" "}
-        <input
-          onChange={(e) => setPassword(e.target.value)}
-          placeholder="Password"
-          name="message"
-          value={password}
-        />
-      </label>
-      <br />
-      <button
-        className="border-4 border-cyan-500 rounded-lg"
-        onClick={() => signUp()}
-      >
-        Create User
-      </button>
-      <br />
-      {/* <p>Username: {user.is && user.get("alias")}</p> */}
-      <button
-        className="border-4 border-cyan-500 rounded-lg"
-        onClick={() => signIn()}
-      >
-        Sign In
-      </button>
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <p>Username: {username}</p>
-      <p>Password: {password}</p>
-    </>
+    <div className="flex flex-col gap-8 w-[400px] h-[600px] bg-gray-800 p-8 text-center">
+      <div className="text-3xl text-white">Sign In</div>
+      <div className="bg-white rounded-xl shadow-xl px-4 py-8 flex flex-col gap-4">
+        <div className="flex flex-col gap-2">
+          <label>Username</label>
+          <Input
+            onChange={(e) => setUsername(e.target.value)}
+            placeholder="Username"
+            name="name"
+          />
+        </div>
+        <div className="flex flex-col gap-2">
+          <label>Password</label>
+          <Input
+            onChange={(e) => setPassword(e.target.value)}
+            placeholder="Password"
+            name="message"
+          />
+        </div>
+        <Button onClick={signUp}>Create User</Button>
+        <Button onClick={signIn}>Sign In</Button>
+      </div>
+    </div>
   );
 }
 

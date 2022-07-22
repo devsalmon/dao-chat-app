@@ -1,6 +1,6 @@
 import { useState } from "react";
 import mainnetBetaRealms from "../mainnet-beta.json";
-import { Connection, PublicKey, clusterApiUrl } from "@solana/web3.js";
+import { PublicKey } from "@solana/web3.js";
 
 const MAINNET_REALMS = parseCertifiedRealms(mainnetBetaRealms);
 
