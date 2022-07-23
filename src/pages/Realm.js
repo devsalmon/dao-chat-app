@@ -1,6 +1,7 @@
 import Chat from "../components/Chat";
 import { useEffect, useState } from "react";
 import { useParams, Outlet } from "react-router-dom";
+import "gun/lib/unset.js";
 
 export default function Realm({ gun }) {
   let { realmId } = useParams();
@@ -11,7 +12,7 @@ export default function Realm({ gun }) {
     tabActive:
       "bg-gray-600 px-8 py-2 cursor-pointer rounded-lg shadow-sm shadow-black",
     tabInactive:
-      "bg-gray-900 px-8 py-2 cursor-pointer rounded-lg shadow-inner shadow-xl shadow-black",
+      "bg-gray-900 px-8 py-2 cursor-pointer rounded-lg shadow-inner shadow-black",
   };
 
   return (

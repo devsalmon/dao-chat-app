@@ -1,20 +1,8 @@
 import { useState } from "react";
 import Input from "./Input";
 
-export default function SearchRealms({ gun, realms, updateRealms }) {
+export default function SearchRealms({ gun, realms, addRealm }) {
   const [filteredRealms, setFilteredRealms] = useState([]);
-
-  const addRealm = (id) => {
-    let newRealms = [];
-    gun.get(gun.user()?.is?.alias).set(id);
-    gun
-      .get(gun.user()?.is?.alias)
-      .map()
-      .once(function (realm) {
-        if (newRealms.indexOf(realm) === -1) newRealms.push(realm);
-      });
-    updateRealms(newRealms);
-  };
 
   const filterRealms = (v) => {
     if (v.length > 0) {
