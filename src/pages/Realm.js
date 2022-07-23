@@ -1,4 +1,4 @@
-import Chat from "../components/Chat";
+//import Chat from "../components/Chat";
 import { useEffect, useState } from "react";
 import { useParams, Outlet } from "react-router-dom";
 import "gun/lib/unset.js";
