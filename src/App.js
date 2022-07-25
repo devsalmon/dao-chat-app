@@ -35,15 +35,15 @@ export default function App({ gun, signOut }) {
 
   return (
     <div className="App w-[400px] h-[600px] flex relative bg-gray-700 overflow-hidden">
-      <div className={`transition-all duration-200 ease-in-out basis-1/6`}>
-        <SideBar gun={gun} />
-      </div>
-      <div className="relative flex flex-col gap-4 p-4 basis-5/6 w-full break-all">
-        <div className="relative items-center justify-between flex gap-4 w-full">
+      <div className={`transition-all duration-200 ease-in-out w-1/6`}>
+        {/* <div className="relative items-center justify-between flex gap-4 w-full">
           <div onClick={signOut} className="cursor-pointer text-white">
             Sign out
           </div>
-        </div>
+        </div> */}
+        <SideBar gun={gun} />
+      </div>
+      <div className="relative flex flex-col gap-4 p-4 w-5/6 break-all">
         <Outlet />
       </div>
     </div>

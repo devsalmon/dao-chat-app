@@ -1,4 +1,5 @@
-import React, { useState, useMemo } from "react";
+/*global chrome*/
+import React, { useState, useMemo, useEffect } from "react";
 import Input from "../components/Input";
 import Button from "../components/Button";
 import {
@@ -33,6 +34,8 @@ require("@solana/wallet-adapter-react-ui/styles.css");
 function SignIn({ gun, user }) {
   const [username, setUsername] = useState();
   const [password, setPassword] = useState();
+
+  useEffect(() => {});
 
   // The network can be set to 'devnet', 'testnet', or 'mainnet-beta'.
   const network = WalletAdapterNetwork.Devnet;
@@ -99,6 +102,7 @@ function SignIn({ gun, user }) {
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="Password"
                   name="message"
+                  type="password"
                 />
               </div>
               <Button onClick={signUp}>Create User</Button>

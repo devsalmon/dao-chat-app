@@ -64,8 +64,8 @@ const SideBar = ({ gun }) => {
   };
 
   return (
-    <div className="flex h-full w-max">
-      <div className="h-full overflow-y-scroll scrollbar-hide overflow-x-hidden w-max flex flex-col gap-2 p-2 items-start justify-start bg-gray-900 shadow-lg text-white rounded-r-xl">
+    <div className="flex h-full w-full">
+      <div className="h-full overflow-y-scroll scrollbar-hide overflow-x-hidden w-full flex flex-col gap-2 p-2 items-center justify-start bg-gray-900 shadow-lg text-white rounded-r-xl">
         <div className="basis-1/12">
           <SideBarIcon icon={<BsPlus size="32" />} onClick={searchRealms} />
         </div>
