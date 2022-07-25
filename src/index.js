@@ -29,6 +29,7 @@ function Main() {
   gun.on("auth", (ack) => {
     console.log(gunUser.get("alias"), " authentication was successful: ", ack);
     setUser(gunUser?.is);
+    gunUser.get("wallet").once((x) => console.log("wallet address: " + x));
   });
 
   const signOut = () => {

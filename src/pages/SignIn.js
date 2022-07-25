@@ -1,12 +1,18 @@
 /*global chrome*/
-import React, { useState, useMemo, useEffect } from "react";
+import React, { useState, useMemo, useEffect, useContext } from "react";
 import Input from "../components/Input";
 import Button from "../components/Button";
 import {
   ConnectionProvider,
   WalletProvider,
+  useWallet,
+  WalletContext,
+  useConnection,
 } from "@solana/wallet-adapter-react";
-import { WalletAdapterNetwork } from "@solana/wallet-adapter-base";
+import {
+  WalletAdapterNetwork,
+  WalletNotConnectedError,
+} from "@solana/wallet-adapter-base";
 import {
   CoinbaseWalletAdapter,
   GlowWalletAdapter,
@@ -22,7 +28,12 @@ import {
   WalletDisconnectButton,
   WalletMultiButton,
 } from "@solana/wallet-adapter-react-ui";
-import { clusterApiUrl } from "@solana/web3.js";
+import {
+  clusterApiUrl,
+  Keypair,
+  SystemProgram,
+  Transaction,
+} from "@solana/web3.js";
 import {
   createDefaultAuthorizationResultCache,
   SolanaMobileWalletAdapter,
@@ -34,8 +45,16 @@ require("@solana/wallet-adapter-react-ui/styles.css");
 function SignIn({ gun, user }) {
   const [username, setUsername] = useState();
   const [password, setPassword] = useState();
+  //const [walletAddress, setWalletAddress] = useState();
 
-  useEffect(() => {});
+  const publicKey = useWallet();
+
+  useEffect(() => {
+    console.log("running");
+    if (publicKey) {
+      console.log("Public key:", publicKey.toString());
+    }
+  }, [publicKey]);
 
   // The network can be set to 'devnet', 'testnet', or 'mainnet-beta'.
   const network = WalletAdapterNetwork.Devnet;
@@ -74,9 +93,16 @@ function SignIn({ gun, user }) {
       if (err) {
         alert(err);
       } else {
+        user.put({ wallet: "PUBLIC KEY" });
         signIn();
       }
     });
+  };
+
+  const testFunction = () => {
+    if (publicKey) {
+      console.log("public key", publicKey.toBase58());
+    }
   };
 
   return (
@@ -107,6 +133,7 @@ function SignIn({ gun, user }) {
               </div>
               <Button onClick={signUp}>Create User</Button>
               <Button onClick={signIn}>Sign In</Button>
+              <button onClick={() => testFunction()}>Test</button>
             </div>
           </div>
         </WalletModalProvider>
