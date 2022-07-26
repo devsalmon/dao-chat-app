@@ -2,6 +2,7 @@ import Input from "./Input";
 import { BiSend } from "react-icons/bi";
 import { BsPersonCircle } from "react-icons/bs";
 import { useEffect, useReducer, useState, useRef } from "react";
+import { useParams } from "react-router-dom";
 
 const initialState = {
   allChats: {},
@@ -12,39 +13,39 @@ function reducer(state, collectionChats) {
 }
 
 const Message = ({ m }) => {
+  const formatDate = (date) => {
+    const hours = date.getHours();
+    const minutes = date.getMinutes();
+    const day = date.getDate();
+    const month = date.getMonth();
+    return `${hours}:${minutes}, ${day}/${month}`;
+  };
+
   return (
-    <div className="text-sm text-gray-400 overflow-y-auto">
-      <div className="flex py-2 border-t border-gray-600">
-        <div className="flex-none">
-          {/* <BsPersonCircle className="w-10 h-10" /> */}
-          <img
-            // src={"https://ui-avatars.com/api/?name=" + m.name}
-            src={"https://avatars.dicebear.com/api/male/" + m.name + ".svg"}
-            className="w-10 h-10"
-            alt="avatar"
-          />
-        </div>
-        <div className="ml-5">
-          <div>
+    <div className="flex items-center py-2 gap-2 border-t border-gray-600 text-sm text-gray-400">
+      <div className="flex-none">
+        <img
+          src={"https://avatars.dicebear.com/api/male/" + m.name + ".svg"}
+          className="w-10 h-10"
+          alt="avatar"
+        />
+      </div>
+      <div>
+        <div className="flex gap-2 items-center">
+          {m.name && (
             <span className="text-xs text-white" key={m.createdAt}>
               {m.name}
             </span>
-            <span className="text-xs text-gray-600 ml-2">
-              {new Date(m.createdAt).toLocaleDateString()}
-            </span>
-          </div>
-          <div>{m.message}</div>
+          )}
+          <span className="text-xs text-gray-600">
+            {formatDate(new Date(m.createdAt))}
+          </span>
         </div>
+        <div>{m.message}</div>
       </div>
     </div>
   );
 };
-
-{
-  /* <div className="bg-white rounded-lg p-2" key={m.createdAt}>
-        {m.message}
-      </div> */
-}
 
 export default function Chat({ gun, collectionId }) {
   const [state, dispatch] = useReducer(reducer, initialState);
@@ -76,7 +77,7 @@ export default function Chat({ gun, collectionId }) {
       }
     });
     dispatch(chats);
-  }, [collectionId, gun]);
+  }, [collectionId]);
 
   useEffect(() => {
     chatsRef.current.scrollTop = chatsRef.current.scrollHeight;
@@ -101,14 +102,15 @@ export default function Chat({ gun, collectionId }) {
   };
 
   return (
-    <div className="h-full w-full flex-1 flex flex-col justify-between">
-      <div
-        ref={chatsRef}
-        //className="flex flex-col w-full gap-4 overflow-y-auto py-2"
-      >
+    <div className="h-full w-full flex flex-col justify-end">
+      <ul ref={chatsRef} className="flex flex-col w-full overflow-y-auto py-2">
         {state.allChats[collectionId] &&
-          state.allChats[collectionId].map((m) => <Message m={m} />)}
-      </div>
+          state.allChats[collectionId].map((m) => (
+            <li>
+              <Message key={m.createdAt} m={m} />
+            </li>
+          ))}
+      </ul>
       <div className="relative w-full flex items-center justify-end shadow-lg pt-4">
         <Input
           onChange={onChange}

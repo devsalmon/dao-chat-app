@@ -20,7 +20,7 @@ function parseCertifiedRealms(realms) {
   }));
 }
 
-const SideBar = ({ gun }) => {
+const SideBar = ({ gun, signOut }) => {
   const [showSearch, setShowSearch] = useState(false);
   const [realms, setRealms] = useState([]);
 
@@ -69,7 +69,7 @@ const SideBar = ({ gun }) => {
         <div className="basis-1/12">
           <SideBarIcon icon={<BsPlus size="32" />} onClick={searchRealms} />
         </div>
-        <ul className="h-max flex flex-col gap-2">
+        <ul className="h-max flex flex-col gap-2 pb-6">
           {realms &&
             realms.map((realmId) => (
               <SideBarIcon
@@ -82,10 +82,18 @@ const SideBar = ({ gun }) => {
               />
             ))}
         </ul>
+        <div className="absolute bottom-0 mx-auto backdrop-blur py-2">
+          <div
+            onClick={signOut}
+            className="cursor-pointer text-white text-xs hover:opacity-75"
+          >
+            Sign out
+          </div>
+        </div>
       </div>
       <div
         className={`transition-all duration-200 ease-in-out shadow-lg z-50 ${
-          showSearch ? `max-w-[1000px]` : `max-w-0 overflow-hidden`
+          showSearch ? `max-w-[300px]` : `max-w-0 overflow-hidden`
         }`}
       >
         <SearchRealms gun={gun} realms={MAINNET_REALMS} addRealm={addRealm} />
@@ -95,13 +103,13 @@ const SideBar = ({ gun }) => {
 };
 
 const SideBarIcon = ({ icon, onClick, removeRealm }) => (
-  <div className="flex items-center gap-1 group">
+  <div className="flex flex-col items-center gap-1 group">
     <div className="sidebar-icon" onClick={onClick}>
       {icon}
     </div>
     {removeRealm && (
       <div
-        className="text-red-500 group-hover:block hidden cursor-pointer"
+        className="text-red-500 group-hover:block hidden cursor-pointer hover:opacity-75"
         onClick={removeRealm}
       >
         <MdOutlineCancel size={20} />

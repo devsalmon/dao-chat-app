@@ -18,7 +18,7 @@ export default function SearchRealms({ gun, realms, addRealm }) {
   };
 
   return (
-    <div className="w-max h-full p-2">
+    <div className="w-max h-full p-2 z-50">
       <Input
         placeholder="Search Realms"
         onChange={(e) => filterRealms(e.target.value)}

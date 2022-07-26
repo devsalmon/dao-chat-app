@@ -1,7 +1,7 @@
-/*global chrome*/
-import React, { useState, useMemo, useEffect, useContext } from "react";
+import React, { useState, useMemo, useEffect, useCallback } from "react";
 import Input from "../components/Input";
 import Button from "../components/Button";
+import { getAllTokenOwnerRecords } from "@solana/spl-governance";
 import {
   ConnectionProvider,
   WalletProvider,
@@ -31,6 +31,7 @@ import {
 import {
   clusterApiUrl,
   Keypair,
+  Connection,
   SystemProgram,
   Transaction,
 } from "@solana/web3.js";
@@ -38,6 +39,22 @@ import {
   createDefaultAuthorizationResultCache,
   SolanaMobileWalletAdapter,
 } from "@solana-mobile/wallet-adapter-mobile";
+import mainnetBetaRealms from "../realms/mainnet-beta.json";
+import { PublicKey } from "@solana/web3.js";
+
+const MAINNET_REALMS = parseCertifiedRealms(mainnetBetaRealms);
+
+function parseCertifiedRealms(realms) {
+  return realms.map((realm) => ({
+    ...realm,
+    programId: new PublicKey(realm.programId),
+    realmId: new PublicKey(realm.realmId),
+    sharedWalletId: realm.sharedWalletId && new PublicKey(realm.sharedWalletId),
+    isCertified: true,
+    programVersion: realm.programVersion,
+    enableNotifi: realm.enableNotifi ?? true, // enable by default
+  }));
+}
 
 // Default styles that can be overridden by your app
 require("@solana/wallet-adapter-react-ui/styles.css");
@@ -47,14 +64,40 @@ function SignIn({ gun, user }) {
   const [password, setPassword] = useState();
   //const [walletAddress, setWalletAddress] = useState();
 
-  const publicKey = useWallet();
+  const NETWORK = clusterApiUrl("mainnet-beta");
+  const connection = new Connection(NETWORK);
+  const { publicKey, sendTransaction } = useWallet();
+
+  const getProvider = () => {
+    if ("solana" in window) {
+      const provider = window.solana;
+      if (provider.isPhantom) {
+        return provider;
+      }
+    } else if ("solflare" in window) {
+      const provider = window.solflare;
+      if (provider.isSolflare) {
+        return provider;
+      }
+    }
+  };
+
+  async function getRealmMembers(pubKey) {
+    const members = await getAllTokenOwnerRecords(
+      connection,
+      pubKey,
+      MAINNET_REALMS[0].realmId
+    );
+    console.log(members);
+  }
 
   useEffect(() => {
     console.log("running");
-    if (publicKey) {
-      console.log("Public key:", publicKey.toString());
+    if (getProvider().publicKey) {
+      console.log("Public key:", publicKey);
+      getRealmMembers(getProvider().publicKey);
     }
-  }, [publicKey]);
+  });
 
   // The network can be set to 'devnet', 'testnet', or 'mainnet-beta'.
   const network = WalletAdapterNetwork.Devnet;
@@ -80,6 +123,22 @@ function SignIn({ gun, user }) {
     ],
     [network]
   );
+
+  const onClick = useCallback(async () => {
+    if (!publicKey) throw new WalletNotConnectedError();
+
+    const transaction = new Transaction().add(
+      SystemProgram.transfer({
+        fromPubkey: publicKey,
+        toPubkey: Keypair.generate().publicKey,
+        lamports: 1,
+      })
+    );
+
+    const signature = await sendTransaction(transaction, connection);
+
+    await connection.confirmTransaction(signature, "processed");
+  }, [publicKey, sendTransaction, connection]);
 
   const signIn = () => {
     user.auth(username, password, ({ err }) => {
