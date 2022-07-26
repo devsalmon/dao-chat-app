@@ -21,13 +21,13 @@ const root = ReactDOM.createRoot(document.getElementById("root"));
 const gun = Gun({
   peers: ["http://localhost:3030/gun"],
 });
-const gunUser = gun.user().recall({ sessionStorage: true });
+const gunUser = gun.user(); //.recall({ sessionStorage: true });
 
 function Main() {
   const [user, setUser] = useState(gunUser?.is);
 
   gun.on("auth", (ack) => {
-    console.log(gunUser.get("alias"), " authentication was successful: ", ack);
+    //console.log(gunUser.get("alias"), " authentication was successful: ", ack);
     setUser(gunUser?.is);
     gunUser.get("wallet").once((x) => console.log("wallet address: " + x));
   });

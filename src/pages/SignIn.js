@@ -83,6 +83,7 @@ function SignIn({ gun, user }) {
 
   const signIn = () => {
     user.auth(username, password, ({ err }) => {
+      user.put({ wallet: "PUBLIC KEY" });
       if (err) alert(err);
     });
   };
@@ -93,7 +94,6 @@ function SignIn({ gun, user }) {
       if (err) {
         alert(err);
       } else {
-        user.put({ wallet: "PUBLIC KEY" });
         signIn();
       }
     });
