@@ -97,8 +97,6 @@ const SignIn = ({ gun, user }) => {
   );
 
   const signIn = () => {
-    if (!walletAddress || walletAddress.trim() == "")
-      return alert("Connect a wallet to sign in");
     user.auth(username, password, ({ err }) => {
       user.put({ wallet: walletAddress });
       if (err) alert(err);
@@ -107,13 +105,17 @@ const SignIn = ({ gun, user }) => {
 
   // Create user
   const signUp = () => {
-    user.create(username, password, ({ err }) => {
-      if (err) {
-        alert(err);
-      } else {
-        signIn();
-      }
-    });
+    if (!walletAddress || walletAddress.trim() === "") {
+      alert("Connect a wallet to sign up");
+    } else {
+      user.create(username, password, ({ err }) => {
+        if (err) {
+          alert(err);
+        } else {
+          signIn();
+        }
+      });
+    }
   };
 
   return (
