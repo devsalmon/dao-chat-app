@@ -51,8 +51,14 @@ export default function Chat({ gun, collectionId }) {
   const [state, dispatch] = useReducer(reducer, initialState);
   const [message, setMessage] = useState("");
   const [username, setUsername] = useState("");
+  const [newChat, setNewChat] = useState(false);
 
   const chatsRef = useRef();
+
+  // const collectionChats = gun.get(collectionId);
+  // collectionChats.map().on((m) => {
+  //   setNewChat(!newChat);
+  // });
 
   useEffect(() => {
     gun
@@ -67,17 +73,17 @@ export default function Chat({ gun, collectionId }) {
     if (!chats[collectionId]) {
       chats[collectionId] = [];
     }
-    collectionChats.map().once((m) => {
+    collectionChats.map().on((m) => {
       if (!chats[collectionId].find((c) => c.createdAt === m.createdAt)) {
         chats[collectionId].push({
           name: m.name,
           message: m.message,
           createdAt: m.createdAt,
         });
+        dispatch(chats);
       }
     });
-    dispatch(chats);
-  }, [collectionId]);
+  }, [collectionId, newChat]);
 
   useEffect(() => {
     chatsRef.current.scrollTop = chatsRef.current.scrollHeight;

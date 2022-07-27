@@ -3,8 +3,6 @@ import SideBar from "./components/SideBar";
 import { Outlet } from "react-router-dom";
 
 export default function App({ gun, signOut }) {
-  const user = gun.user();
-
   return (
     <div className="App w-[400px] h-[600px] flex relative bg-gray-700 overflow-hidden">
       <div className="w-min">
