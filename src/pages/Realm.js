@@ -6,32 +6,25 @@ import mainnetBetaRealms from "../realms/mainnet-beta.json";
 import { PublicKey } from "@solana/web3.js";
 import Chat from "../components/Chat";
 
-const MAINNET_REALMS = parseCertifiedRealms(mainnetBetaRealms);
-
-function parseCertifiedRealms(realms) {
-  return realms.map((realm) => ({
-    ...realm,
-    programId: new PublicKey(realm.programId),
-    realmId: new PublicKey(realm.realmId),
-    sharedWalletId: realm.sharedWalletId && new PublicKey(realm.sharedWalletId),
-    isCertified: true,
-    programVersion: realm.programVersion,
-    enableNotifi: realm.enableNotifi ?? true, // enable by default
-  }));
-}
-
-export default function Realm({ gun }) {
+export default function Realm({ gun, network, devnetRealms, mainnetRealms }) {
   let { realmId } = useParams();
   const [activeTab, setActiveTab] = useState(0);
   const [collectionId, setCollectionId] = useState(`chats-${realmId}`);
   const [realm, setRealm] = useState(
-    MAINNET_REALMS.find((r) => r.realmId.toString() == realmId)
+    network === "devnet"
+      ? devnetRealms.find((r) => r.realmId.toString() === realmId)
+      : mainnetRealms.find((r) => r.realmId.toString() === realmId)
   );
 
   useEffect(() => {
+    console.log(realmId);
     setCollectionId(`chats-${realmId}`);
-    setRealm(MAINNET_REALMS.find((r) => r.realmId.toString() == realmId));
-  }, [realmId]);
+    setRealm(
+      network === "devnet"
+        ? devnetRealms.find((r) => r.realmId.toString() === realmId)
+        : mainnetRealms.find((r) => r.realmId.toString() === realmId)
+    );
+  }, [realmId, network]);
 
   useEffect(() => {
     gun
@@ -51,7 +44,7 @@ export default function Realm({ gun }) {
     <div className="w-full h-full relative">
       <div className="absolute z-50 w-full top-0 pb-4 bg-gray-700 flex flex-col gap-2 items-center">
         <h1 className="text-center text-white text-xl">
-          {realm.displayName ?? realm.symbol}
+          {realm?.displayName ?? realm?.symbol}
         </h1>
         <div className="flex flex-nowrap mx-auto w-max rounded-lg bg-black items-center justify-center text-gray-400">
           <div

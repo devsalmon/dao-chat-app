@@ -1,18 +1,11 @@
-import React, { useState, useMemo, useEffect, useCallback } from "react";
+import React, { useState, useMemo } from "react";
 import Input from "../components/Input";
 import Button from "../components/Button";
-import { getAllTokenOwnerRecords, getRealms } from "@solana/spl-governance";
 import {
   ConnectionProvider,
   WalletProvider,
-  useWallet,
-  WalletContext,
-  useConnection,
 } from "@solana/wallet-adapter-react";
-import {
-  WalletAdapterNetwork,
-  WalletNotConnectedError,
-} from "@solana/wallet-adapter-base";
+import { WalletAdapterNetwork } from "@solana/wallet-adapter-base";
 import {
   CoinbaseWalletAdapter,
   GlowWalletAdapter,
@@ -28,26 +21,11 @@ import {
   WalletDisconnectButton,
   WalletConnectButton,
 } from "@solana/wallet-adapter-react-ui";
-import { clusterApiUrl, Connection, PublicKey } from "@solana/web3.js";
+import { clusterApiUrl } from "@solana/web3.js";
 import {
   createDefaultAuthorizationResultCache,
   SolanaMobileWalletAdapter,
 } from "@solana-mobile/wallet-adapter-mobile";
-import mainnetBetaRealms from "../realms/mainnet-beta.json";
-
-const MAINNET_REALMS = parseCertifiedRealms(mainnetBetaRealms);
-
-function parseCertifiedRealms(realms) {
-  return realms.map((realm) => ({
-    ...realm,
-    programId: new PublicKey(realm.programId),
-    realmId: new PublicKey(realm.realmId),
-    sharedWalletId: realm.sharedWalletId && new PublicKey(realm.sharedWalletId),
-    isCertified: true,
-    programVersion: realm.programVersion,
-    enableNotifi: realm.enableNotifi ?? true, // enable by default
-  }));
-}
 
 // Default styles that can be overridden by your app
 require("@solana/wallet-adapter-react-ui/styles.css");
@@ -56,32 +34,6 @@ const SignIn = ({ gun, user }) => {
   const [username, setUsername] = useState();
   const [password, setPassword] = useState();
   const [walletAddress, setWalletAddress] = useState();
-
-  const NETWORK = clusterApiUrl("mainnet-beta");
-
-  const connection = new Connection(NETWORK, "recent");
-  const programId = new PublicKey(
-    "GovER5Lthms3bLBqWub97yVrMmEogzX7xNjdXpPPCVZw"
-  );
-
-  useEffect(() => {
-    // fetchRealms();
-    // getRealmMembers(new PublicKey(MAINNET_REALMS[2].realmId.toString()));
-  });
-
-  async function fetchRealms() {
-    const realms = await getRealms(connection, programId);
-    console.log(realms);
-  }
-
-  async function getRealmMembers(realmPk) {
-    const members = await getAllTokenOwnerRecords(
-      connection,
-      programId,
-      realmPk
-    );
-    console.log("Realm members for ", realmPk.toString(), ": ", members);
-  }
 
   const getProvider = () => {
     if ("solana" in window) {

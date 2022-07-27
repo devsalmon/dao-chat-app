@@ -55,11 +55,6 @@ export default function Chat({ gun, collectionId }) {
 
   const chatsRef = useRef();
 
-  // const collectionChats = gun.get(collectionId);
-  // collectionChats.map().on((m) => {
-  //   setNewChat(!newChat);
-  // });
-
   useEffect(() => {
     gun
       .user()
