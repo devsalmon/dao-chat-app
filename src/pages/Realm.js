@@ -33,6 +33,13 @@ export default function Realm({ gun }) {
     setRealm(MAINNET_REALMS.find((r) => r.realmId.toString() == realmId));
   }, [realmId]);
 
+  useEffect(() => {
+    gun
+      .user()
+      .get("wallet")
+      .once((wallet) => console.log(wallet));
+  });
+
   const styles = {
     tabActive:
       "bg-gray-600 px-8 py-2 cursor-pointer rounded-lg shadow-sm shadow-black",

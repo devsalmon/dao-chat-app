@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import ReactDOM from "react-dom/client";
+import { createRoot } from "react-dom/client";
 import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
@@ -14,7 +14,7 @@ import {
 } from "react-router-dom";
 import Realm from "./pages/Realm";
 
-const root = ReactDOM.createRoot(document.getElementById("root"));
+const root = createRoot(document.getElementById("root"));
 
 // initialize gun locally
 // sync with as many peers as you would like by passing in an array of network uris
@@ -29,7 +29,6 @@ function Main() {
   gun.on("auth", (ack) => {
     //console.log(gunUser.get("alias"), " authentication was successful: ", ack);
     setUser(gunUser?.is);
-    gunUser.get("wallet").once((x) => console.log("wallet address: " + x));
   });
 
   const signOut = () => {
