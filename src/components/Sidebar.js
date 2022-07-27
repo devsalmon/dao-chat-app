@@ -25,7 +25,7 @@ const SideBar = ({
   }, [network]);
 
   useEffect(() => {
-    const savedRealms = localStorage.getItem("sidebarRealms");
+    const savedRealms = localStorage.getItem(network + "sidebarRealms");
     setSidebarRealms(
       savedRealms && savedRealms.length > 0 ? JSON.parse(savedRealms) : []
     );
@@ -36,7 +36,7 @@ const SideBar = ({
   };
 
   const addRealm = (id) => {
-    const savedRealms = localStorage.getItem("sidebarRealms");
+    const savedRealms = localStorage.getItem(network + "sidebarRealms");
     let newSavedRealms = [];
     if (savedRealms) {
       newSavedRealms = JSON.parse(savedRealms).filter((r) => r !== id);
@@ -45,7 +45,10 @@ const SideBar = ({
     } else {
       newSavedRealms = [id];
     }
-    localStorage.setItem("sidebarRealms", JSON.stringify(newSavedRealms));
+    localStorage.setItem(
+      network + "sidebarRealms",
+      JSON.stringify(newSavedRealms)
+    );
     setSidebarRealms(newSavedRealms);
   };
 
@@ -53,7 +56,10 @@ const SideBar = ({
     const savedRealms = localStorage.getItem("sidebarRealms");
     if (!savedRealms) return;
     const newSavedRealms = JSON.parse(savedRealms).filter((r) => r !== id);
-    localStorage.setItem("sidebarRealms", JSON.stringify(newSavedRealms));
+    localStorage.setItem(
+      network + "sidebarRealms",
+      JSON.stringify(newSavedRealms)
+    );
     setSidebarRealms(newSavedRealms);
   };
 
