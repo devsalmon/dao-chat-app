@@ -3,6 +3,7 @@ import { BsPlus, BsFillLightningFill } from "react-icons/bs";
 import { MdOutlineCancel } from "react-icons/md";
 import SearchRealms from "./SearchRealms";
 import { useNavigate } from "react-router-dom";
+import { fetchCouncilMembersWithTokensOutsideRealm } from "../governance-functions/Members";
 
 const SideBar = ({
   gun,
@@ -36,6 +37,10 @@ const SideBar = ({
   };
 
   const addRealm = (id) => {
+    // console.log(
+    //   "fetch:",
+    //   fetchCouncilMembersWithTokensOutsideRealm(id, network)
+    // );
     const savedRealms = localStorage.getItem("sidebarRealms");
     let newSavedRealms = [];
     if (savedRealms) {
