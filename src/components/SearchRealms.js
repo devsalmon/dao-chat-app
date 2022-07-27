@@ -26,12 +26,14 @@ export default function SearchRealms({ gun, realms, addRealm }) {
       <ul className="overflow-y-auto h-full pt-4 pb-16 flex flex-col gap-4">
         {filteredRealms &&
           filteredRealms.map((realm) => (
-            <div
+            <li
               key={realm.realmId}
               onClick={() => addRealm(realm.realmId.toString())}
             >
-              {realm.displayName}
-            </div>
+              <div className="sidebar-icon w-full">
+                {realm?.displayName ?? realm?.symbol}
+              </div>
+            </li>
           ))}
       </ul>
     </div>
