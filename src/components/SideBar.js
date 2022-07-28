@@ -4,6 +4,7 @@ import { MdOutlineCancel } from "react-icons/md";
 import SearchRealms from "./SearchRealms";
 import { useNavigate } from "react-router-dom";
 import { fetchCouncilMembersWithTokensOutsideRealm } from "../governance-functions/Members";
+import { getActiveProposals } from "../governance-functions/Proposals";
 
 const SideBar = ({
   gun,
@@ -41,6 +42,9 @@ const SideBar = ({
     //   "fetch:",
     //   fetchCouncilMembersWithTokensOutsideRealm(id, network)
     // );
+
+    //getActiveProposals(network,prog ,id)
+
     const savedRealms = localStorage.getItem("sidebarRealms");
     let newSavedRealms = [];
     if (savedRealms) {
