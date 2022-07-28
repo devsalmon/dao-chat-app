@@ -5,6 +5,7 @@ import SearchRealms from "./SearchRealms";
 import { useNavigate } from "react-router-dom";
 import { fetchCouncilMembersWithTokensOutsideRealm } from "../governance-functions/Members";
 import { getActiveProposals } from "../governance-functions/Proposals";
+import { Connection, clusterApiUrl, PublicKey } from "@solana/web3.js";
 
 const SideBar = ({
   gun,
@@ -42,8 +43,11 @@ const SideBar = ({
     //   "fetch:",
     //   fetchCouncilMembersWithTokensOutsideRealm(id, network)
     // );
-
-    //getActiveProposals(network,prog ,id)
+    // getActiveProposals(
+    //   new Connection(clusterApiUrl("devnet"), "recent"),
+    //   new PublicKey("GovER5Lthms3bLBqWub97yVrMmEogzX7xNjdXpPPCVZw"),
+    //   id
+    // );
 
     const savedRealms = localStorage.getItem("sidebarRealms");
     let newSavedRealms = [];

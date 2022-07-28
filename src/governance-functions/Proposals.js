@@ -8,5 +8,5 @@ export const getActiveProposals = async ({
   programId,
   realmPk,
 }) => {
-  console.log(getAllProposals(connection, programId, realmPk));
+  console.log("Proposals", getAllProposals(connection, programId, realmPk));
 };
