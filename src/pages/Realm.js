@@ -6,25 +6,19 @@ import mainnetBetaRealms from "../realms/mainnet-beta.json";
 import { PublicKey } from "@solana/web3.js";
 import Chat from "../components/Chat";
 
-export default function Realm({ gun, network, devnetRealms, mainnetRealms }) {
+export default function Realm({ gun, network, realms }) {
   let { realmId } = useParams();
   const [activeTab, setActiveTab] = useState(0);
   const [collectionId, setCollectionId] = useState(`chats-${realmId}`);
   const [realm, setRealm] = useState(
-    network === "devnet"
-      ? devnetRealms.find((r) => r.realmId.toString() === realmId)
-      : mainnetRealms.find((r) => r.realmId.toString() === realmId)
+    realms.find((r) => r.realmId?.toString() === realmId)
   );
 
   useEffect(() => {
-    console.log(realmId);
+    console.log(network);
     setCollectionId(`chats-${realmId}`);
-    setRealm(
-      network === "devnet"
-        ? devnetRealms.find((r) => r.realmId.toString() === realmId)
-        : mainnetRealms.find((r) => r.realmId.toString() === realmId)
-    );
-  }, [realmId, network]);
+    setRealm(realms.find((r) => r.realmId?.toString() === realmId));
+  }, [realmId, network, realms]);
 
   useEffect(() => {
     gun

@@ -7,25 +7,11 @@ import { fetchCouncilMembersWithTokensOutsideRealm } from "../governance-functio
 import { getActiveProposals } from "../governance-functions/Proposals";
 import { Connection, clusterApiUrl, PublicKey } from "@solana/web3.js";
 
-const SideBar = ({
-  gun,
-  signOut,
-  network,
-  changeNetwork,
-  devnetRealms,
-  mainnetRealms,
-}) => {
+const Sidebar = ({ gun, signOut, network, changeNetwork, realms, loading }) => {
   const [showSearch, setShowSearch] = useState(false);
-  const [realms, setRealms] = useState(
-    network === "devnet" ? devnetRealms : mainnetRealms
-  );
   const [sidebarRealms, setSidebarRealms] = useState([]);
 
   const navigate = useNavigate();
-
-  useEffect(() => {
-    setRealms(network === "devnet" ? devnetRealms : mainnetRealms);
-  }, [network]);
 
   useEffect(() => {
     const savedRealms = localStorage.getItem(network + "sidebarRealms");
@@ -65,7 +51,7 @@ const SideBar = ({
   };
 
   const removeRealm = (id) => {
-    const savedRealms = localStorage.getItem("sidebarRealms");
+    const savedRealms = localStorage.getItem(network + "sidebarRealms");
     if (!savedRealms) return;
     const newSavedRealms = JSON.parse(savedRealms).filter((r) => r !== id);
     localStorage.setItem(
@@ -95,13 +81,13 @@ const SideBar = ({
           {sidebarRealms &&
             sidebarRealms.map(
               (realmId) =>
-                realms.find((r) => r.realmId == realmId) && (
+                realms?.find((r) => r.realmId?.toString() === realmId) && (
                   <SideBarIcon
-                    key={realmId}
-                    onClick={() => goToRealm(realmId)}
-                    removeRealm={() => removeRealm(realmId)}
+                    key={realmId.toString()}
+                    onClick={() => goToRealm(realmId?.toString())}
+                    removeRealm={() => removeRealm(realmId?.toString())}
                     icon={realms
-                      .find((r) => r.realmId == realmId)
+                      ?.find((r) => r.realmId?.toString() == realmId)
                       ?.symbol.substring(0, 2)}
                   />
                 )
@@ -121,7 +107,12 @@ const SideBar = ({
           showSearch ? `max-w-[300px]` : `max-w-0 overflow-hidden`
         }`}
       >
-        <SearchRealms gun={gun} realms={realms} addRealm={addRealm} />
+        <SearchRealms
+          gun={gun}
+          realms={realms}
+          addRealm={addRealm}
+          loading={loading}
+        />
       </div>
     </div>
   );
@@ -143,4 +134,4 @@ const SideBarIcon = ({ icon, onClick, removeRealm }) => (
   </div>
 );
 
-export default SideBar;
+export default Sidebar;
