@@ -3,6 +3,9 @@ import { BsPlus, BsFillLightningFill } from "react-icons/bs";
 import { MdOutlineCancel } from "react-icons/md";
 import SearchRealms from "./SearchRealms";
 import { useNavigate } from "react-router-dom";
+import { fetchCouncilMembersWithTokensOutsideRealm } from "../governance-functions/Members";
+import { getActiveProposals } from "../governance-functions/Proposals";
+import { Connection, clusterApiUrl, PublicKey } from "@solana/web3.js";
 
 const SideBar = ({
   gun,
@@ -37,6 +40,15 @@ const SideBar = ({
 
   const addRealm = (id) => {
     const savedRealms = localStorage.getItem(network + "sidebarRealms");
+    // console.log(
+    //   "fetch:",
+    //   fetchCouncilMembersWithTokensOutsideRealm(id, network)
+    // );
+    // getActiveProposals(
+    //   new Connection(clusterApiUrl("devnet"), "recent"),
+    //   new PublicKey("GovER5Lthms3bLBqWub97yVrMmEogzX7xNjdXpPPCVZw"),
+    //   id
+    // );
     let newSavedRealms = [];
     if (savedRealms) {
       newSavedRealms = JSON.parse(savedRealms).filter((r) => r !== id);

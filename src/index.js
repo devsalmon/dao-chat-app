@@ -40,7 +40,7 @@ const root = createRoot(document.getElementById("root"));
 // initialize gun locally
 // sync with as many peers as you would like by passing in an array of network uris
 const gun = Gun({
-  peers: ["http://localhost:3030/gun"],
+  peers: ["https://dao-chat-server.herokuapp.com/gun"],
 });
 const gunUser = gun.user().recall({ sessionStorage: true });
 
