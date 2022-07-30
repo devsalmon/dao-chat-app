@@ -44,6 +44,7 @@ function Main() {
   const [realms, setRealms] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  // only fetch realms when connection changes (i.e. devnet to mainnet or vice versa)
   useMemo(async () => {
     setLoading(true);
     if (connection) {
@@ -63,10 +64,7 @@ function Main() {
     }
   }, [connection]);
 
-  useEffect(() => {
-    console.log(realms);
-  }, [realms]);
-
+  // change to devnet or vice versa
   const changeNetwork = () => {
     if (network == "devnet") {
       setNetwork("mainnet-beta");
@@ -109,6 +107,8 @@ function Main() {
             <App
               gun={gun}
               network={network}
+              connection={connection}
+              programId={programId}
               changeNetwork={changeNetwork}
               signOut={signOut}
               realms={realms}

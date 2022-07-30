@@ -2,8 +2,8 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import "gun/lib/unset.js";
-import mainnetBetaRealms from "../realms/mainnet-beta.json";
-import { PublicKey } from "@solana/web3.js";
+import { getRealmMembers } from "../realms/Realms.js";
+import { PublicKey, Connection, clusterApiUrl } from "@solana/web3.js";
 import Chat from "../components/Chat";
 
 export default function Realm({ gun, network, realms }) {
@@ -13,19 +13,35 @@ export default function Realm({ gun, network, realms }) {
   const [realm, setRealm] = useState(
     realms.find((r) => r.realmId?.toString() === realmId)
   );
-
-  useEffect(() => {
-    console.log(network);
-    setCollectionId(`chats-${realmId}`);
-    setRealm(realms.find((r) => r.realmId?.toString() === realmId));
-  }, [realmId, network, realms]);
+  const [hasAccess, setHasAccess] = useState(true);
+  const [userWallet, setUserWallet] = useState("");
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     gun
       .user()
       .get("wallet")
-      .once((wallet) => console.log(wallet));
+      .once((wallet) => {
+        setUserWallet(wallet);
+        console.log("USER WALLET: ", wallet);
+      });
   });
+
+  useEffect(() => {
+    setCollectionId(`chats-${realmId}`);
+    setRealm(realms.find((r) => r.realmId?.toString() === realmId));
+    getMembers();
+  }, [realmId, network, realms]);
+
+  async function getMembers() {
+    let members = await getRealmMembers(
+      new Connection(clusterApiUrl(network), "recent"),
+      new PublicKey("GovER5Lthms3bLBqWub97yVrMmEogzX7xNjdXpPPCVZw"),
+      new PublicKey(realmId)
+    );
+    setHasAccess(userWallet && members.includes(userWallet));
+    setLoading(false);
+  }
 
   const styles = {
     tabActive:
@@ -34,7 +50,13 @@ export default function Realm({ gun, network, realms }) {
       "bg-gray-900 px-8 py-2 cursor-pointer rounded-lg shadow-inner shadow-black",
   };
 
-  return (
+  return loading ? (
+    <div className="h-full w-full flex items-center justify-center gap-2">
+      <div className="bg-white rounded-full h-2 w-2 animate-pulse"></div>
+      <div className="bg-white rounded-full h-2 w-2 animate-pulse delay-50"></div>
+      <div className=" bg-white rounded-full h-2 w-2 animate-pulse delay-75"></div>
+    </div>
+  ) : hasAccess ? (
     <div className="w-full h-full relative">
       <div className="absolute z-50 w-full top-0 pb-4 bg-gray-700 flex flex-col gap-2 items-center">
         <h1 className="text-center text-white text-xl">
@@ -60,5 +82,7 @@ export default function Realm({ gun, network, realms }) {
         {activeTab === 1 && <div id="voting" className=""></div>}
       </div>
     </div>
+  ) : (
+    <div className="w-full h-full"></div>
   );
 }

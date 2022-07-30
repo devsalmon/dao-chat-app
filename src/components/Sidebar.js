@@ -3,13 +3,24 @@ import { BsPlus, BsFillLightningFill } from "react-icons/bs";
 import { MdOutlineCancel } from "react-icons/md";
 import SearchRealms from "./SearchRealms";
 import { useNavigate } from "react-router-dom";
+import { getRealmMembers } from "../realms/Realms.js";
 import { fetchCouncilMembersWithTokensOutsideRealm } from "../governance-functions/Members";
 import { getActiveProposals } from "../governance-functions/Proposals";
 import { Connection, clusterApiUrl, PublicKey } from "@solana/web3.js";
 
-const Sidebar = ({ gun, signOut, network, changeNetwork, realms, loading }) => {
+const Sidebar = ({
+  gun,
+  signOut,
+  network,
+  connection,
+  programId,
+  changeNetwork,
+  realms,
+  loading,
+}) => {
   const [showSearch, setShowSearch] = useState(false);
   const [sidebarRealms, setSidebarRealms] = useState([]);
+  const [userWallet, setUserWallet] = useState("");
 
   const navigate = useNavigate();
 
@@ -20,11 +31,35 @@ const Sidebar = ({ gun, signOut, network, changeNetwork, realms, loading }) => {
     );
   }, []);
 
+  useEffect(() => {
+    gun
+      .user()
+      .get("wallet")
+      .once((wallet) => {
+        setUserWallet(wallet);
+        console.log("USER WALLET: ", wallet);
+        if (!wallet) {
+          // if user doesn't have a wallet connected, sign them out for now
+          signOut(); // tbd - just make them reconnect wallet
+        }
+      });
+  });
+
   const searchRealms = () => {
     setShowSearch(!showSearch);
   };
 
-  const addRealm = (id) => {
+  // add a realm to the sidebar by updating the appropriate local storage variable
+  const addRealm = async (id) => {
+    let members = await getRealmMembers(
+      connection,
+      programId,
+      new PublicKey(id)
+    );
+    if (!userWallet || !members.includes(userWallet)) {
+      alert("You do not have access to this DAO");
+      return;
+    }
     const savedRealms = localStorage.getItem(network + "sidebarRealms");
     // console.log(
     //   "fetch:",
@@ -50,6 +85,7 @@ const Sidebar = ({ gun, signOut, network, changeNetwork, realms, loading }) => {
     setSidebarRealms(newSavedRealms);
   };
 
+  // remove realm from the sidebar
   const removeRealm = (id) => {
     const savedRealms = localStorage.getItem(network + "sidebarRealms");
     if (!savedRealms) return;

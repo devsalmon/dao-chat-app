@@ -7,6 +7,7 @@ import devnetRealms from "./devnet.json";
 const CERTIFIED_MAINNET = parseCertifiedRealms(mainnetBetaRealms);
 const CERTIFIED_DEVNET = parseCertifiedRealms(devnetRealms);
 
+// return certified realms based on network
 export function getCertifiedRealmInfos(network) {
   return network === "mainnet" ? CERTIFIED_MAINNET : CERTIFIED_DEVNET;
 }
@@ -22,6 +23,7 @@ function createUnchartedRealmInfo(realm) {
   };
 }
 
+// get all uncharted realms (all realms excluding certified realms)
 export async function getUnchartedRealmInfos(connection) {
   const certifiedRealms = getCertifiedRealmInfos(connection);
 
@@ -127,7 +129,19 @@ const EXCLUDED_REALMS = new Map([
   ["24pZ9VkpRGTH6wHqjSsySYHpxAKbQL1Tczb6b7zytomZ", ""],
 ]);
 
-async function getRealmMembers(connection, programId, realmPk) {
-  const members = await getAllTokenOwnerRecords(connection, programId, realmPk);
-  console.log("Realm members for ", realmPk.toString(), ": ", members);
+// returns wallet addresses of members of a given realm
+export async function getRealmMembers(connection, programId, realmPk) {
+  try {
+    const ownerRecords = await getAllTokenOwnerRecords(
+      connection,
+      programId,
+      realmPk
+    );
+    return ownerRecords.map((record) =>
+      record?.account?.governingTokenOwner.toString()
+    );
+  } catch (e) {
+    console.log(e);
+    return [];
+  }
 }

@@ -6,6 +6,8 @@ export default function App({
   gun,
   signOut,
   network,
+  connection,
+  programId,
   changeNetwork,
   realms,
   loading,
@@ -17,6 +19,8 @@ export default function App({
           gun={gun}
           signOut={signOut}
           network={network}
+          connection={connection}
+          programId={programId}
           changeNetwork={changeNetwork}
           realms={realms}
           loading={loading}

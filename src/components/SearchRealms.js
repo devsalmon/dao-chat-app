@@ -5,7 +5,6 @@ export default function SearchRealms({ realms, addRealm, loading }) {
   const [filteredRealms, setFilteredRealms] = useState([]);
 
   const filterRealms = (v) => {
-    console.log(realms);
     if (v.length > 0) {
       const filtered = realms.filter(
         (r) =>
