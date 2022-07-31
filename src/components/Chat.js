@@ -142,14 +142,10 @@ export default function Chat({ gun, collectionId }) {
                 isNewDay(
                   new Date(state.allChats[collectionId][index - 1]?.createdAt),
                   new Date(m.createdAt)
-                ) && <hr className="border-white border" />
+                ) && <hr key={`hr-${index}`} className="border-white border" />
               }
-              <li>
-                <Message
-                  key={m.createdAt}
-                  m={m}
-                  isUsers={m?.name === username}
-                />
+              <li key={m.createdAt}>
+                <Message m={m} isUsers={m?.name === username} />
               </li>
             </>
           ))}

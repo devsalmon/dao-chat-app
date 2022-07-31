@@ -98,6 +98,7 @@ const SignIn = ({ gun, user }) => {
 
   const signIn = () => {
     user.auth(username, password, ({ err }) => {
+      if (!err) console.log("SIGNED IN");
       if (walletAddress != null && walletAddress?.trim() !== "") {
         user.put({ wallet: walletAddress });
       }
