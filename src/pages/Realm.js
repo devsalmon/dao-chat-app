@@ -14,6 +14,7 @@ export default function Realm({ gun, network, realms }) {
     realms.find((r) => r.realmId?.toString() === realmId)
   );
   const [hasAccess, setHasAccess] = useState(true);
+  const [members, setMembers] = useState();
   const [userWallet, setUserWallet] = useState("");
   const [loading, setLoading] = useState(true);
 
@@ -23,7 +24,6 @@ export default function Realm({ gun, network, realms }) {
       .get("wallet")
       .once((wallet) => {
         setUserWallet(wallet);
-        console.log("USER WALLET: ", wallet);
       });
   });
 
@@ -33,13 +33,19 @@ export default function Realm({ gun, network, realms }) {
     getMembers();
   }, [realmId, network, realms]);
 
+  useEffect(() => {
+    if (members) setHasAccess(userWallet && members.includes(userWallet));
+  }, [members, userWallet]);
+
   async function getMembers() {
-    let members = await getRealmMembers(
+    let realmMembers = await getRealmMembers(
       new Connection(clusterApiUrl(network), "recent"),
       new PublicKey("GovER5Lthms3bLBqWub97yVrMmEogzX7xNjdXpPPCVZw"),
       new PublicKey(realmId)
     );
-    setHasAccess(userWallet && members.includes(userWallet));
+    setMembers(realmMembers);
+    // user only has access if their wallet is in the members list
+    setHasAccess(userWallet && realmMembers.includes(userWallet));
     setLoading(false);
   }
 

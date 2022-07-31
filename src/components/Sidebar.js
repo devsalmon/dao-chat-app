@@ -21,6 +21,7 @@ const Sidebar = ({
   const [showSearch, setShowSearch] = useState(false);
   const [sidebarRealms, setSidebarRealms] = useState([]);
   const [userWallet, setUserWallet] = useState("");
+  const [activeRealm, setActiveRealm] = useState("");
 
   const navigate = useNavigate();
 
@@ -37,13 +38,10 @@ const Sidebar = ({
       .get("wallet")
       .once((wallet) => {
         setUserWallet(wallet);
-        console.log("USER WALLET: ", wallet);
-        if (!wallet) {
-          // if user doesn't have a wallet connected, sign them out for now
-          signOut(); // tbd - just make them reconnect wallet
-        }
       });
-  });
+    const arr = window.location.href.split("/");
+    setActiveRealm(arr[arr.length - 1]);
+  }, []);
 
   const searchRealms = () => {
     setShowSearch(!showSearch);
@@ -98,6 +96,7 @@ const Sidebar = ({
   };
 
   const goToRealm = (id) => {
+    setActiveRealm(id);
     navigate(`/realms/${id}`);
   };
 
@@ -120,6 +119,7 @@ const Sidebar = ({
                 realms?.find((r) => r.realmId?.toString() === realmId) && (
                   <SideBarIcon
                     key={realmId.toString()}
+                    active={activeRealm == realmId.toString()}
                     onClick={() => goToRealm(realmId?.toString())}
                     removeRealm={() => removeRealm(realmId?.toString())}
                     icon={realms
@@ -154,9 +154,12 @@ const Sidebar = ({
   );
 };
 
-const SideBarIcon = ({ icon, onClick, removeRealm }) => (
+const SideBarIcon = ({ icon, active, onClick, removeRealm }) => (
   <div className="flex flex-col items-center gap-1 group">
-    <div className="sidebar-icon" onClick={onClick}>
+    <div
+      className={`sidebar-icon ${active && `bg-green-600 text-white`}`}
+      onClick={onClick}
+    >
       {icon}
     </div>
     {removeRealm && (
