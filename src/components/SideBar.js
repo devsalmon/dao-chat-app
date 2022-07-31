@@ -27,10 +27,10 @@ const Sidebar = ({
 
   useEffect(() => {
     const savedRealms = localStorage.getItem(network + "sidebarRealms");
-    setSidebarRealms(
-      savedRealms && savedRealms.length > 0 ? JSON.parse(savedRealms) : []
-    );
-  }, []);
+    if (savedRealms && savedRealms.length > 0)
+      setSidebarRealms(JSON.parse(savedRealms));
+    console.log(savedRealms);
+  }, [network]);
 
   useEffect(() => {
     gun
@@ -113,6 +113,11 @@ const Sidebar = ({
           <SideBarIcon icon={<BsPlus size="32" />} onClick={searchRealms} />
         </div>
         <ul className="h-max flex flex-col gap-2 pb-6">
+          {loading &&
+            sidebarRealms &&
+            sidebarRealms.map((realm) => (
+              <div className="sidebar-icon animate-pulse" />
+            ))}
           {sidebarRealms &&
             sidebarRealms.map(
               (realmId) =>
