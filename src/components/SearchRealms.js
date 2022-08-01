@@ -1,7 +1,12 @@
 import { useState } from "react";
 import Input from "./Input";
 
-export default function SearchRealms({ realms, addRealm, loading }) {
+export default function SearchRealms({
+  realms,
+  addRealm,
+  loading,
+  getRealmImage,
+}) {
   const [filteredRealms, setFilteredRealms] = useState([]);
 
   const filterRealms = (v) => {
@@ -33,10 +38,21 @@ export default function SearchRealms({ realms, addRealm, loading }) {
           : filteredRealms &&
             filteredRealms.map((realm) => (
               <li
-                key={realm.realmId}
-                onClick={() => addRealm(realm.realmId.toString())}
+                key={realm.realmId?.toString()}
+                onClick={() => addRealm(realm.realmId?.toString())}
               >
-                <div className="sidebar-icon w-full">
+                <div className="sidebar-icon flex-col gap-2 h-auto w-full p-2">
+                  <div className="h-12 w-12 flex items-center justify-center relative rounded-full bg-gray-500 p-2">
+                    {getRealmImage(realm?.ogImage) ? (
+                      <img
+                        className="h-full w-full"
+                        src={getRealmImage(realm?.ogImage)}
+                        alt=""
+                      />
+                    ) : (
+                      <div>{realm?.symbol?.substring(0, 2)}</div>
+                    )}
+                  </div>
                   {realm?.displayName ?? realm?.symbol}
                 </div>
               </li>

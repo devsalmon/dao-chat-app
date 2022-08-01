@@ -6,7 +6,8 @@ import Channels from "./Channels";
 import { useNavigate } from "react-router-dom";
 import { getRealmMembers } from "../realms/Realms.js";
 import { fetchCouncilMembersWithTokensOutsideRealm } from "../governance-functions/Members";
-import { Connection, clusterApiUrl, PublicKey } from "@solana/web3.js";
+import { getActiveProposals } from "../governance-functions/Proposals";
+import { PublicKey } from "@solana/web3.js";
 
 const Sidebar = ({
   gun,
@@ -46,10 +47,6 @@ const Sidebar = ({
 
   const searchRealms = () => {
     setShowSearch(!showSearch);
-  };
-
-  const channelToggle = () => {
-    setShowChannel(!showChannel);
   };
 
   // add a realm to the sidebar by updating the appropriate local storage variable
@@ -100,6 +97,13 @@ const Sidebar = ({
     navigate(`/realms/${id}`);
   };
 
+  const getRealmImage = (url) => {
+    if (!url) return;
+    if (url?.includes("http")) return url;
+    const image = url.split("/");
+    return "/" + image[image.length - 1];
+  };
+
   return (
     <div className="flex h-full w-full">
       <div className="h-full overflow-y-scroll scrollbar-hide overflow-x-hidden w-full flex flex-col gap-2 p-2 items-center justify-start bg-gray-900 shadow-lg text-white rounded-r-xl">
@@ -119,23 +123,31 @@ const Sidebar = ({
               <div className="sidebar-icon animate-pulse" />
             ))}
           {sidebarRealms &&
-            sidebarRealms.map(
-              (realmId) =>
-                realms?.find((r) => r.realmId?.toString() === realmId) && (
+            sidebarRealms.map((realmId) => {
+              const realm = realms?.find(
+                (r) => r.realmId?.toString() === realmId
+              );
+              return (
+                realm && (
                   <SideBarIcon
                     key={realmId.toString()}
                     active={activeRealm === realmId.toString()}
-                    onClick={() => {
-                      goToRealm(realmId?.toString());
-                      channelToggle();
-                    }}
+                    onClick={() => goToRealm(realmId?.toString())}
                     removeRealm={() => removeRealm(realmId?.toString())}
-                    icon={realms
-                      ?.find((r) => r.realmId?.toString() === realmId)
-                      ?.symbol.substring(0, 2)}
+                    icon={
+                      realm?.ogImage && (
+                        <img
+                          className="p-2"
+                          src={getRealmImage(realm?.ogImage)}
+                          alt=""
+                        />
+                      )
+                    }
+                    symbol={realm?.symbol.substring(0, 2)}
                   />
                 )
-            )}
+              );
+            })}
         </ul>
         <div className="absolute bottom-0 mx-auto backdrop-blur py-2">
           <div
@@ -156,6 +168,7 @@ const Sidebar = ({
           realms={realms}
           addRealm={addRealm}
           loading={loading}
+          getRealmImage={getRealmImage}
         />
       </div>
       <div
@@ -174,13 +187,13 @@ const Sidebar = ({
   );
 };
 
-const SideBarIcon = ({ icon, active, onClick, removeRealm }) => (
+const SideBarIcon = ({ icon, active, onClick, removeRealm, symbol }) => (
   <div className="flex flex-col items-center gap-1 group">
     <div
       className={`sidebar-icon ${active && `bg-green-600 text-white`}`}
       onClick={onClick}
     >
-      {icon}
+      {icon ?? symbol}
     </div>
     {removeRealm && (
       <div
