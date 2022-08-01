@@ -6,7 +6,6 @@ import Channels from "./Channels";
 import { useNavigate } from "react-router-dom";
 import { getRealmMembers } from "../realms/Realms.js";
 import { fetchCouncilMembersWithTokensOutsideRealm } from "../governance-functions/Members";
-import { getActiveProposals } from "../governance-functions/Proposals";
 import { PublicKey } from "@solana/web3.js";
 
 const Sidebar = ({
@@ -132,7 +131,10 @@ const Sidebar = ({
                   <SideBarIcon
                     key={realmId.toString()}
                     active={activeRealm === realmId.toString()}
-                    onClick={() => goToRealm(realmId?.toString())}
+                    onClick={() => {
+                      goToRealm(realmId?.toString());
+                      setShowChannel(!showChannel);
+                    }}
                     removeRealm={() => removeRealm(realmId?.toString())}
                     icon={
                       realm?.ogImage && (
