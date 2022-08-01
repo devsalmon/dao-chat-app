@@ -105,17 +105,17 @@ const SignIn = ({ gun, user }) => {
 
   // Create user
   const signUp = () => {
-    // if (!walletAddress || walletAddress.trim() === "") {
-    //   alert("Connect a wallet to sign up");
-    // } else {
-    user.create(username, password, ({ err }) => {
-      if (err) {
-        alert(err);
-      } else {
-        signIn();
-      }
-    });
-    // }
+    if (!walletAddress || walletAddress.trim() === "") {
+      alert("Connect a wallet to sign up");
+    } else {
+      user.create(username, password, ({ err }) => {
+        if (err) {
+          alert(err);
+        } else {
+          signIn();
+        }
+      });
+    }
   };
 
   return (
