@@ -1,8 +1,6 @@
 import Input from "./Input";
 import { BiSend } from "react-icons/bi";
-import { BsPersonCircle } from "react-icons/bs";
 import { useEffect, useReducer, useState, useRef } from "react";
-import { useParams } from "react-router-dom";
 
 const initialState = {
   allChats: {},
@@ -12,36 +10,48 @@ function reducer(state, collectionChats) {
   return { allChats: { collectionChats, ...state.allChats } };
 }
 
-const Message = ({ m }) => {
+const Message = ({ m, isUsers }) => {
+  const getDay = (date) => {
+    const today = new Date();
+    if (date.getDate() === today.getDate()) return "Today";
+    if (date.getDate() === today.getDate() - 1) return "Yesterday";
+    const day = date.getDate();
+    const month = date.getMonth();
+    return `${day}/${month}`;
+  };
+
   const formatDate = (date) => {
     const hours = date.getHours();
     const minutes = date.getMinutes();
-    const day = date.getDate();
-    const month = date.getMonth();
-    return `${hours}:${minutes}, ${day}/${month}`;
+    const day = getDay(date);
+    return `${day}, ${hours}:${minutes}`;
   };
 
   return (
-    <div className="flex items-center py-2 gap-2 border-t border-gray-600 text-sm text-gray-400">
-      <div className="flex-none">
-        <img
-          src={"https://avatars.dicebear.com/api/male/" + m.name + ".svg"}
-          className="w-10 h-10"
-          alt="avatar"
-        />
+    <div className={`flex flex-col gap-1 ${isUsers ? `items-end` : ``}`}>
+      <div className="text-xxs text-white">
+        {formatDate(new Date(m.createdAt))}
       </div>
-      <div>
-        <div className="flex gap-2 items-center">
+      <div
+        className={`flex mr-6 py-2 gap-2 px-2 shadow-lg bg-gray-600 rounded-lg text-sm text-gray-400 ${
+          isUsers && ` ml-6 mr-0 bg-gray-500`
+        }`}
+      >
+        <div className="flex-none">
+          <img
+            src={"https://avatars.dicebear.com/api/male/" + m.name + ".svg"}
+            className="w-10 h-10"
+            alt="avatar"
+          />
+        </div>
+        <div>
           {m.name && (
             <span className="text-xs text-white" key={m.createdAt}>
               {m.name}
             </span>
           )}
-          <span className="text-xs text-gray-600">
-            {formatDate(new Date(m.createdAt))}
-          </span>
+          <div className="break-words">{m.message}</div>
         </div>
-        <div>{m.message}</div>
       </div>
     </div>
   );
@@ -65,9 +75,11 @@ export default function Chat({ gun, collectionId }) {
   useEffect(() => {
     const collectionChats = gun.get(collectionId);
     let chats = state.allChats;
+    // if the realm doesn't already have a chat, create a new object in the chats collection with the realmId as the key
     if (!chats[collectionId]) {
       chats[collectionId] = [];
     }
+
     collectionChats.map().on((m) => {
       if (!chats[collectionId].find((c) => c.createdAt === m.createdAt)) {
         chats[collectionId].push({
@@ -102,14 +114,40 @@ export default function Chat({ gun, collectionId }) {
     dispatch(chats);
   };
 
+  const submit = (e) => {
+    if (e.key === "Enter") {
+      sendMessage();
+    }
+  };
+
+  const isNewDay = (prevDate, date) => {
+    const today = new Date();
+    return (
+      today.getDate() === date.getDate() &&
+      today.getDate() - 1 === prevDate.getDate()
+    );
+  };
+
   return (
     <div className="h-full w-full flex flex-col justify-end">
-      <ul ref={chatsRef} className="flex flex-col w-full overflow-y-auto py-2">
+      <ul
+        ref={chatsRef}
+        className="flex flex-col gap-4 w-full overflow-y-auto py-2"
+      >
         {state.allChats[collectionId] &&
-          state.allChats[collectionId].map((m) => (
-            <li>
-              <Message key={m.createdAt} m={m} />
-            </li>
+          state.allChats[collectionId].map((m, index) => (
+            <>
+              {
+                // if the current message is on a new day, add a breakpoint (line) before it
+                isNewDay(
+                  new Date(state.allChats[collectionId][index - 1]?.createdAt),
+                  new Date(m.createdAt)
+                ) && <hr key={`hr-${index}`} className="border-white border" />
+              }
+              <li key={m.createdAt}>
+                <Message m={m} isUsers={m?.name === username} />
+              </li>
+            </>
           ))}
       </ul>
       <div className="relative w-full flex items-center justify-end shadow-lg pt-4">
@@ -118,6 +156,7 @@ export default function Chat({ gun, collectionId }) {
           placeholder="Send Message..."
           name="message"
           value={message}
+          onKeyDown={submit}
         />
         <button
           onClick={sendMessage}

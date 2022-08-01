@@ -80,6 +80,7 @@ function Main() {
 
   gun.on("auth", (ack) => {
     //console.log(gunUser.get("alias"), " authentication was successful: ", ack);
+    console.log("SIGNED IN");
     setUser(gunUser?.is);
   });
 

@@ -26,7 +26,7 @@ export default function App({
           loading={loading}
         />
       </div>
-      <div className="relative flex flex-col gap-4 p-4 w-5/6 break-all">
+      <div className="relative flex flex-col gap-4 p-4 w-5/6 break-words">
         <Outlet />
       </div>
     </div>
