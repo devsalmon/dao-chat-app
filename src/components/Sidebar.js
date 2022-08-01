@@ -2,10 +2,10 @@ import React, { useState, useEffect } from "react";
 import { BsPlus, BsFillLightningFill } from "react-icons/bs";
 import { MdOutlineCancel } from "react-icons/md";
 import SearchRealms from "./SearchRealms";
+import Channels from "./Channels";
 import { useNavigate } from "react-router-dom";
 import { getRealmMembers } from "../realms/Realms.js";
 import { fetchCouncilMembersWithTokensOutsideRealm } from "../governance-functions/Members";
-import { getActiveProposals } from "../governance-functions/Proposals";
 import { Connection, clusterApiUrl, PublicKey } from "@solana/web3.js";
 
 const Sidebar = ({
@@ -19,6 +19,7 @@ const Sidebar = ({
   loading,
 }) => {
   const [showSearch, setShowSearch] = useState(false);
+  const [showChannel, setShowChannel] = useState(false);
   const [sidebarRealms, setSidebarRealms] = useState([]);
   const [userWallet, setUserWallet] = useState("");
   const [activeRealm, setActiveRealm] = useState("");
@@ -47,6 +48,10 @@ const Sidebar = ({
     setShowSearch(!showSearch);
   };
 
+  const channelToggle = () => {
+    setShowChannel(!showChannel);
+  };
+
   // add a realm to the sidebar by updating the appropriate local storage variable
   const addRealm = async (id) => {
     let members = await getRealmMembers(
@@ -62,11 +67,6 @@ const Sidebar = ({
     // console.log(
     //   "fetch:",
     //   fetchCouncilMembersWithTokensOutsideRealm(id, network)
-    // );
-    // getActiveProposals(
-    //   new Connection(clusterApiUrl("devnet"), "recent"),
-    //   new PublicKey("GovER5Lthms3bLBqWub97yVrMmEogzX7xNjdXpPPCVZw"),
-    //   id
     // );
     let newSavedRealms = [];
     if (savedRealms) {
@@ -124,11 +124,14 @@ const Sidebar = ({
                 realms?.find((r) => r.realmId?.toString() === realmId) && (
                   <SideBarIcon
                     key={realmId.toString()}
-                    active={activeRealm == realmId.toString()}
-                    onClick={() => goToRealm(realmId?.toString())}
+                    active={activeRealm === realmId.toString()}
+                    onClick={() => {
+                      goToRealm(realmId?.toString());
+                      channelToggle();
+                    }}
                     removeRealm={() => removeRealm(realmId?.toString())}
                     icon={realms
-                      ?.find((r) => r.realmId?.toString() == realmId)
+                      ?.find((r) => r.realmId?.toString() === realmId)
                       ?.symbol.substring(0, 2)}
                   />
                 )
@@ -153,6 +156,18 @@ const Sidebar = ({
           realms={realms}
           addRealm={addRealm}
           loading={loading}
+        />
+      </div>
+      <div
+        className={`transition-all duration-200 ease-in-out shadow-lg z-50 ${
+          showChannel ? `max-w-[300px]` : `max-w-0 overflow-hidden`
+        }`}
+      >
+        <Channels
+          gun={gun}
+          realmId={activeRealm}
+          connection={connection}
+          programId={programId}
         />
       </div>
     </div>

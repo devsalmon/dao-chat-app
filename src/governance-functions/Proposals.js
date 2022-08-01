@@ -3,10 +3,10 @@ import {
   getAllProposals,
 } from "@solana/spl-governance";
 
-export const getActiveProposals = async ({
-  connection,
-  programId,
-  realmPk,
-}) => {
-  console.log("Proposals", getAllProposals(connection, programId, realmPk));
-};
+export async function getActiveProposals(connection, programId, realmPk) {
+  try {
+    return getAllProposals(connection, programId, realmPk);
+  } catch (e) {
+    console.log("Error:", e);
+  }
+}
