@@ -47,11 +47,18 @@ const Message = ({ m, isUsers }) => {
   );
 };
 
-export default function Chat({ gun, collectionId, realmId, connection }) {
+export default function Chat({
+  gun,
+  collectionId,
+  realmId,
+  connection,
+  realmName,
+}) {
   const [state, dispatch] = useReducer(reducer, initialState);
   const [message, setMessage] = useState("");
   const [username, setUsername] = useState("");
   const [newChat, setNewChat] = useState(false);
+  const BOT_NAME = realmName + " bot";
 
   const chatsRef = useRef();
 
@@ -90,8 +97,8 @@ export default function Chat({ gun, collectionId, realmId, connection }) {
     setMessage(e.target.value);
   }
 
-  const sendMessage = async () => {
-    const newMessage = {
+  const sendMessage = async (m) => {
+    const newMessage = m || {
       message: message,
       name: username,
       createdAt: Date.now(),
@@ -102,10 +109,13 @@ export default function Chat({ gun, collectionId, realmId, connection }) {
     chats[collectionId].push(newMessage);
     setMessage("");
     dispatch(chats);
-    if (message === "/treasury") {
-      console.log("loading treasury balance");
+    if (newMessage.message === "/treasury") {
       const treasuryBalance = await getTreasuryBalance(connection, realmId);
-      console.log("balance:", treasuryBalance);
+      sendMessage({
+        message: treasuryBalance,
+        name: BOT_NAME,
+        createdAt: Date.now(),
+      });
     }
   };
 

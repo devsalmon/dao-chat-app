@@ -5,20 +5,20 @@ const TOKEN_PROGRAM_ID = new PublicKey(
   "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
 );
 
+function getSolAmount(lamports) {
+  return lamports / 1000000000;
+}
+
 export async function getTreasuryBalance(connection, realmId) {
-  const programId = new PublicKey(
-    "GovER5Lthms3bLBqWub97yVrMmEogzX7xNjdXpPPCVZw"
-  );
   try {
     const govAccount = await getRealm(connection, new PublicKey(realmId));
-    console.log("Gov account: ", govAccount.pubkey.toString());
     const treasuryAddress = await getNativeTreasuryAddress(
-      programId,
-      govAccount.pubkey
+      govAccount.owner,
+      govAccount.account.authority
     );
-    console.log("Treasury address:", treasuryAddress);
+    console.log("Treasury address:", treasuryAddress.toString());
     const balance = await connection.getBalance(treasuryAddress);
-    if (balance > 0) return balance;
+    if (balance > 0) return getSolAmount(balance);
     const tokenAccounts = await connection.getTokenAccountsByOwner(
       govAccount.pubkey,
       {
@@ -27,7 +27,7 @@ export async function getTreasuryBalance(connection, realmId) {
     );
     for (const tokenAccount of tokenAccounts.value) {
       if (tokenAccount.account.lamports > 0)
-        return tokenAccount.account.lamports;
+        return getSolAmount(tokenAccount.account.lamports);
     }
     return 0;
   } catch (e) {

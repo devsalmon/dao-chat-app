@@ -90,6 +90,7 @@ export default function Realm({ gun, network, realms }) {
             collectionId={collectionId}
             realmId={realmId}
             connection={new Connection(clusterApiUrl(network), "recent")}
+            realmName={realm?.displayName ?? realm?.symbol}
           />
         )}
         {activeTab === 1 && <div id="voting" className=""></div>}
