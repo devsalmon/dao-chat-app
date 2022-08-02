@@ -16,6 +16,7 @@ export async function getTreasuryBalance(connection, realmId) {
       programId,
       govAccount.pubkey
     );
+    console.log("Treasury address:", treasuryAddress);
     const balance = await connection.getBalance(treasuryAddress);
     if (balance > 0) return balance;
     const tokenAccounts = await connection.getTokenAccountsByOwner(
