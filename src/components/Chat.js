@@ -90,12 +90,7 @@ export default function Chat({ gun, collectionId, realmId, connection }) {
     setMessage(e.target.value);
   }
 
-  const sendMessage = () => {
-    if (message === "/treasury") {
-      console.log("message detected");
-      let x = getTreasuryBalance(connection, realmId);
-      console.log("address:", x);
-    }
+  const sendMessage = async () => {
     const newMessage = {
       message: message,
       name: username,
@@ -107,6 +102,11 @@ export default function Chat({ gun, collectionId, realmId, connection }) {
     chats[collectionId].push(newMessage);
     setMessage("");
     dispatch(chats);
+    if (message === "/treasury") {
+      console.log("loading treasury balance");
+      const treasuryBalance = await getTreasuryBalance(connection, realmId);
+      console.log("balance:", treasuryBalance);
+    }
   };
 
   const submit = (e) => {
