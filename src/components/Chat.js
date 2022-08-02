@@ -23,7 +23,7 @@ const Message = ({ m, isUsers }) => {
         {formatDate(new Date(m.createdAt))}
       </div>
       <div
-        className={`flex mr-6 py-2 gap-2 px-2 shadow-lg bg-gray-600 rounded-lg text-sm text-gray-400 ${
+        className={`flex mr-6 overflow-hidden py-2 gap-2 px-2 shadow-lg bg-gray-600 rounded-lg text-sm text-gray-400 ${
           isUsers && ` ml-6 mr-0 bg-gray-500`
         }`}
       >
@@ -40,7 +40,7 @@ const Message = ({ m, isUsers }) => {
               {m.name}
             </span>
           )}
-          <div className="break-words">{m.message}</div>
+          <div className="break-words truncate">{m.message}</div>
         </div>
       </div>
     </div>
@@ -110,7 +110,8 @@ export default function Chat({
     setMessage("");
     dispatch(chats);
     if (newMessage.message === "/treasury") {
-      const treasuryBalance = await getTreasuryBalance(connection, realmId);
+      let treasuryBalance = await getTreasuryBalance(connection, realmId);
+      treasuryBalance = treasuryBalance + " SOL";
       sendMessage({
         message: treasuryBalance,
         name: BOT_NAME,

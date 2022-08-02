@@ -7,9 +7,9 @@ import { PublicKey, Connection, clusterApiUrl } from "@solana/web3.js";
 import Chat from "../components/Chat";
 
 export default function Realm({ gun, network, realms }) {
-  let { realmId } = useParams();
+  let { realmId, channelId } = useParams();
   const [activeTab, setActiveTab] = useState(0);
-  const [collectionId, setCollectionId] = useState(`chats-${realmId}`);
+  const [collectionId, setCollectionId] = useState();
   const [realm, setRealm] = useState(
     realms.find((r) => r.realmId?.toString() === realmId)
   );
@@ -28,24 +28,25 @@ export default function Realm({ gun, network, realms }) {
   });
 
   useEffect(() => {
-    setCollectionId(`chats-${realmId}`);
+    if (channelId) setCollectionId(`chats-${channelId}`);
+    else setCollectionId(`chats-${realmId}`);
     setRealm(realms.find((r) => r.realmId?.toString() === realmId));
     getMembers();
-  }, [realmId, network, realms]);
+  }, [realmId, channelId, network, realms]);
 
-  useEffect(() => {
-    if (members) setHasAccess(userWallet && members.includes(userWallet));
-  }, [members, userWallet]);
+  // useEffect(() => {
+  //   if (members) setHasAccess(userWallet && members.includes(userWallet));
+  // }, [members, userWallet]);
 
   async function getMembers() {
-    let realmMembers = await getRealmMembers(
-      new Connection(clusterApiUrl(network), "recent"),
-      new PublicKey("GovER5Lthms3bLBqWub97yVrMmEogzX7xNjdXpPPCVZw"),
-      new PublicKey(realmId)
-    );
-    setMembers(realmMembers);
+    // let realmMembers = await getRealmMembers(
+    //   new Connection(clusterApiUrl(network), "recent"),
+    //   new PublicKey("GovER5Lthms3bLBqWub97yVrMmEogzX7xNjdXpPPCVZw"),
+    //   new PublicKey(realmId)
+    // );
+    // setMembers(realmMembers);
     // user only has access if their wallet is in the members list
-    setHasAccess(userWallet && realmMembers.includes(userWallet));
+    // setHasAccess(userWallet && realmMembers.includes(userWallet));
     setLoading(false);
   }
 

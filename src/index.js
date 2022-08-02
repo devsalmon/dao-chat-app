@@ -122,6 +122,10 @@ function Main() {
               path=":realmId"
               element={<Realm gun={gun} network={network} realms={realms} />}
             />
+            <Route
+              path=":realmId/:channelId"
+              element={<Realm gun={gun} network={network} realms={realms} />}
+            />
           </Route>
         </Route>
         <Route path="*" element={<Navigate to="/" replace />} />
