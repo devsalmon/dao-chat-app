@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { getRealmMembers } from "../realms/Realms.js";
 import { fetchCouncilMembersWithTokensOutsideRealm } from "../governance-functions/Members";
 import { PublicKey } from "@solana/web3.js";
+import toast from "react-hot-toast";
 
 const Sidebar = ({
   gun,
@@ -23,6 +24,7 @@ const Sidebar = ({
   const [sidebarRealms, setSidebarRealms] = useState([]);
   const [userWallet, setUserWallet] = useState("");
   const [activeRealm, setActiveRealm] = useState("");
+  const [verifying, setVerifying] = useState(false);
 
   const navigate = useNavigate();
 
@@ -50,13 +52,15 @@ const Sidebar = ({
 
   // add a realm to the sidebar by updating the appropriate local storage variable
   const addRealm = async (id) => {
+    setVerifying(true);
     let members = await getRealmMembers(
       connection,
       programId,
       new PublicKey(id)
     );
+    setVerifying(false);
     if (!userWallet || !members.includes(userWallet)) {
-      alert("You do not have access to this DAO");
+      toast.error("You do not have access to this DAO");
       return;
     }
     const savedRealms = localStorage.getItem(network + "sidebarRealms");
@@ -92,8 +96,9 @@ const Sidebar = ({
   };
 
   const goToRealm = (id) => {
+    if (window.location.href.includes(id)) setShowChannel(!showChannel);
+    else navigate(`/realms/${id}`);
     setActiveRealm(id);
-    navigate(`/realms/${id}`);
   };
 
   const getRealmImage = (url) => {
@@ -131,10 +136,7 @@ const Sidebar = ({
                   <SideBarIcon
                     key={realmId.toString()}
                     active={activeRealm === realmId.toString()}
-                    onClick={() => {
-                      goToRealm(realmId?.toString());
-                      setShowChannel(!showChannel);
-                    }}
+                    onClick={() => goToRealm(realmId?.toString())}
                     removeRealm={() => removeRealm(realmId?.toString())}
                     icon={
                       realm?.ogImage && (
@@ -169,6 +171,7 @@ const Sidebar = ({
           gun={gun}
           realms={realms}
           addRealm={addRealm}
+          verifying={verifying}
           loading={loading}
           getRealmImage={getRealmImage}
         />

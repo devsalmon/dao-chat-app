@@ -26,6 +26,7 @@ import {
   createDefaultAuthorizationResultCache,
   SolanaMobileWalletAdapter,
 } from "@solana-mobile/wallet-adapter-mobile";
+import toast from "react-hot-toast";
 
 // Default styles that can be overridden by your app
 require("@solana/wallet-adapter-react-ui/styles.css");
@@ -102,18 +103,18 @@ const SignIn = ({ gun, user }) => {
       if (walletAddress != null && walletAddress?.trim() !== "") {
         user.put({ wallet: walletAddress });
       }
-      if (err) alert(err);
+      if (err) toast.error(err);
     });
   };
 
   // Create user
   const signUp = () => {
     if (!walletAddress || walletAddress.trim() === "") {
-      alert("Connect a wallet to sign up");
+      toast.error("Connect a wallet to sign up");
     } else {
       user.create(username, password, ({ err }) => {
         if (err) {
-          alert(err);
+          toast.error(err);
         } else {
           signIn();
         }

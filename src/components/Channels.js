@@ -1,22 +1,20 @@
 import React, { useEffect, useState } from "react";
 import { getActiveProposals } from "../governance-functions/Proposals";
 import { PublicKey } from "@solana/web3.js";
-import { HiChevronDown } from "react-icons/hi";
+import { HiChevronDown, HiChevronUp } from "react-icons/hi";
 import { useNavigate } from "react-router-dom";
 
 export default function Channels({ gun, realmId, connection, programId }) {
-  const [proposalNames, setProposalNames] = useState([]);
+  const [proposals, setProposals] = useState([]);
+  const [showProposals, setShowProposals] = useState(true);
+  const [loading, setLoading] = useState(true);
   //const navigate = useNavigate();
-
-  const goToRealm = (id) => {
-    //setActiveRealm(id);
-    //navigate(`/realms/${id}`);
-  };
 
   useEffect(() => {
     console.log("running");
 
-    setProposalNames([]);
+    setProposals([]);
+    setLoading(true);
 
     async function fetchProposals() {
       let proposals = await getActiveProposals(
@@ -24,10 +22,14 @@ export default function Channels({ gun, realmId, connection, programId }) {
         programId,
         new PublicKey(realmId)
       );
-      proposals[0].forEach((x) => {
-        console.log("x:", x.account.name);
-        setProposalNames((current) => [...current, x.account.name]);
+      proposals.forEach((x) => {
+        if (x?.length > 0) {
+          x.forEach((proposal) => {
+            setProposals((current) => [...current, proposal]);
+          });
+        }
       });
+      setLoading(false);
     }
 
     fetchProposals();
@@ -36,40 +38,63 @@ export default function Channels({ gun, realmId, connection, programId }) {
   return (
     <div className="w-max h-full py-2 text-sm">
       <ul className="px-2 py-3">
-        <li className="text-gray-500 px-2 hover:text-gray-200 hover:bg-gray-900">
+        <li className="cursor-pointer text-gray-500 px-2 hover:text-gray-200 hover:bg-gray-900">
           <div className="flex items-center">
             <span className="text-xl">#</span>
-            <button className="ml-2">welcome</button>
+            <div className="ml-2">welcome</div>
           </div>
         </li>
         <li className="text-gray-500 px-2 hover:text-gray-200 hover:bg-gray-900">
-          <div className="flex items-center">
+          <a
+            className="flex w-full items-center"
+            href={`/realms/${realmId.toString()}`}
+          >
             <span className="text-xl">#</span>
-            <button className="ml-2" onClick={goToRealm(realmId?.toString())}>
-              main
-            </button>
-          </div>
+            <div className="ml-2">main</div>
+          </a>
         </li>
       </ul>
 
-      <button className="flex items-center text-gray-500 hover:text-gray-200">
-        <HiChevronDown />
+      <button
+        onClick={() => setShowProposals(!showProposals)}
+        className="flex items-center text-gray-500 hover:text-gray-200"
+      >
+        {showProposals ? <HiChevronDown /> : <HiChevronUp />}
         <h3 className="uppercase tracking-wide font-semibold text-xs">
           Proposals
         </h3>
       </button>
 
-      <ul className="px-2 py-3">
-        {proposalNames.map((x) => (
-          <li className="text-gray-500 px-2 hover:text-gray-200 hover:bg-gray-900">
-            <div className="flex items-center">
+      <ul
+        className={`px-2 transition-all duration-200 ease-in-out ${
+          showProposals
+            ? `max-h-[500px] overflow-auto`
+            : `max-h-0 overflow-hidden`
+        }`}
+      >
+        {proposals.map((x) => (
+          <li
+            key={x.pubkey?.toString()}
+            className="cursor-pointer text-gray-500 px-2 hover:text-gray-200 hover:bg-gray-900"
+          >
+            <div
+              className="flex w-full items-center"
+              // href={`/realms/${realmId}/proposals/${x.pubkey?.toString()}`}
+            >
               <span className="text-xl">#</span>
-              <button className="ml-2" title={x}>
-                {x.substring(0, 10)}
-              </button>
+              <div className="ml-2" title={x}>
+                {x.account?.name.substring(0, 10)}
+              </div>
             </div>
           </li>
         ))}
+        {loading &&
+          Array.from(Array(10).keys()).map((x) => (
+            <div
+              key={x}
+              className="w-full h-6 animate-pulse bg-gray-500 my-2 rounded-full"
+            ></div>
+          ))}
       </ul>
     </div>
   );

@@ -2,6 +2,7 @@ import Input from "./Input";
 import { BiSend } from "react-icons/bi";
 import { useEffect, useReducer, useState, useRef } from "react";
 import { getTreasuryBalance } from "../governance-functions/Data";
+import moment from "moment";
 
 const initialState = {
   allChats: {},
@@ -12,20 +13,8 @@ function reducer(state, collectionChats) {
 }
 
 const Message = ({ m, isUsers }) => {
-  const getDay = (date) => {
-    const today = new Date();
-    if (date.getDate() === today.getDate()) return "Today";
-    if (date.getDate() === today.getDate() - 1) return "Yesterday";
-    const day = date.getDate();
-    const month = date.getMonth();
-    return `${day}/${month}`;
-  };
-
   const formatDate = (date) => {
-    const hours = date.getHours();
-    const minutes = date.getMinutes();
-    const day = getDay(date);
-    return `${day}, ${hours}:${minutes}`;
+    return moment(date).calendar();
   };
 
   return (
@@ -126,12 +115,8 @@ export default function Chat({ gun, collectionId, realmId, connection }) {
     }
   };
 
-  const isNewDay = (prevDate, date) => {
-    const today = new Date();
-    return (
-      today.getDate() === date.getDate() &&
-      today.getDate() - 1 === prevDate.getDate()
-    );
+  const areSuccessive = (day1, day2) => {
+    return moment(day1).add(1, "days").date() === moment(day2).date();
   };
 
   return (
@@ -142,18 +127,21 @@ export default function Chat({ gun, collectionId, realmId, connection }) {
       >
         {state.allChats[collectionId] &&
           state.allChats[collectionId].map((m, index) => (
-            <>
+            <li key={m.createdAt}>
               {
                 // if the current message is on a new day, add a breakpoint (line) before it
-                isNewDay(
+                areSuccessive(
                   new Date(state.allChats[collectionId][index - 1]?.createdAt),
                   new Date(m.createdAt)
-                ) && <hr key={`hr-${index}`} className="border-white border" />
+                ) && (
+                  <div
+                    key={`hr-${index}`}
+                    className="bg-white w-full h-0.5 rounded-full mb-4"
+                  />
+                )
               }
-              <li key={m.createdAt}>
-                <Message m={m} isUsers={m?.name === username} />
-              </li>
-            </>
+              <Message m={m} isUsers={m?.name === username} />
+            </li>
           ))}
       </ul>
       <div className="relative w-full flex items-center justify-end shadow-lg pt-4">

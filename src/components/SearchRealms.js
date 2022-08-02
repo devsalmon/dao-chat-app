@@ -4,6 +4,7 @@ import Input from "./Input";
 export default function SearchRealms({
   realms,
   addRealm,
+  verifying,
   loading,
   getRealmImage,
 }) {
@@ -28,7 +29,7 @@ export default function SearchRealms({
         placeholder="Search Realms"
         onChange={(e) => filterRealms(e.target.value)}
       />
-      <ul className="overflow-y-auto h-full pt-4 pb-16 flex flex-col gap-4">
+      <ul className="relative overflow-y-auto h-full pt-4 pb-16 flex flex-col gap-4">
         {loading
           ? Array.from(Array(10).keys()).map((item) => (
               <li key={item}>
@@ -57,6 +58,13 @@ export default function SearchRealms({
                 </div>
               </li>
             ))}
+        {verifying && (
+          <div className="h-full w-full absolute top-0 backdrop-blur left-0 flex items-center justify-center gap-2">
+            <div className="bg-white rounded-full h-2 w-2 animate-pulse"></div>
+            <div className="bg-white rounded-full h-2 w-2 animate-pulse delay-50"></div>
+            <div className=" bg-white rounded-full h-2 w-2 animate-pulse delay-75"></div>
+          </div>
+        )}
       </ul>
     </div>
   );
