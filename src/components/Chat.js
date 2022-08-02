@@ -98,7 +98,7 @@ export default function Chat({
     setMessage(e.target.value);
   }
 
-  const sendMessage = async (m) => {
+  const sendMessage = async (e, m) => {
     const newMessage = m || {
       message: message,
       name: username,
@@ -123,7 +123,7 @@ export default function Chat({
 
   const submit = (e) => {
     if (e.key === "Enter") {
-      sendMessage();
+      sendMessage(e);
     }
   };
 
