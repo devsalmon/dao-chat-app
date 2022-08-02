@@ -13,6 +13,12 @@ function reducer(state, collectionChats) {
 }
 
 const Message = ({ m, isUsers }) => {
+  const getAvatar = (isBot) => {
+    return !isBot
+      ? "https://avatars.dicebear.com/api/male/" + m.name + ".svg"
+      : "https://avatars.dicebear.com/api/bottts/" + m.name + ".svg";
+  };
+
   const formatDate = (date) => {
     return moment(date).calendar();
   };
@@ -29,7 +35,7 @@ const Message = ({ m, isUsers }) => {
       >
         <div className="flex-none">
           <img
-            src={"https://avatars.dicebear.com/api/male/" + m.name + ".svg"}
+            src={getAvatar(m.isBot || false)}
             className="w-10 h-10"
             alt="avatar"
           />
@@ -98,7 +104,7 @@ export default function Chat({
     setMessage(e.target.value);
   }
 
-  const sendMessage = async (e, m) => {
+  const sendMessage = async (m) => {
     const newMessage = m || {
       message: message,
       name: username,
@@ -117,13 +123,14 @@ export default function Chat({
         message: treasuryBalance,
         name: BOT_NAME,
         createdAt: Date.now(),
+        isBot: true,
       });
     }
   };
 
   const submit = (e) => {
     if (e.key === "Enter") {
-      sendMessage(e);
+      sendMessage();
     }
   };
 
@@ -165,7 +172,7 @@ export default function Chat({
           onKeyDown={submit}
         />
         <button
-          onClick={sendMessage}
+          onClick={() => sendMessage()}
           className="absolute p-2 cursor-pointer hover:scale-110 transition-all duration-200"
         >
           <BiSend />
