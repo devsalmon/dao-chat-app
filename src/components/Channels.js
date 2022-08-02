@@ -24,7 +24,7 @@ export default function Channels({ gun, realmId, connection, programId }) {
         programId,
         new PublicKey(realmId)
       );
-      proposals[1].forEach((x) => {
+      proposals[0].forEach((x) => {
         console.log("x:", x.account.name);
         setProposalNames((current) => [...current, x.account.name]);
       });

@@ -1,6 +1,7 @@
 import Input from "./Input";
 import { BiSend } from "react-icons/bi";
 import { useEffect, useReducer, useState, useRef } from "react";
+import { getTreasuryBalance } from "../governance-functions/Data";
 
 const initialState = {
   allChats: {},
@@ -57,7 +58,7 @@ const Message = ({ m, isUsers }) => {
   );
 };
 
-export default function Chat({ gun, collectionId }) {
+export default function Chat({ gun, collectionId, realmId, connection }) {
   const [state, dispatch] = useReducer(reducer, initialState);
   const [message, setMessage] = useState("");
   const [username, setUsername] = useState("");
@@ -101,6 +102,11 @@ export default function Chat({ gun, collectionId }) {
   }
 
   const sendMessage = () => {
+    if (message === "/treasury") {
+      console.log("message detected");
+      let x = getTreasuryBalance(connection, realmId);
+      console.log("address:", x);
+    }
     const newMessage = {
       message: message,
       name: username,

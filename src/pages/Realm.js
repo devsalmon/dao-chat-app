@@ -84,7 +84,14 @@ export default function Realm({ gun, network, realms }) {
         </div>
       </div>
       <div className="relative w-full h-full pt-24">
-        {activeTab === 0 && <Chat gun={gun} collectionId={collectionId} />}
+        {activeTab === 0 && (
+          <Chat
+            gun={gun}
+            collectionId={collectionId}
+            realmId={realmId}
+            connection={new Connection(clusterApiUrl(network), "recent")}
+          />
+        )}
         {activeTab === 1 && <div id="voting" className=""></div>}
       </div>
     </div>
