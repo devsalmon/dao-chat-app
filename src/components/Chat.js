@@ -53,6 +53,7 @@ export default function Chat({
   realmId,
   connection,
   realmName,
+  channelName,
 }) {
   const [state, dispatch] = useReducer(reducer, initialState);
   const [message, setMessage] = useState("");

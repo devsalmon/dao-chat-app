@@ -8,7 +8,14 @@ export default function Channels({ gun, realmId, connection, programId }) {
   const [proposals, setProposals] = useState([]);
   const [showProposals, setShowProposals] = useState(true);
   const [loading, setLoading] = useState(true);
+  const [activeChannel, setActiveChannel] = useState();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const urlParts = window.location.href.split("/");
+    setActiveChannel(urlParts[urlParts.length - 1]);
+    console.log(urlParts[urlParts.length - 1]);
+  });
 
   useEffect(() => {
     setProposals([]);
@@ -36,7 +43,11 @@ export default function Channels({ gun, realmId, connection, programId }) {
   return (
     <div className="w-max h-full py-2 text-sm">
       <ul className="px-2 py-3">
-        <li className="text-gray-500 px-2 hover:text-gray-200 hover:bg-gray-900">
+        <li
+          className={`text-gray-500 px-2 hover:text-gray-200 hover:bg-gray-900 ${
+            activeChannel === "welcome" && `bg-gray-900 text-gray-200`
+          }`}
+        >
           <div
             onClick={() => navigate(`/realms/${realmId.toString()}/welcome`)}
             className="flex w-full cursor-pointer items-center"
@@ -45,7 +56,11 @@ export default function Channels({ gun, realmId, connection, programId }) {
             <div className="ml-2">welcome</div>
           </div>
         </li>
-        <li className="text-gray-500 px-2 hover:text-gray-200 hover:bg-gray-900">
+        <li
+          className={` text-gray-500 px-2 hover:text-gray-200 hover:bg-gray-900 ${
+            activeChannel === realmId.toString() && `bg-gray-900 text-gray-200`
+          }`}
+        >
           <div
             className="cursor-pointer flex w-full items-center"
             onClick={() => navigate(`/realms/${realmId.toString()}`)}
@@ -76,7 +91,10 @@ export default function Channels({ gun, realmId, connection, programId }) {
         {proposals.map((x) => (
           <li
             key={x.pubkey?.toString()}
-            className="cursor-pointer text-gray-500 px-2 hover:text-gray-200 hover:bg-gray-900"
+            className={`cursor-pointer text-gray-500 px-2 hover:text-gray-200 hover:bg-gray-900 ${
+              activeChannel === x.pubkey?.toString() &&
+              `bg-gray-900 text-gray-200`
+            }`}
             onClick={() =>
               navigate(`/realms/${realmId.toString()}/${x.pubkey?.toString()}`)
             }
