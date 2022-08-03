@@ -3,10 +3,18 @@ import {
   getAllProposals,
 } from "@solana/spl-governance";
 
-export async function getActiveProposals(connection, programId, realmPk) {
+export async function getProposals(connection, programId, realmPk) {
   try {
     return getAllProposals(connection, programId, realmPk);
   } catch (e) {
     console.log("Error:", e);
   }
 }
+
+// export async function getActiveProposals(connection, programId, realmPk) {
+//   try {
+//     return getAllProposals(connection, programId, realmPk);
+//   } catch (e) {
+//     console.log("Error:", e);
+//   }
+// }
