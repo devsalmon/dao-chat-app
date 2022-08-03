@@ -18,6 +18,34 @@ import {
   getCertifiedRealmInfos,
   getUnchartedRealmInfos,
 } from "./realms/Realms";
+import {
+  ConnectionProvider,
+  WalletProvider,
+  useWallet,
+} from "@solana/wallet-adapter-react";
+import { WalletAdapterNetwork } from "@solana/wallet-adapter-base";
+import {
+  CoinbaseWalletAdapter,
+  GlowWalletAdapter,
+  PhantomWalletAdapter,
+  SlopeWalletAdapter,
+  SolflareWalletAdapter,
+  SolletExtensionWalletAdapter,
+  SolletWalletAdapter,
+  TorusWalletAdapter,
+} from "@solana/wallet-adapter-wallets";
+import {
+  WalletModalProvider,
+  WalletDisconnectButton,
+  WalletConnectButton,
+  WalletMultiButton,
+} from "@solana/wallet-adapter-react-ui";
+import {
+  createDefaultAuthorizationResultCache,
+  SolanaMobileWalletAdapter,
+} from "@solana-mobile/wallet-adapter-mobile";
+// Default styles that can be overridden by your app
+require("@solana/wallet-adapter-react-ui/styles.css");
 
 const root = createRoot(document.getElementById("root"));
 
@@ -43,6 +71,28 @@ function Main() {
   );
   const [realms, setRealms] = useState([]);
   const [loading, setLoading] = useState(true);
+
+  // The network can be set to 'devnet', 'testnet', or 'mainnet-beta'.
+  // const network = WalletAdapterNetwork.Devnet;
+
+  // You can also provide a custom RPC endpoint.
+  const endpoint = useMemo(() => clusterApiUrl(network), [network]);
+
+  const wallets = useMemo(
+    () => [
+      new SolanaMobileWalletAdapter({
+        appIdentity: { name: "Solana Wallet Adapter App" },
+        authorizationResultCache: createDefaultAuthorizationResultCache(),
+      }),
+      new CoinbaseWalletAdapter(),
+      new PhantomWalletAdapter(),
+      new GlowWalletAdapter(),
+      new SlopeWalletAdapter(),
+      new SolflareWalletAdapter({ network }),
+      new TorusWalletAdapter(),
+    ],
+    [network]
+  );
 
   // only fetch realms when connection changes (i.e. devnet to mainnet or vice versa)
   useMemo(async () => {
@@ -90,15 +140,21 @@ function Main() {
   };
 
   return user === undefined ? (
-    <Router>
-      <Routes>
-        <Route
-          path="sign-in"
-          element={<SignIn gun={gun} user={gunUser} setUser={setUser} />}
-        />
-        <Route path="*" element={<Navigate to="/sign-in" replace />} />
-      </Routes>
-    </Router>
+    <ConnectionProvider endpoint={endpoint}>
+      <WalletProvider wallets={wallets} autoConnect>
+        <WalletModalProvider>
+          <Router>
+            <Routes>
+              <Route
+                path="sign-in"
+                element={<SignIn gun={gun} user={gunUser} setUser={setUser} />}
+              />
+              <Route path="*" element={<Navigate to="/sign-in" replace />} />
+            </Routes>
+          </Router>
+        </WalletModalProvider>
+      </WalletProvider>
+    </ConnectionProvider>
   ) : (
     <Router>
       <Routes>
