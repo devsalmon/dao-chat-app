@@ -3,6 +3,48 @@ import { getProposals } from "../governance-functions/Proposals";
 import { PublicKey } from "@solana/web3.js";
 import { HiChevronDown, HiChevronUp } from "react-icons/hi";
 import { useNavigate } from "react-router-dom";
+import { click } from "@testing-library/user-event/dist/click";
+
+const ProposalList = ({
+  proposals,
+  show,
+  currentProposal,
+  loading,
+  clickProposal,
+}) => {
+  return (
+    <ul
+      className={`px-2 transition-all duration-200 ease-in-out ${
+        show ? `max-h-[500px] overflow-auto pb-2` : `max-h-0 overflow-hidden`
+      }`}
+    >
+      {proposals.map((x) => (
+        <li
+          key={x.pubkey?.toString()}
+          className={`cursor-pointer text-gray-500 px-2 hover:text-gray-200 hover:bg-gray-900 ${
+            currentProposal?.pubkey?.toString() === x.pubkey?.toString() &&
+            `bg-gray-900 text-gray-200`
+          }`}
+          onClick={() => clickProposal(x)}
+        >
+          <div className="flex w-full items-center">
+            <span className="text-xl">#</span>
+            <div className="ml-2" title={x.account.name}>
+              {x.account?.name.substring(0, 10)}
+            </div>
+          </div>
+        </li>
+      ))}
+      {loading &&
+        Array.from(Array(10).keys()).map((x) => (
+          <div
+            key={x}
+            className="w-full h-6 animate-pulse bg-gray-500 my-2 rounded-full"
+          ></div>
+        ))}
+    </ul>
+  );
+};
 
 export default function Channels({ gun, realmId, connection, programId }) {
   const [activeProposals, setActiveProposals] = useState([]);
@@ -10,14 +52,22 @@ export default function Channels({ gun, realmId, connection, programId }) {
   const [showActiveProposals, setShowActiveProposals] = useState(true);
   const [showPastProposals, setShowPastProposals] = useState(true);
   const [loading, setLoading] = useState(true);
-  const [activeChannel, setActiveChannel] = useState();
+  const [currentProposal, setCurrentProposal] = useState();
   const navigate = useNavigate();
 
   useEffect(() => {
     const urlParts = window.location.href.split("/");
-    setActiveChannel(urlParts[urlParts.length - 1]);
-    console.log(urlParts[urlParts.length - 1]);
-  });
+    const currentProposalId = urlParts[urlParts.length - 1];
+    let current = activeProposals.find(
+      (p) => p.pubkey.toString() === currentProposalId
+    );
+    if (!current)
+      current = pastProposals.find(
+        (p) => p.pubkey.toString() === currentProposalId
+      );
+    if (!current) current = currentProposalId;
+    setCurrentProposal(current);
+  }, []);
 
   useEffect(() => {
     setActiveProposals([]);
@@ -48,16 +98,24 @@ export default function Channels({ gun, realmId, connection, programId }) {
     fetchProposals();
   }, [connection, programId, realmId]);
 
+  const clickProposal = (p) => {
+    setCurrentProposal(p);
+    navigate(`/realms/${realmId.toString()}/${p.pubkey?.toString()}`);
+  };
+
   return (
-    <div className="w-max h-full py-2 text-sm">
+    <div className="w-max h-full overflow-auto py-2 text-sm">
       <ul className="px-2 py-3">
         <li
           className={`text-gray-500 px-2 hover:text-gray-200 hover:bg-gray-900 ${
-            activeChannel === "welcome" && `bg-gray-900 text-gray-200`
+            currentProposal === "welcome" && `bg-gray-900 text-gray-200`
           }`}
         >
           <div
-            onClick={() => navigate(`/realms/${realmId.toString()}/welcome`)}
+            onClick={() => {
+              setCurrentProposal("welcome");
+              navigate(`/realms/${realmId.toString()}/welcome`);
+            }}
             className="flex w-full cursor-pointer items-center"
           >
             <span className="text-xl">#</span>
@@ -66,12 +124,17 @@ export default function Channels({ gun, realmId, connection, programId }) {
         </li>
         <li
           className={` text-gray-500 px-2 hover:text-gray-200 hover:bg-gray-900 ${
-            activeChannel === realmId.toString() && `bg-gray-900 text-gray-200`
+            (currentProposal === realmId.toString() ||
+              currentProposal === null) &&
+            `bg-gray-900 text-gray-200`
           }`}
         >
           <div
             className="cursor-pointer flex w-full items-center"
-            onClick={() => navigate(`/realms/${realmId.toString()}`)}
+            onClick={() => {
+              setCurrentProposal(realmId.toString());
+              navigate(`/realms/${realmId.toString()}`);
+            }}
           >
             <span className="text-xl">#</span>
             <div className="ml-2">main</div>
@@ -89,40 +152,13 @@ export default function Channels({ gun, realmId, connection, programId }) {
         </h3>
       </button>
 
-      <ul
-        className={`px-2 transition-all duration-200 ease-in-out ${
-          showActiveProposals
-            ? `max-h-[500px] overflow-auto pb-2`
-            : `max-h-0 overflow-hidden`
-        }`}
-      >
-        {activeProposals.map((x) => (
-          <li
-            key={x.pubkey?.toString()}
-            className={`cursor-pointer text-gray-500 px-2 hover:text-gray-200 hover:bg-gray-900 ${
-              activeChannel === x.pubkey?.toString() &&
-              `bg-gray-900 text-gray-200`
-            }`}
-            onClick={() =>
-              navigate(`/realms/${realmId.toString()}/${x.pubkey?.toString()}`)
-            }
-          >
-            <div className="flex w-full items-center">
-              <span className="text-xl">#</span>
-              <div className="ml-2" title={x.account.name}>
-                {x.account?.name.substring(0, 10)}
-              </div>
-            </div>
-          </li>
-        ))}
-        {loading &&
-          Array.from(Array(10).keys()).map((x) => (
-            <div
-              key={x}
-              className="w-full h-6 animate-pulse bg-gray-500 my-2 rounded-full"
-            ></div>
-          ))}
-      </ul>
+      <ProposalList
+        proposals={activeProposals}
+        loading={loading}
+        show={showActiveProposals}
+        currentProposal={currentProposal}
+        clickProposal={clickProposal}
+      />
 
       <button
         onClick={() => setShowPastProposals(!showPastProposals)}
@@ -133,41 +169,13 @@ export default function Channels({ gun, realmId, connection, programId }) {
           Past Proposals
         </h3>
       </button>
-
-      <ul
-        className={`px-2 transition-all duration-200 ease-in-out ${
-          showPastProposals
-            ? `max-h-[500px] overflow-auto pb-2`
-            : `max-h-0 overflow-hidden`
-        }`}
-      >
-        {pastProposals.map((x) => (
-          <li
-            key={x.pubkey?.toString()}
-            className={`cursor-pointer text-gray-500 px-2 hover:text-gray-200 hover:bg-gray-900 ${
-              activeChannel === x.pubkey?.toString() &&
-              `bg-gray-900 text-gray-200`
-            }`}
-            onClick={() =>
-              navigate(`/realms/${realmId.toString()}/${x.pubkey?.toString()}`)
-            }
-          >
-            <div className="flex w-full items-center">
-              <span className="text-xl">#</span>
-              <div className="ml-2" title={x.account.name}>
-                {x.account?.name.substring(0, 10)}
-              </div>
-            </div>
-          </li>
-        ))}
-        {loading &&
-          Array.from(Array(10).keys()).map((x) => (
-            <div
-              key={x}
-              className="w-full h-6 animate-pulse bg-gray-500 my-2 rounded-full"
-            ></div>
-          ))}
-      </ul>
+      <ProposalList
+        proposals={pastProposals}
+        loading={loading}
+        show={showPastProposals}
+        currentProposal={currentProposal}
+        clickProposal={clickProposal}
+      />
     </div>
   );
 }

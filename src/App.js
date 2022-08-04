@@ -14,7 +14,7 @@ export default function App({
   loading,
 }) {
   return (
-    <div className="App w-[400px] h-[600px] flex relative bg-gray-700 overflow-hidden">
+    <div className="App w-[400px] h-[600px] left-0 right-0 mx-auto flex relative bg-gray-700 overflow-hidden">
       <div className="w-min">
         <Sidebar
           gun={gun}

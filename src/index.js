@@ -6,6 +6,7 @@ import reportWebVitals from "./reportWebVitals";
 import Gun from "gun";
 import "gun/sea";
 import SignIn from "./pages/SignIn";
+import { programId } from "./constants.js";
 import {
   BrowserRouter as Router,
   Routes,
@@ -55,8 +56,6 @@ const gun = Gun({
   peers: ["https://dao-chat-server.herokuapp.com/gun"],
 });
 const gunUser = gun.user().recall({ sessionStorage: true });
-
-const programId = new PublicKey("GovER5Lthms3bLBqWub97yVrMmEogzX7xNjdXpPPCVZw");
 
 function Main() {
   const [user, setUser] = useState(gunUser?.is);

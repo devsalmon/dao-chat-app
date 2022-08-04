@@ -5,9 +5,9 @@ import SearchRealms from "./SearchRealms";
 import Channels from "./Channels";
 import { useNavigate } from "react-router-dom";
 import { getRealmMembers } from "../realms/Realms.js";
-import { fetchCouncilMembersWithTokensOutsideRealm } from "../governance-functions/Members";
 import { PublicKey } from "@solana/web3.js";
 import toast from "react-hot-toast";
+import { ProposalState } from "@solana/spl-governance";
 
 const Sidebar = ({
   gun,
@@ -64,10 +64,6 @@ const Sidebar = ({
       return;
     }
     const savedRealms = localStorage.getItem(network + "sidebarRealms");
-    // console.log(
-    //   "fetch:",
-    //   fetchCouncilMembersWithTokensOutsideRealm(id, network)
-    // );
     let newSavedRealms = [];
     if (savedRealms) {
       newSavedRealms = JSON.parse(savedRealms).filter((r) => r !== id);
