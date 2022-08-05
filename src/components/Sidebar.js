@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { BsPlus, BsFillLightningFill } from "react-icons/bs";
+import { FiMinus } from "react-icons/fi";
 import { MdOutlineCancel } from "react-icons/md";
 import SearchRealms from "./SearchRealms";
 import Channels from "./Channels";
@@ -119,7 +120,10 @@ const Sidebar = ({
           {network == "devnet" ? "DEVNET" : "MAINNET"}
         </div>
         <div className="basis-1/12">
-          <SideBarIcon icon={<BsPlus size="32" />} onClick={searchRealms} />
+          <SideBarIcon
+            icon={showSearch ? <FiMinus size="28" /> : <BsPlus size="32" />}
+            onClick={searchRealms}
+          />
         </div>
         <ul className="h-max flex flex-col gap-2 pb-6">
           {loading &&
