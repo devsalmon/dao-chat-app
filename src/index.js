@@ -45,6 +45,8 @@ import {
   createDefaultAuthorizationResultCache,
   SolanaMobileWalletAdapter,
 } from "@solana-mobile/wallet-adapter-mobile";
+import { Toaster } from "react-hot-toast";
+
 // Default styles that can be overridden by your app
 require("@solana/wallet-adapter-react-ui/styles.css");
 
@@ -152,6 +154,7 @@ function Main() {
               <Route path="*" element={<Navigate to="/sign-in" replace />} />
             </Routes>
           </Router>
+          <Toaster />
         </WalletModalProvider>
       </WalletProvider>
     </ConnectionProvider>
@@ -204,6 +207,7 @@ function Main() {
         </Route>
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
+      <Toaster />
     </Router>
   );
 }

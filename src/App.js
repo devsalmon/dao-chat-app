@@ -1,7 +1,6 @@
 import "./App.css";
 import Sidebar from "./components/Sidebar";
 import { Outlet } from "react-router-dom";
-import { Toaster } from "react-hot-toast";
 
 export default function App({
   gun,
@@ -34,7 +33,6 @@ export default function App({
       <div className="relative flex flex-col gap-4 p-4 w-full break-words">
         <Outlet />
       </div>
-      <Toaster />
     </div>
   );
 }
