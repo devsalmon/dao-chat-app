@@ -18,6 +18,8 @@ const Sidebar = ({
   changeNetwork,
   realms,
   loading,
+  currentProposal,
+  setCurrentProposal,
 }) => {
   const [showSearch, setShowSearch] = useState(false);
   const [showChannel, setShowChannel] = useState(false);
@@ -42,8 +44,9 @@ const Sidebar = ({
       .once((wallet) => {
         setUserWallet(wallet);
       });
-    const arr = window.location.href.split("/");
-    setActiveRealm(arr[arr.length - 1]);
+    var myRegexp = /realms\/(.*)\/?/;
+    var match = myRegexp.exec(window.location.href);
+    if (match) setActiveRealm(match[1]);
   }, []);
 
   const searchRealms = () => {
@@ -92,6 +95,8 @@ const Sidebar = ({
   };
 
   const goToRealm = (id) => {
+    setShowSearch(false);
+    if (!window.location.href.includes(id)) setCurrentProposal("");
     if (window.location.href.includes(id)) setShowChannel(!showChannel);
     else navigate(`/realms/${id}`);
     setActiveRealm(id);
@@ -182,6 +187,8 @@ const Sidebar = ({
           realmId={activeRealm}
           connection={connection}
           programId={programId}
+          currentProposal={currentProposal}
+          setCurrentProposal={setCurrentProposal}
         />
       </div>
     </div>

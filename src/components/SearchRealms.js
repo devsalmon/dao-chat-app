@@ -59,7 +59,10 @@ export default function SearchRealms({
               </li>
             ))}
         {verifying && (
-          <div className="h-full w-full absolute top-0 backdrop-blur left-0 flex items-center justify-center gap-2">
+          <div
+            key="verifying"
+            className="h-full w-full absolute top-0 backdrop-blur left-0 flex items-center justify-center gap-2"
+          >
             <div className="bg-white rounded-full h-2 w-2 animate-pulse"></div>
             <div className="bg-white rounded-full h-2 w-2 animate-pulse delay-50"></div>
             <div className=" bg-white rounded-full h-2 w-2 animate-pulse delay-75"></div>

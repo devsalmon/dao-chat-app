@@ -70,6 +70,7 @@ function Main() {
   );
   const [realms, setRealms] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [currentProposal, setCurrentProposal] = useState();
 
   // The network can be set to 'devnet', 'testnet', or 'mainnet-beta'.
   // const network = WalletAdapterNetwork.Devnet;
@@ -169,17 +170,35 @@ function Main() {
               signOut={signOut}
               realms={realms}
               loading={loading}
+              currentProposal={currentProposal}
+              setCurrentProposal={setCurrentProposal}
             />
           }
         >
           <Route path="/realms">
             <Route
               path=":realmId"
-              element={<Realm gun={gun} network={network} realms={realms} />}
+              element={
+                <Realm
+                  gun={gun}
+                  network={network}
+                  realms={realms}
+                  currentProposal={currentProposal}
+                  setCurrentProposal={setCurrentProposal}
+                />
+              }
             />
             <Route
               path=":realmId/:channelId"
-              element={<Realm gun={gun} network={network} realms={realms} />}
+              element={
+                <Realm
+                  gun={gun}
+                  network={network}
+                  realms={realms}
+                  currentProposal={currentProposal}
+                  setCurrentProposal={setCurrentProposal}
+                />
+              }
             />
           </Route>
         </Route>

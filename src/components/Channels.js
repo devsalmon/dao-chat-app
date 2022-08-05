@@ -46,13 +46,19 @@ const ProposalList = ({
   );
 };
 
-export default function Channels({ gun, realmId, connection, programId }) {
+export default function Channels({
+  gun,
+  realmId,
+  connection,
+  programId,
+  currentProposal,
+  setCurrentProposal,
+}) {
   const [activeProposals, setActiveProposals] = useState([]);
   const [pastProposals, setPastProposals] = useState([]);
   const [showActiveProposals, setShowActiveProposals] = useState(true);
   const [showPastProposals, setShowPastProposals] = useState(true);
   const [loading, setLoading] = useState(true);
-  const [currentProposal, setCurrentProposal] = useState();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -65,7 +71,6 @@ export default function Channels({ gun, realmId, connection, programId }) {
       current = pastProposals.find(
         (p) => p.pubkey.toString() === currentProposalId
       );
-    if (!current) current = currentProposalId;
     setCurrentProposal(current);
   }, []);
 
@@ -95,7 +100,7 @@ export default function Channels({ gun, realmId, connection, programId }) {
       setLoading(false);
     }
 
-    fetchProposals();
+    if (realmId && realmId !== "") fetchProposals();
   }, [connection, programId, realmId]);
 
   const clickProposal = (p) => {
@@ -124,15 +129,14 @@ export default function Channels({ gun, realmId, connection, programId }) {
         </li>
         <li
           className={` text-gray-500 px-2 hover:text-gray-200 hover:bg-gray-900 ${
-            (currentProposal === realmId.toString() ||
-              currentProposal === null) &&
+            (currentProposal === "" || currentProposal === null) &&
             `bg-gray-900 text-gray-200`
           }`}
         >
           <div
             className="cursor-pointer flex w-full items-center"
             onClick={() => {
-              setCurrentProposal(realmId.toString());
+              setCurrentProposal("");
               navigate(`/realms/${realmId.toString()}`);
             }}
           >
