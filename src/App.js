@@ -1,7 +1,6 @@
 import "./App.css";
 import Sidebar from "./components/Sidebar";
 import { Outlet } from "react-router-dom";
-import { Toaster } from "react-hot-toast";
 
 export default function App({
   gun,
@@ -16,8 +15,8 @@ export default function App({
   setCurrentProposal,
 }) {
   return (
-    <div className="App w-[400px] h-[600px] left-0 right-0 mx-auto flex relative bg-gray-700 overflow-hidden">
-      <div className="w-min">
+    <div className="App w-full h-full flex relative bg-gray-700 overflow-hidden">
+      <div className="w-fit">
         <Sidebar
           gun={gun}
           signOut={signOut}
@@ -31,10 +30,9 @@ export default function App({
           setCurrentProposal={setCurrentProposal}
         />
       </div>
-      <div className="relative flex flex-col gap-4 p-4 w-5/6 break-words">
+      <div className="relative flex flex-col gap-4 p-4 w-full break-words">
         <Outlet />
       </div>
-      <Toaster />
     </div>
   );
 }

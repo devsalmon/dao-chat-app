@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { BsPlus, BsFillLightningFill } from "react-icons/bs";
 import { FiMinus } from "react-icons/fi";
-import { MdOutlineCancel } from "react-icons/md";
+import { MdOutlineCancel, MdEdit, MdCheck } from "react-icons/md";
 import SearchRealms from "./SearchRealms";
 import Channels from "./Channels";
 import { useNavigate } from "react-router-dom";
@@ -28,6 +28,7 @@ const Sidebar = ({
   const [userWallet, setUserWallet] = useState("");
   const [activeRealm, setActiveRealm] = useState("");
   const [verifying, setVerifying] = useState(false);
+  const [editing, setEditing] = useState(false);
 
   const navigate = useNavigate();
 
@@ -85,6 +86,7 @@ const Sidebar = ({
 
   // remove realm from the sidebar
   const removeRealm = (id) => {
+    if (!window.confirm("Remove this realm from your sidebar?")) return;
     const savedRealms = localStorage.getItem(network + "sidebarRealms");
     if (!savedRealms) return;
     const newSavedRealms = JSON.parse(savedRealms).filter((r) => r !== id);
@@ -112,7 +114,7 @@ const Sidebar = ({
 
   return (
     <div className="flex h-full w-full">
-      <div className="h-full overflow-y-scroll scrollbar-hide overflow-x-hidden w-full flex flex-col gap-2 p-2 items-center justify-start bg-gray-900 shadow-lg text-white rounded-r-xl">
+      <div className="h-full overflow-y-scroll scrollbar-hide overflow-x-hidden w-min flex flex-col gap-2 p-2 px-4 items-center justify-start bg-gray-900 shadow-lg text-white rounded-r-xl">
         <div
           className="text-xs text-blue-500 cursor-pointer hover:opacity-75"
           onClick={changeNetwork}
@@ -153,10 +155,15 @@ const Sidebar = ({
                       )
                     }
                     symbol={realm?.symbol.substring(0, 2)}
+                    editing={editing}
                   />
                 )
               );
             })}
+          <SideBarIcon
+            icon={editing ? <MdCheck size="20" /> : <MdEdit size="20" />}
+            onClick={() => setEditing(!editing)}
+          />
         </ul>
         <div className="absolute bottom-0 mx-auto backdrop-blur py-2">
           <div
@@ -200,17 +207,24 @@ const Sidebar = ({
   );
 };
 
-const SideBarIcon = ({ icon, active, onClick, removeRealm, symbol }) => (
-  <div className="flex flex-col items-center gap-1 group">
+const SideBarIcon = ({
+  icon,
+  active,
+  onClick,
+  removeRealm,
+  symbol,
+  editing,
+}) => (
+  <div className="flex flex-col items-center gap-1 group relative">
     <div
       className={`sidebar-icon ${active && `bg-green-600 text-white`}`}
       onClick={onClick}
     >
       {icon ?? symbol}
     </div>
-    {removeRealm && (
+    {editing && removeRealm && (
       <div
-        className="text-red-500 group-hover:block hidden cursor-pointer hover:opacity-75"
+        className="text-red-500 absolute -top-2 -right-2 cursor-pointer hover:opacity-75"
         onClick={removeRealm}
       >
         <MdOutlineCancel size={20} />
