@@ -29,8 +29,8 @@ const Message = ({ m, isUsers }) => {
         {formatDate(new Date(m.createdAt))}
       </div>
       <div
-        className={`flex mr-6 overflow-hidden py-2 gap-2 px-2 shadow-lg bg-gray-600 rounded-lg text-sm text-gray-400 ${
-          isUsers && ` ml-6 mr-0 bg-gray-500`
+        className={`flex relative mr-auto max-w-[90%] py-2 gap-2 px-2 shadow-lg bg-gray-600 rounded-lg text-sm text-gray-400 ${
+          isUsers && ` ml-auto !mr-0 bg-gray-500`
         }`}
       >
         <div className="flex-none">
@@ -40,13 +40,13 @@ const Message = ({ m, isUsers }) => {
             alt="avatar"
           />
         </div>
-        <div>
+        <div className="w-full relative break-words overflow-auto">
           {m.name && (
             <span className="text-xs text-white" key={m.createdAt}>
               {m.name}
             </span>
           )}
-          <div className="break-words truncate">{m.message}</div>
+          <div>{m.message}</div>
         </div>
       </div>
     </div>
