@@ -74,7 +74,7 @@ export default function Realm({ gun, network, realms, currentProposal }) {
     <Loading />
   ) : hasAccess ? (
     <div className="w-full h-full relative flex flex-col">
-      <div className="sticky top-0 z-50 w-full pb-4 bg-gray-700 flex flex-col gap-2 items-center">
+      <div className="sticky top-0 z-50 h-1/6 w-full pb-4 bg-gray-700 flex flex-col gap-2 items-center">
         <h1 className="text-center text-white text-xl line-clamp-2">
           {!title ? <Loading /> : title}
         </h1>
@@ -93,7 +93,7 @@ export default function Realm({ gun, network, realms, currentProposal }) {
           </div>
         </div>
       </div>
-      <div className="relative w-full min-h-[50%]">
+      <div className="relative w-full h-5/6">
         {activeTab === 0 && (
           <Chat
             gun={gun}
