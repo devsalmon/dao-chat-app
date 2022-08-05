@@ -53,6 +53,7 @@ export default function Channels({
   programId,
   currentProposal,
   setCurrentProposal,
+  setShowChannel,
 }) {
   const [activeProposals, setActiveProposals] = useState([]);
   const [pastProposals, setPastProposals] = useState([]);
@@ -104,6 +105,7 @@ export default function Channels({
   }, [connection, programId, realmId]);
 
   const clickProposal = (p) => {
+    if (currentProposal === p) setShowChannel(false);
     setCurrentProposal(p);
     navigate(`/realms/${realmId.toString()}/${p.pubkey?.toString()}`);
   };

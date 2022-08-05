@@ -189,6 +189,7 @@ const Sidebar = ({
           programId={programId}
           currentProposal={currentProposal}
           setCurrentProposal={setCurrentProposal}
+          setShowChannel={setShowChannel}
         />
       </div>
     </div>
