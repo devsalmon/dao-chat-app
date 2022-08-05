@@ -15,6 +15,7 @@ export default function VoteResults({ proposal }) {
   }, [totalVoteCount, noVotes]);
 
   useEffect(() => {
+    console.log(proposal.getYesVoteCount());
     const y = getTokenAmount(proposal.getYesVoteCount());
     const n = getTokenAmount(proposal.getNoVoteCount());
     setYesVotes(y);
@@ -23,7 +24,8 @@ export default function VoteResults({ proposal }) {
   }, [proposal]);
 
   function getTokenAmount(c, decimals) {
-    return c?.div(new BN(100000)).toNumber() || 0;
+    if (c.bitLength() > 53) return c?.div(new BN(10000)).toNumber() || 0;
+    return c.toNumber();
   }
 
   return (
