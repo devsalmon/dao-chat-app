@@ -5,20 +5,21 @@ import Button from "../Button";
 
 export default function ProposalInfo({ currentProposal, realm, network }) {
   const [proposal, setProposal] = useState(
-    new Proposal(currentProposal?.account)
+    currentProposal?.account ? new Proposal(currentProposal?.account) : null
   );
   const votingLink = useMemo(() => {
-    console.log(realm);
     const realmPath =
       realm.isCertified && realm.symbol
         ? realm.symbol
-        : realm.realmId.toString();
+        : realm?.realmId?.toString();
     const clusterPath = network == "devnet" ? "?cluster=devnet" : "";
-    return `https://app.realms.today/dao/${realmPath}/proposal/${currentProposal.pubkey.toString()}${clusterPath}`;
+    return `https://app.realms.today/dao/${realmPath}/proposal/${currentProposal?.pubkey?.toString()}${clusterPath}`;
   }, [currentProposal, realm, network]);
 
   useEffect(() => {
-    const p = new Proposal(currentProposal?.account);
+    const p = currentProposal?.account
+      ? new Proposal(currentProposal?.account)
+      : null;
     setProposal(p);
   }, [realm, currentProposal]);
 
