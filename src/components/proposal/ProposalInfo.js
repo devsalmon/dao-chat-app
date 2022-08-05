@@ -1,38 +1,16 @@
 import { useEffect, useState, useMemo } from "react";
 import { ProposalState, Proposal, Realm } from "@solana/spl-governance";
-import VoteResultsBar from "./VoteResultsBar";
-import BN from "bn.js";
+import VoteResults from "./VoteResults";
 
 export default function ProposalInfo({ currentProposal, realm }) {
   const [proposal, setProposal] = useState(
     new Proposal(currentProposal?.account)
   );
-  const [totalVoteCount, setTotalVoteCount] = useState();
-  const [yesVotes, setYesVotes] = useState();
-  const [noVotes, setNoVotes] = useState();
-  // const proposalMint = useMemo(() => {
-  //   return proposal?.governingTokenMint.toBase58() ===
-  //   realm?.account.communityMint.toBase58()
-  //     ? mint
-  //     : councilMint
-  // }, [realm, proposal])
 
   useEffect(() => {
     const p = new Proposal(currentProposal?.account);
     setProposal(p);
-    const y = getTokenAmount(p.getYesVoteCount());
-    const n = getTokenAmount(p.getNoVoteCount());
-    setYesVotes(y);
-    setNoVotes(n);
-    setTotalVoteCount(y + n);
-    console.log(p?.governingTokenMint.toBase58());
-    console.log(new Realm(realm));
-    console.log("p");
   }, [realm, currentProposal]);
-
-  function getTokenAmount(c, decimals) {
-    return c?.div(new BN(100000)).toNumber() || 0;
-  }
 
   function getBorderColour(proposalState) {
     switch (proposalState) {
@@ -78,14 +56,7 @@ export default function ProposalInfo({ currentProposal, realm }) {
         >
           {getState(currentProposal.account.state)}
         </div>
-        <VoteResultsBar
-          approveVotePercentage={
-            totalVoteCount === 0 ? 0 : (yesVotes / totalVoteCount) * 100
-          }
-          denyVotePercentage={
-            totalVoteCount === 0 ? 0 : (noVotes / totalVoteCount) * 100
-          }
-        />
+        <VoteResults proposal={proposal} />
       </div>
     )
   );
