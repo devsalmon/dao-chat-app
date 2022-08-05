@@ -105,7 +105,11 @@ export default function Realm({ gun, network, realms, currentProposal }) {
         )}
         {activeTab === 1 && currentProposal && (
           <div id="voting" className="">
-            <ProposalInfo realm={realm} currentProposal={currentProposal} />
+            <ProposalInfo
+              realm={realm}
+              currentProposal={currentProposal}
+              network={network}
+            />
           </div>
         )}
       </div>

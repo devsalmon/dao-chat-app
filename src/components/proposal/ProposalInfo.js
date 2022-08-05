@@ -1,11 +1,21 @@
 import { useEffect, useState, useMemo } from "react";
 import { ProposalState, Proposal, Realm } from "@solana/spl-governance";
 import VoteResults from "./VoteResults";
+import Button from "../Button";
 
-export default function ProposalInfo({ currentProposal, realm }) {
+export default function ProposalInfo({ currentProposal, realm, network }) {
   const [proposal, setProposal] = useState(
     new Proposal(currentProposal?.account)
   );
+  const votingLink = useMemo(() => {
+    console.log(realm);
+    const realmPath =
+      realm.isCertified && realm.symbol
+        ? realm.symbol
+        : realm.realmId.toString();
+    const clusterPath = network == "devnet" ? "?cluster=devnet" : "";
+    return `https://app.realms.today/dao/${realmPath}/proposal/${currentProposal.pubkey.toString()}${clusterPath}`;
+  }, [currentProposal, realm, network]);
 
   useEffect(() => {
     const p = new Proposal(currentProposal?.account);
@@ -57,6 +67,14 @@ export default function ProposalInfo({ currentProposal, realm }) {
           {getState(currentProposal.account.state)}
         </div>
         <VoteResults proposal={proposal} />
+        <a
+          href={votingLink}
+          className="mx-auto"
+          target="_blank"
+          rel="noreferrer"
+        >
+          <Button>VOTE</Button>
+        </a>
       </div>
     )
   );
