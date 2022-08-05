@@ -8,7 +8,8 @@ import { useNavigate } from "react-router-dom";
 import { getRealmMembers } from "../realms/Realms.js";
 import { PublicKey } from "@solana/web3.js";
 import toast from "react-hot-toast";
-import { ProposalState } from "@solana/spl-governance";
+import SortableList, { SortableItem } from "react-easy-sort";
+import arrayMove from "array-move";
 
 const Sidebar = ({
   gun,
@@ -50,6 +51,10 @@ const Sidebar = ({
     var match = myRegexp.exec(window.location.href);
     if (match) setActiveRealm(match[1]);
   }, []);
+
+  const onSortEnd = (oldIndex, newIndex) => {
+    setSidebarRealms((array) => arrayMove(array, oldIndex, newIndex));
+  };
 
   const searchRealms = () => {
     setShowSearch(!showSearch);
@@ -127,7 +132,11 @@ const Sidebar = ({
             onClick={searchRealms}
           />
         </div>
-        <ul className="h-max flex flex-col gap-2 pb-6">
+        <SortableList
+          onSortEnd={onSortEnd}
+          className="h-max flex flex-col gap-2 pb-6 select-none"
+          allowDrag={editing}
+        >
           {loading &&
             sidebarRealms &&
             sidebarRealms.map((realm) => (
@@ -140,23 +149,24 @@ const Sidebar = ({
               );
               return (
                 realm && (
-                  <SideBarIcon
-                    key={realmId.toString()}
-                    active={activeRealm === realmId.toString()}
-                    onClick={() => goToRealm(realmId?.toString())}
-                    removeRealm={() => removeRealm(realmId?.toString())}
-                    icon={
-                      realm?.ogImage && (
-                        <img
-                          className="p-2"
-                          src={getRealmImage(realm?.ogImage)}
-                          alt=""
-                        />
-                      )
-                    }
-                    symbol={realm?.symbol.substring(0, 2)}
-                    editing={editing}
-                  />
+                  <SortableItem key={realmId.toString()}>
+                    <SideBarIcon
+                      active={activeRealm === realmId.toString()}
+                      onClick={() => goToRealm(realmId?.toString())}
+                      removeRealm={() => removeRealm(realmId?.toString())}
+                      icon={
+                        realm?.ogImage && (
+                          <img
+                            className="p-2"
+                            src={getRealmImage(realm?.ogImage)}
+                            alt=""
+                          />
+                        )
+                      }
+                      symbol={realm?.symbol.substring(0, 2)}
+                      editing={editing}
+                    />
+                  </SortableItem>
                 )
               );
             })}
@@ -164,7 +174,7 @@ const Sidebar = ({
             icon={editing ? <MdCheck size="20" /> : <MdEdit size="20" />}
             onClick={() => setEditing(!editing)}
           />
-        </ul>
+        </SortableList>
         <div className="absolute bottom-0 mx-auto backdrop-blur py-2">
           <div
             onClick={signOut}
@@ -176,7 +186,7 @@ const Sidebar = ({
       </div>
       <div
         className={`transition-all duration-200 ease-in-out shadow-lg z-50 ${
-          showSearch ? `max-w-[300px]` : `max-w-0 overflow-hidden`
+          showSearch ? `max-w-[200px] w-[200px]` : `max-w-0 overflow-hidden`
         }`}
       >
         <SearchRealms
@@ -207,30 +217,25 @@ const Sidebar = ({
   );
 };
 
-const SideBarIcon = ({
-  icon,
-  active,
-  onClick,
-  removeRealm,
-  symbol,
-  editing,
-}) => (
-  <div className="flex flex-col items-center gap-1 group relative">
-    <div
-      className={`sidebar-icon ${active && `bg-green-600 text-white`}`}
-      onClick={onClick}
-    >
-      {icon ?? symbol}
-    </div>
-    {editing && removeRealm && (
+const SideBarIcon = React.forwardRef(
+  ({ icon, active, onClick, removeRealm, symbol, editing }, ref) => (
+    <div ref={ref} className="flex flex-col items-center gap-1 group relative">
       <div
-        className="text-red-500 absolute -top-2 -right-2 cursor-pointer hover:opacity-75"
-        onClick={removeRealm}
+        className={`sidebar-icon ${active && `bg-green-600 text-white`}`}
+        onClick={editing ? () => null : onClick}
       >
-        <MdOutlineCancel size={20} />
+        {icon ?? symbol}
       </div>
-    )}
-  </div>
+      {editing && removeRealm && (
+        <div
+          className="text-red-500 absolute -top-2 -right-2 cursor-pointer hover:opacity-75"
+          onClick={removeRealm}
+        >
+          <MdOutlineCancel size={20} />
+        </div>
+      )}
+    </div>
+  )
 );
 
 export default Sidebar;
