@@ -3,16 +3,7 @@ import { useParams } from "react-router-dom";
 import ProposalInfo from "../components/proposal/ProposalInfo";
 import { Connection, clusterApiUrl } from "@solana/web3.js";
 import Chat from "../components/Chat";
-
-const Loading = () => {
-  return (
-    <div className="h-full w-full flex items-center justify-center gap-2">
-      <div className="bg-white rounded-full h-2 w-2 animate-pulse"></div>
-      <div className="bg-white rounded-full h-2 w-2 animate-pulse delay-50"></div>
-      <div className=" bg-white rounded-full h-2 w-2 animate-pulse delay-75"></div>
-    </div>
-  );
-};
+import Loading from "../components/Loading";
 
 export default function Realm({ gun, network, realms, currentProposal }) {
   let { realmId, channelId } = useParams();

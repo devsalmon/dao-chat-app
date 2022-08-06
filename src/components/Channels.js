@@ -115,18 +115,18 @@ export default function Channels({
       <ul className="px-2 py-3">
         <li
           className={`text-gray-500 px-2 hover:text-gray-200 hover:bg-gray-900 ${
-            currentProposal === "welcome" && `bg-gray-900 text-gray-200`
+            currentProposal === "info" && `bg-gray-900 text-gray-200`
           }`}
         >
           <div
             onClick={() => {
-              setCurrentProposal("welcome");
-              navigate(`/realms/${realmId.toString()}/welcome`);
+              setCurrentProposal("info");
+              navigate(`/realms/${realmId.toString()}/info`);
             }}
             className="flex w-full cursor-pointer items-center"
           >
             <span className="text-xl">#</span>
-            <div className="ml-2">welcome</div>
+            <div className="ml-2">info</div>
           </div>
         </li>
         <li

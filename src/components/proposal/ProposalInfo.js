@@ -23,26 +23,26 @@ export default function ProposalInfo({ currentProposal, realm, network }) {
     setProposal(p);
   }, [realm, currentProposal]);
 
-  function getBorderColour(proposalState) {
+  function getColour(proposalState) {
     switch (proposalState) {
       case ProposalState.Cancelled:
-        return "border-red-500";
+        return "red-500";
       case ProposalState.Completed:
-        return "border-green-300";
+        return "green-300";
       case ProposalState.Defeated:
-        return "border-red-500";
+        return "red-500";
       case ProposalState.ExecutingWithErrors:
-        return "border-red-500";
+        return "red-500";
       case ProposalState.Executing:
-        return "border-[#5DC9EB]";
+        return "#5DC9EB";
       case ProposalState.Draft:
-        return "border-gray-200";
+        return "gray-200";
       case ProposalState.SigningOff:
-        return "border-gray-400";
+        return "gray-400";
       case ProposalState.Succeeded:
-        return "border-[#5DC9EB]";
+        return "#5DC9EB";
       case ProposalState.Voting:
-        return "border-[#8EFFDD]";
+        return "#8EFFDD";
       default:
         return undefined;
     }
@@ -61,9 +61,11 @@ export default function ProposalInfo({ currentProposal, realm, network }) {
     proposal && (
       <div className="w-full h-full flex flex-col gap-4 relative">
         <div
-          className={`${getBorderColour(
-            currentProposal.account.state
-          )} p-2 w-min px-4 rounded-full border-2 mx-auto text-gray-300`}
+          className={`p-2 px-4 w-min rounded-full border-2 mx-auto`}
+          style={{
+            border: `2px solid ${getColour(currentProposal.account.state)}`,
+            color: `${getColour(currentProposal.account.state)}`,
+          }}
         >
           {getState(currentProposal.account.state)}
         </div>
