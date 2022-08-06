@@ -17,8 +17,10 @@
     "@types/chrome": "^0.0.193",
     "bn.js": "^5.2.1",
     "crypto-browserify": "^3.12.0",
+    "dotenv": "^16.0.1",
     "gun": "^0.2020.1237",
     "moment": "^2.29.4",
+    "os-browserify": "^0.3.0",
     "patch-package": "^6.4.7",
     "react": "^18.2.0",
     "react-app-rewired": "^2.2.1",
@@ -42,8 +44,7 @@
       "react-app",
       "react-app/jest"
     ]
-  }
-  ,
+  },
   "browserslist": {
     "production": [
       ">0.2%",

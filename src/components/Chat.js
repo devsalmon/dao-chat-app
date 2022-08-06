@@ -3,6 +3,9 @@ import { BiSend } from "react-icons/bi";
 import { useEffect, useReducer, useState, useRef } from "react";
 import { getTreasuryBalance } from "../governance-functions/Data";
 import moment from "moment";
+import Gun from "gun";
+require("gun/sea");
+//require("dotenv").config();
 
 const initialState = {
   allChats: {},
@@ -69,6 +72,23 @@ export default function Chat({
 
   const chatsRef = useRef();
 
+  // Encryption functions
+  const SEA = Gun.SEA;
+  async function encrypt(plaintext) {
+    const key = process.env.REACT_APP_TEMP_GUN_KEY;
+    //console.log("Enc key:", key);
+    const encryptedM = await SEA.encrypt(plaintext, key);
+    //console.log("Enc m:", encryptedM);
+    return encryptedM;
+  }
+  async function decrypt(ciphertext) {
+    const key = process.env.REACT_APP_TEMP_GUN_KEY;
+    //console.log("Dec key:", key);
+    const decryptedM = await SEA.decrypt(ciphertext, key);
+    //console.log("Dec m:", decryptedM);
+    return decryptedM;
+  }
+
   useEffect(() => {
     gun
       .user()
@@ -84,11 +104,12 @@ export default function Chat({
       chats[collectionId] = [];
     }
 
-    collectionChats.map().on((m) => {
+    collectionChats.map().on(async (m) => {
       if (!chats[collectionId].find((c) => c.createdAt === m.createdAt)) {
+        const decryptedM = await decrypt(m.message);
         chats[collectionId].push({
           name: m.name,
-          message: m.message,
+          message: decryptedM,
           createdAt: m.createdAt,
         });
         dispatch(chats);
@@ -105,13 +126,21 @@ export default function Chat({
   }
 
   const sendMessage = async (m) => {
+    const encryptedM = await encrypt(message);
     const newMessage = m || {
       message: message,
       name: username,
       createdAt: Date.now(),
     };
+    const newEncryptedMessage = m || {
+      message: encryptedM,
+      name: username,
+      createdAt: Date.now(),
+    };
+    // newEncryptedMessage is pushed to gun and newMessage is pushed
+    // onto the state.
     const collectionChats = gun.get(collectionId);
-    collectionChats.set(newMessage);
+    collectionChats.set(newEncryptedMessage);
     let chats = state.allChats;
     chats[collectionId].push(newMessage);
     setMessage("");
