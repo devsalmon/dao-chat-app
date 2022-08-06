@@ -117,6 +117,18 @@ const Sidebar = ({
     return "/" + image[image.length - 1];
   };
 
+  const edit = () => {
+    if (editing) {
+      setEditing(false);
+      localStorage.setItem(
+        network + "sidebarRealms",
+        JSON.stringify(sidebarRealms)
+      );
+    } else {
+      setEditing(true);
+    }
+  };
+
   return (
     <div className="flex h-full w-full">
       <div className="h-full overflow-y-scroll scrollbar-hide overflow-x-hidden w-min flex flex-col gap-2 p-2 px-4 items-center justify-start bg-gray-900 shadow-lg text-white rounded-r-xl">
@@ -172,7 +184,7 @@ const Sidebar = ({
             })}
           <SideBarIcon
             icon={editing ? <MdCheck size="20" /> : <MdEdit size="20" />}
-            onClick={() => setEditing(!editing)}
+            onClick={edit}
           />
         </SortableList>
         <div className="absolute bottom-0 mx-auto backdrop-blur py-2">
