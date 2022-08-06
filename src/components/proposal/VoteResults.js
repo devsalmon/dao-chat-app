@@ -15,7 +15,6 @@ export default function VoteResults({ proposal }) {
   }, [totalVoteCount, noVotes]);
 
   useEffect(() => {
-    console.log(proposal.getYesVoteCount());
     const y = getTokenAmount(proposal.getYesVoteCount());
     const n = getTokenAmount(proposal.getNoVoteCount());
     setYesVotes(y);
@@ -31,7 +30,7 @@ export default function VoteResults({ proposal }) {
   return (
     <div className="flex items-center space-x-4">
       {proposal ? (
-        <div className={`bg-gray-300 p-3 rounded-md w-full`}>
+        <div className={`bg-gray-300 shadow-lg p-3 rounded-lg w-full`}>
           <div className="flex">
             <div className="w-1/2">
               <p>Yes Votes</p>
