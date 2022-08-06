@@ -76,14 +76,16 @@ export default function Chat({
   // Encryption functions
   const SEA = Gun.SEA;
   async function encrypt(plaintext) {
+    console.log("Encryption running");
     const key = process.env.REACT_APP_TEMP_GUN_KEY;
-    console.log("Enc key:", key);
+    //console.log("Enc key:", key);
     const encryptedM = await SEA.encrypt(plaintext, key);
-    console.log("Enc m:", encryptedM);
+    //console.log("Enc m:", encryptedM);
     return encryptedM;
   }
 
   async function decrypt(ciphertext) {
+    console.log("Decryption running");
     const key = process.env.REACT_APP_TEMP_GUN_KEY;
     //console.log("Dec key:", key);
     const decryptedM = await SEA.decrypt(ciphertext, key);
@@ -141,7 +143,7 @@ export default function Chat({
           userWallet = data;
         }
       });
-    //const encryptedM = await encrypt(message);
+    const encryptedM = await encrypt(message);
     // const encryptedW = await encrypt(userWallet);
     const newMessage = m || {
       message: message,
@@ -149,22 +151,28 @@ export default function Chat({
       createdAt: Date.now(),
       walletAddress: userWallet,
     };
-    // const newEncryptedMessage = m || {
-    //   message: encryptedM,
-    //   name: username,
-    //   createdAt: Date.now(),
-    //   walletAddress: userWallet,
-    // };
+    const newEncryptedMessage = m || {
+      message: encryptedM,
+      name: username,
+      createdAt: Date.now(),
+      walletAddress: userWallet,
+    };
     // newEncryptedMessage is pushed to gun and newMessage is pushed
     // onto the state.
     const collectionChats = gun.get(collectionId);
-    collectionChats.set(newMessage);
+    collectionChats.set(newEncryptedMessage);
     let chats = state.allChats;
-    chats[collectionId].push(newMessage);
+    chats[collectionId].push(newEncryptedMessage);
     setMessage("");
     dispatch(chats);
     console.log("new m:", newMessage);
-    ChatCommands(newMessage, connection, realmId, sendMessage, BOT_NAME);
+    // ChatCommands(
+    //   newEncryptedMessage,
+    //   connection,
+    //   realmId,
+    //   sendMessage,
+    //   BOT_NAME
+    // );
   };
 
   const submit = (e) => {
