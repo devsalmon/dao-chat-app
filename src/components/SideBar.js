@@ -233,7 +233,7 @@ const SideBarIcon = React.forwardRef(
   ({ icon, active, onClick, removeRealm, symbol, editing }, ref) => (
     <div ref={ref} className="flex flex-col items-center gap-1 group relative">
       <div
-        className={`sidebar-icon ${active && `bg-green-600 text-white`}`}
+        className={`sidebar-icon ${active && `bg-[#00FFA3] text-white`}`}
         onClick={editing ? () => null : onClick}
       >
         {icon ?? symbol}

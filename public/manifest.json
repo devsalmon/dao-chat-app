@@ -1,6 +1,6 @@
 {
-  "short_name": "Dao Chat App",
-  "name": "Dao Chat App Extension",
+  "short_name": "Dao Chat",
+  "name": "Dao Chat App",
   "version": "1.0.0",
   "manifest_version": 3,
   "action": {
@@ -12,5 +12,9 @@
     "16": "logo512.png",
     "48": "logo512.png",
     "128": "logo512.png"
-  }
+  },
+  "start_url": "/",
+  "display": "fullscreen",
+  "theme_color": "#00FFA3",
+  "background_color": "#36393f"
 }

@@ -107,13 +107,8 @@ export default function Chat({
       chats[collectionId] = [];
     }
 
-    let index = 0;
     collectionChats.map().on(async (m) => {
-      if (
-        !chats[collectionId].find((c) => c?.createdAt === m?.createdAt) &&
-        index < 40
-      ) {
-        index++;
+      if (!chats[collectionId].find((c) => c?.createdAt === m?.createdAt)) {
         const decryptedM = await decrypt(m.message);
         chats[collectionId].push({
           name: m.name,
