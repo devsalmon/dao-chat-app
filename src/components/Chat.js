@@ -76,9 +76,9 @@ export default function Chat({
   const SEA = Gun.SEA;
   async function encrypt(plaintext) {
     const key = process.env.REACT_APP_TEMP_GUN_KEY;
-    //console.log("Enc key:", key);
+    console.log("Enc key:", key);
     const encryptedM = await SEA.encrypt(plaintext, key);
-    //console.log("Enc m:", encryptedM);
+    console.log("Enc m:", encryptedM);
     return encryptedM;
   }
   async function decrypt(ciphertext) {
