@@ -26,6 +26,8 @@ const Message = ({ m, isUsers }) => {
     return moment(date).calendar();
   };
 
+  const link = `https://explorer.solana.com/address/${m.walletAddress ?? ""}`;
+
   return (
     <div className={`flex flex-col gap-1 ${isUsers ? `items-end` : ``}`}>
       <div className="text-xxs text-white">
@@ -36,13 +38,13 @@ const Message = ({ m, isUsers }) => {
           isUsers && ` ml-auto !mr-0 bg-gray-500`
         }`}
       >
-        <div className="flex-none">
+        <a className="flex-none" href={link} target="_blank" rel="noreferrer">
           <img
             src={getAvatar(m.isBot || false)}
-            className="w-10 h-10"
+            className="w-10 h-10 hover:animate-bounce"
             alt="avatar"
           />
-        </div>
+        </a>
         <div className="w-full relative break-words overflow-auto">
           {m.name && (
             <span className="text-xs text-white" key={m.createdAt}>
@@ -81,6 +83,7 @@ export default function Chat({
     console.log("Enc m:", encryptedM);
     return encryptedM;
   }
+
   async function decrypt(ciphertext) {
     const key = process.env.REACT_APP_TEMP_GUN_KEY;
     //console.log("Dec key:", key);
@@ -98,19 +101,26 @@ export default function Chat({
 
   useEffect(() => {
     const collectionChats = gun.get(collectionId);
+    loadMessages(collectionChats, 10);
     let chats = state.allChats;
     // if the realm doesn't already have a chat, create a new object in the chats collection with the realmId as the key
     if (!chats[collectionId]) {
       chats[collectionId] = [];
     }
 
+    let index = 0;
     collectionChats.map().on(async (m) => {
-      if (!chats[collectionId].find((c) => c.createdAt === m.createdAt)) {
+      if (
+        !chats[collectionId].find((c) => c?.createdAt === m?.createdAt) &&
+        index < 40
+      ) {
+        index++;
         const decryptedM = await decrypt(m.message);
         chats[collectionId].push({
           name: m.name,
           message: decryptedM,
-          createdAt: m.createdAt,
+          createdAt: m?.createdAt,
+          walletAddress: m.walletAddress,
         });
         dispatch(chats);
       }
@@ -125,17 +135,31 @@ export default function Chat({
     setMessage(e.target.value);
   }
 
+  const loadMessages = (collection, limit) => {};
+
   const sendMessage = async (m) => {
+    let userWallet;
+    gun
+      .user()
+      .map()
+      .once(async (data, key) => {
+        if (key === "wallet") {
+          userWallet = data;
+        }
+      });
     const encryptedM = await encrypt(message);
+    // const encryptedW = await encrypt(userWallet);
     const newMessage = m || {
       message: message,
       name: username,
       createdAt: Date.now(),
+      walletAddress: userWallet,
     };
     const newEncryptedMessage = m || {
       message: encryptedM,
       name: username,
       createdAt: Date.now(),
+      walletAddress: userWallet,
     };
     // newEncryptedMessage is pushed to gun and newMessage is pushed
     // onto the state.
