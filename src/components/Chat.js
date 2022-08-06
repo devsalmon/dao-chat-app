@@ -5,7 +5,6 @@ import { getTreasuryBalance } from "../governance-functions/Data";
 import moment from "moment";
 import Gun from "gun";
 require("gun/sea");
-//require("dotenv").config();
 
 const initialState = {
   allChats: {},
@@ -147,7 +146,7 @@ export default function Chat({
           userWallet = data;
         }
       });
-    const encryptedM = await encrypt(message);
+    //const encryptedM = await encrypt(message);
     // const encryptedW = await encrypt(userWallet);
     const newMessage = m || {
       message: message,
@@ -155,16 +154,16 @@ export default function Chat({
       createdAt: Date.now(),
       walletAddress: userWallet,
     };
-    const newEncryptedMessage = m || {
-      message: encryptedM,
-      name: username,
-      createdAt: Date.now(),
-      walletAddress: userWallet,
-    };
+    // const newEncryptedMessage = m || {
+    //   message: encryptedM,
+    //   name: username,
+    //   createdAt: Date.now(),
+    //   walletAddress: userWallet,
+    // };
     // newEncryptedMessage is pushed to gun and newMessage is pushed
     // onto the state.
     const collectionChats = gun.get(collectionId);
-    collectionChats.set(newEncryptedMessage);
+    collectionChats.set(newMessage);
     let chats = state.allChats;
     chats[collectionId].push(newMessage);
     setMessage("");
