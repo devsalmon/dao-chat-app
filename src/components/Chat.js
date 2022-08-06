@@ -146,7 +146,7 @@ export default function Chat({
           userWallet = data;
         }
       });
-    const encryptedM = await encrypt(message);
+    //const encryptedM = await encrypt(message);
     // const encryptedW = await encrypt(userWallet);
     const newMessage = m || {
       message: message,
@@ -154,12 +154,12 @@ export default function Chat({
       createdAt: Date.now(),
       walletAddress: userWallet,
     };
-    const newEncryptedMessage = m || {
-      message: encryptedM,
-      name: username,
-      createdAt: Date.now(),
-      walletAddress: userWallet,
-    };
+    // const newEncryptedMessage = m || {
+    //   message: encryptedM,
+    //   name: username,
+    //   createdAt: Date.now(),
+    //   walletAddress: userWallet,
+    // };
     // newEncryptedMessage is pushed to gun and newMessage is pushed
     // onto the state.
     const collectionChats = gun.get(collectionId);
