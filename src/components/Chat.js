@@ -1,7 +1,7 @@
 import Input from "./Input";
 import { BiSend } from "react-icons/bi";
 import { useEffect, useReducer, useState, useRef } from "react";
-import { getTreasuryBalance } from "../governance-functions/Data";
+import { ChatCommands } from "../functions/ChatCommands";
 import moment from "moment";
 import Gun from "gun";
 require("gun/sea");
@@ -168,16 +168,8 @@ export default function Chat({
     chats[collectionId].push(newMessage);
     setMessage("");
     dispatch(chats);
-    if (newMessage.message === "/treasury") {
-      let treasuryBalance = await getTreasuryBalance(connection, realmId);
-      treasuryBalance = treasuryBalance + " SOL";
-      sendMessage({
-        message: treasuryBalance,
-        name: BOT_NAME,
-        createdAt: Date.now(),
-        isBot: true,
-      });
-    }
+    console.log("new m:", newMessage);
+    ChatCommands(newMessage, connection, realmId, sendMessage, BOT_NAME);
   };
 
   const submit = (e) => {
