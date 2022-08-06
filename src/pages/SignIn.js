@@ -85,9 +85,9 @@ const SignIn = ({ gun, user }) => {
   };
 
   return (
-    <div className="flex flex-col gap-8 w-[400px] h-[600px] bg-gray-800 p-8 text-center">
+    <div className="flex flex-col gap-8 w-full h-full bg-gray-800 p-8 text-center">
       <div className="text-2xl text-white">Welcome To Dao Chat!</div>
-      <div className="bg-white rounded-xl shadow-xl px-4 py-8 flex flex-col gap-4">
+      <div className="bg-white rounded-xl shadow-xl px-4 py-8 flex flex-col gap-4 mx-auto md:w-[50vw]">
         {/* <div
                 className="wallet-adapter-button-trigger wallet-adapter-button flex justify-center"
                 onClick={connectWallet}
@@ -96,7 +96,9 @@ const SignIn = ({ gun, user }) => {
                   {walletAddress ? walletAddress : "CONNECT"}
                 </div>
               </div> */}
-        <WalletMultiButton />
+        <div className="mx-auto w-fit">
+          <WalletMultiButton />
+        </div>
         {/* <h1>{myWallet ? myWallet : "not connected"}</h1> */}
         {/* {walletAddress && (
           <div
