@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import { getRealmMembers } from "../realms/Realms";
 import { Connection, PublicKey, clusterApiUrl } from "@solana/web3.js";
 import Loading from "./Loading";
+import { commands } from "../functions/ChatCommands";
 
 const InfoLabel = ({ label, info }) => {
   return (
@@ -58,18 +59,14 @@ export default function RealmInfo({ gun, network, realms }) {
           <InfoLabel label={"Program Version"} info={realm.programVersion} />
         )}
         <div className="text-xl">Available commands</div>
-        <InfoLabel
-          info={"/treasury"}
-          label={"View the treasury balance of the DAO"}
-        />
-        <InfoLabel
-          info={"/sol"}
-          label={"View the current dollar price of Solana"}
-        />
-        <InfoLabel
-          info={"/grape"}
-          label={"View the current dollar price of the Grape Protocol token"}
-        />
+        {commands &&
+          commands.map((c) => (
+            <InfoLabel
+              key={c.description}
+              info={c.command}
+              label={c.description}
+            />
+          ))}
       </div>
     </div>
   );

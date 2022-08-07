@@ -69,7 +69,7 @@ export default function ProposalInfo({ currentProposal, realm, network }) {
         >
           {getState(currentProposal.account.state)}
         </div>
-        <VoteResults proposal={proposal} />
+        <VoteResults proposal={proposal} governance={realm?.governance} />
         <a
           href={votingLink}
           className="mx-auto"

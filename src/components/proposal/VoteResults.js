@@ -2,7 +2,7 @@ import { useState, useEffect, useMemo } from "react";
 import BN from "bn.js";
 import VoteResultsBar from "./VoteResultsBar";
 
-export default function VoteResults({ proposal }) {
+export default function VoteResults({ proposal, governance }) {
   const [totalVoteCount, setTotalVoteCount] = useState(0);
   const [yesVotes, setYesVotes] = useState(0);
   const [noVotes, setNoVotes] = useState(0);
@@ -15,6 +15,10 @@ export default function VoteResults({ proposal }) {
   }, [totalVoteCount, noVotes]);
 
   useEffect(() => {
+    console.log(
+      governance
+      //   new Date(getTokenAmount(proposal.getTimeToVoteEnd(governance)))
+    );
     const y = getTokenAmount(proposal.getYesVoteCount());
     const n = getTokenAmount(proposal.getNoVoteCount());
     setYesVotes(y);

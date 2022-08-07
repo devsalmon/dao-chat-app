@@ -28,8 +28,8 @@ export default function Realm({ gun, network, realms, currentProposal }) {
   });
 
   useEffect(() => {
-    if (channelId) setCollectionId(`chats-${channelId}`);
-    else setCollectionId(`chats-${realmId}`);
+    if (channelId) setCollectionId(`${channelId}-chats`);
+    else setCollectionId(`${realmId}-chats`);
     const currentRealm = realms.find((r) => r.realmId?.toString() === realmId);
     setRealm(currentRealm);
     getMembers();

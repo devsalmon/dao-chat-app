@@ -151,8 +151,8 @@ const Sidebar = ({
         >
           {loading &&
             sidebarRealms &&
-            sidebarRealms.map((realm) => (
-              <div className="sidebar-icon animate-pulse" />
+            sidebarRealms.map((realm, index) => (
+              <div key={index} className="sidebar-icon animate-pulse" />
             ))}
           {sidebarRealms &&
             sidebarRealms.map((realmId) => {

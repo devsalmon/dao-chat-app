@@ -68,7 +68,6 @@ export default function Chat({
   const [state, dispatch] = useReducer(reducer, initialState);
   const [message, setMessage] = useState("");
   const [username, setUsername] = useState("");
-  const [newChat, setNewChat] = useState(false);
   const BOT_NAME = realmName + " bot";
 
   const chatsRef = useRef();
@@ -76,21 +75,19 @@ export default function Chat({
   // Encryption functions
   const SEA = Gun.SEA;
   async function encrypt(plaintext) {
-    console.log("Encryption running");
-    const key = process.env.REACT_APP_TEMP_GUN_KEY;
-    //console.log("Enc key:", key);
-    const encryptedM = await SEA.encrypt(plaintext, key);
-    //console.log("Enc m:", encryptedM);
-    return encryptedM;
+    // console.log("Encryption running");
+    // const key = process.env.REACT_APP_TEMP_GUN_KEY;
+    // const encryptedM = await SEA.encrypt(plaintext, key);
+    // return encryptedM;
+    return plaintext;
   }
 
   async function decrypt(ciphertext) {
-    console.log("Decryption running");
-    const key = process.env.REACT_APP_TEMP_GUN_KEY;
-    //console.log("Dec key:", key);
-    const decryptedM = await SEA.decrypt(ciphertext, key);
-    //console.log("Dec m:", decryptedM);
-    return decryptedM;
+    // console.log("Decryption running");
+    // const key = process.env.REACT_APP_TEMP_GUN_KEY;
+    // const decryptedM = await SEA.decrypt(ciphertext, key);
+    // return decryptedM;
+    return ciphertext;
   }
 
   useEffect(() => {
@@ -102,26 +99,26 @@ export default function Chat({
 
   useEffect(() => {
     const collectionChats = gun.get(collectionId);
-    loadMessages(collectionChats, 10);
     let chats = state.allChats;
     // if the realm doesn't already have a chat, create a new object in the chats collection with the realmId as the key
     if (!chats[collectionId]) {
       chats[collectionId] = [];
     }
 
-    collectionChats.map().on(async (m) => {
+    collectionChats.map().once(async (m) => {
       if (!chats[collectionId].find((c) => c?.createdAt === m?.createdAt)) {
-        const decryptedM = await decrypt(m.message);
+        const decrypted = await decrypt(m.message);
         chats[collectionId].push({
           name: m.name,
-          message: decryptedM,
+          message: decrypted,
           createdAt: m?.createdAt,
           walletAddress: m.walletAddress,
         });
         dispatch(chats);
       }
     });
-  }, [collectionId, newChat]);
+    console.log(chats[collectionId]);
+  }, [collectionId]);
 
   useEffect(() => {
     chatsRef.current.scrollTop = chatsRef.current.scrollHeight;
@@ -134,7 +131,7 @@ export default function Chat({
   const loadMessages = (collection, limit) => {};
 
   const sendMessage = async (m) => {
-    let userWallet;
+    let userWallet, encrypted, newEncryptedMessage;
     gun
       .user()
       .map()
@@ -143,36 +140,26 @@ export default function Chat({
           userWallet = data;
         }
       });
-    const encryptedM = await encrypt(message);
-    // const encryptedW = await encrypt(userWallet);
-    const newMessage = m || {
-      message: message,
-      name: username,
-      createdAt: Date.now(),
-      walletAddress: userWallet,
-    };
-    const newEncryptedMessage = m || {
-      message: encryptedM,
-      name: username,
-      createdAt: Date.now(),
-      walletAddress: userWallet,
-    };
-    // newEncryptedMessage is pushed to gun and newMessage is pushed
-    // onto the state.
+    if (m) {
+      encrypted = await encrypt(m.message);
+      newEncryptedMessage = { ...m, message: encrypted };
+    } else {
+      encrypted = await encrypt(message);
+      newEncryptedMessage = {
+        message: encrypted,
+        name: username,
+        createdAt: Date.now(),
+        walletAddress: userWallet,
+      };
+    }
+    // newEncryptedMessage is pushed to gun
     const collectionChats = gun.get(collectionId);
     collectionChats.set(newEncryptedMessage);
+    setMessage("");
     let chats = state.allChats;
     chats[collectionId].push(newEncryptedMessage);
-    setMessage("");
     dispatch(chats);
-    console.log("new m:", newMessage);
-    // ChatCommands(
-    //   newEncryptedMessage,
-    //   connection,
-    //   realmId,
-    //   sendMessage,
-    //   BOT_NAME
-    // );
+    if (!m) ChatCommands(message, connection, realmId, sendMessage, BOT_NAME);
   };
 
   const submit = (e) => {
