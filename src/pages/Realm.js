@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import ProposalInfo from "../components/proposal/ProposalInfo";
 import { Connection, clusterApiUrl } from "@solana/web3.js";
-import Chat from "../components/Chat";
+import Chat from "../components/chats/Chat";
 import Loading from "../components/Loading";
 
 export default function Realm({ gun, network, realms, currentProposal }) {
@@ -100,6 +100,7 @@ export default function Realm({ gun, network, realms, currentProposal }) {
               realm={realm}
               currentProposal={currentProposal}
               network={network}
+              connection={new Connection(clusterApiUrl(network), "recent")}
             />
           </div>
         )}

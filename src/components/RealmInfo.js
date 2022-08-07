@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import { getRealmMembers } from "../realms/Realms";
 import { Connection, PublicKey, clusterApiUrl } from "@solana/web3.js";
 import Loading from "./Loading";
-import { commands } from "../functions/ChatCommands";
+import { commands } from "../api/ChatCommands";
 
 const InfoLabel = ({ label, info }) => {
   return (

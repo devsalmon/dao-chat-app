@@ -1,9 +1,22 @@
 import { useEffect, useState, useMemo } from "react";
-import { ProposalState, Proposal, Realm } from "@solana/spl-governance";
+import {
+  ProposalState,
+  Proposal,
+  getRealmConfigAddress,
+  getGovernanceAccount,
+  RealmConfigAccount,
+} from "@solana/spl-governance";
+import { programId } from "../../constants";
 import VoteResults from "./VoteResults";
 import Button from "../Button";
+import { PublicKey } from "@solana/web3.js";
 
-export default function ProposalInfo({ currentProposal, realm, network }) {
+export default function ProposalInfo({
+  currentProposal,
+  realm,
+  network,
+  connection,
+}) {
   const [proposal, setProposal] = useState(
     currentProposal?.account ? new Proposal(currentProposal?.account) : null
   );

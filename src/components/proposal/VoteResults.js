@@ -15,10 +15,6 @@ export default function VoteResults({ proposal, governance }) {
   }, [totalVoteCount, noVotes]);
 
   useEffect(() => {
-    console.log(
-      governance
-      //   new Date(getTokenAmount(proposal.getTimeToVoteEnd(governance)))
-    );
     const y = getTokenAmount(proposal.getYesVoteCount());
     const n = getTokenAmount(proposal.getNoVoteCount());
     setYesVotes(y);

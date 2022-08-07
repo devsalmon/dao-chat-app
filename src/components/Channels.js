@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { getProposals } from "../governance-functions/Proposals";
+import { getProposals } from "../api/Proposals";
 import { PublicKey } from "@solana/web3.js";
 import { HiChevronDown, HiChevronUp } from "react-icons/hi";
 import { useNavigate } from "react-router-dom";
@@ -91,9 +91,19 @@ export default function Channels({
           x.forEach((proposal) => {
             // state of 2 means proposal is active
             if (proposal.account.state === 2) {
-              setActiveProposals((current) => [...current, proposal]);
+              setActiveProposals((current) => [
+                ...current.filter(
+                  (p) => p?.pubkey.toString() !== proposal?.pubkey.toString()
+                ),
+                proposal,
+              ]);
             } else {
-              setPastProposals((current) => [...current, proposal]);
+              setPastProposals((current) => [
+                ...current.filter(
+                  (p) => p?.pubkey.toString() !== proposal?.pubkey.toString()
+                ),
+                proposal,
+              ]);
             }
           });
         }

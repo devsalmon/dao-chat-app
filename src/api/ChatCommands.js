@@ -1,4 +1,4 @@
-import { getTreasuryBalance } from "../governance-functions/Data";
+import { getTreasuryBalance } from "./Data";
 import axios from "axios";
 const coinGeckoUrl = "https://api.coingecko.com/api/v3/coins/markets";
 
