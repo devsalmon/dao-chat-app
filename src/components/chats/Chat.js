@@ -6,6 +6,7 @@ import Gun from "gun";
 import Message from "./Message";
 import moment from "moment";
 import InfiniteScroll from "react-infinite-scroll-component";
+import LazyLoad from "react-lazyload";
 import Loading from "../Loading";
 
 require("gun/sea");
@@ -33,6 +34,7 @@ export default function Chat({
   const [state, dispatch] = useReducer(reducer, initialState);
   const [message, setMessage] = useState("");
   const [username, setUsername] = useState("");
+  const [limit, setLimit] = useState(10);
   const BOT_NAME = realmName + " bot";
 
   const chatsRef = useRef();
@@ -47,7 +49,6 @@ export default function Chat({
   }
 
   async function decrypt(ciphertext) {
-    console.log("Decryption running");
     const key = process.env.REACT_APP_TEMP_GUN_KEY;
     const decryptedM = await SEA.decrypt(ciphertext, key);
     return decryptedM;
@@ -61,24 +62,34 @@ export default function Chat({
   }, []);
 
   useEffect(() => {
-    const collectionChats = gun.get(collectionId);
     dispatch({ type: "reset" });
-    collectionChats.map().on(async (m) => {
-      const decrypted = await decrypt(m.message);
-      dispatch({
-        payload: {
-          name: m.name,
-          message: decrypted,
-          createdAt: m?.createdAt,
-          walletAddress: m.walletAddress,
-        },
+    gun
+      .get(collectionId)
+      .map()
+      .on(async (m) => {
+        const decrypted = await decrypt(m.message);
+        dispatch({
+          payload: {
+            name: m.name,
+            message: decrypted,
+            createdAt: m?.createdAt,
+            walletAddress: m.walletAddress,
+          },
+        });
       });
-    });
   }, [collectionId]);
 
   useEffect(() => {
     chatsRef.current.scrollTop = chatsRef.current.scrollHeight;
-  });
+    // if (chatsRef.current.scrollTop === 0)
+  }, []);
+
+  const onScroll = (e) => {
+    if (e.target.scrollTop <= e.target.offsetHeight - e.target.scrollHeight) {
+      console.log("REFRESH");
+      setLimit(limit + 10);
+    }
+  };
 
   // remove duplicate messages
   const newMessagesArray = useMemo(() => {
@@ -92,8 +103,8 @@ export default function Chat({
       );
     });
 
-    return formattedMessages.reverse();
-  }, [state.chats, collectionId]);
+    return formattedMessages.reverse().splice(0, limit);
+  }, [state.chats, limit]);
 
   function onChange(e) {
     setMessage(e.target.value);
@@ -141,26 +152,13 @@ export default function Chat({
   return (
     <div className="h-full w-full flex flex-col justify-end">
       <div
-        className="gap-4 flex flex-col w-full overflow-y-auto py-2"
+        id="scrollableDiv"
+        className="gap-4 flex flex-col-reverse w-full overflow-y-auto py-2"
         ref={chatsRef}
+        onScroll={onScroll}
       >
-        {/*Put the scroll bar always on the bottom*/}
-        <InfiniteScroll
-          dataLength={newMessagesArray.length}
-          next={() => null}
-          style={{
-            display: "flex",
-            gap: "15px",
-            overflowY: "auto",
-            padding: "0 10px",
-            flexDirection: "column-reverse",
-          }} //To put endMessage and loader to the top.
-          inverse={true}
-          hasMore={true}
-          loader={<Loading />}
-          scrollableTarget="scrollableDiv"
-        >
-          {newMessagesArray.map((m, index) => (
+        {newMessagesArray &&
+          newMessagesArray.map((m, index) => (
             <div key={m?.createdAt}>
               {
                 // if the current message is on a new day, add a breakpoint (line) before it
@@ -177,7 +175,6 @@ export default function Chat({
               <Message m={m} isUsers={m?.name === username} />
             </div>
           ))}
-        </InfiniteScroll>
       </div>
       <div className="relative w-full flex items-center justify-end shadow-lg pt-4">
         <Input
