@@ -6,6 +6,7 @@ import Gun from "gun";
 import Message from "./Message";
 import moment from "moment";
 import InfiniteScroll from "react-infinite-scroll-component";
+import Loading from "../Loading";
 
 require("gun/sea");
 
@@ -91,7 +92,7 @@ export default function Chat({
       );
     });
 
-    return formattedMessages;
+    return formattedMessages.reverse();
   }, [state.chats, collectionId]);
 
   function onChange(e) {
@@ -139,28 +140,45 @@ export default function Chat({
 
   return (
     <div className="h-full w-full flex flex-col justify-end">
-      <ul
+      <div
+        className="gap-4 flex flex-col w-full overflow-y-auto py-2"
         ref={chatsRef}
-        className="flex flex-col gap-4 w-full overflow-y-auto py-2"
       >
-        {newMessagesArray.map((m, index) => (
-          <li key={m?.createdAt}>
-            {
-              // if the current message is on a new day, add a breakpoint (line) before it
-              areSuccessive(
-                new Date(state.chats[index - 1]?.createdAt),
-                new Date(m?.createdAt)
-              ) && (
-                <div
-                  key={`hr-${index}`}
-                  className="bg-white w-full h-0.5 rounded-full mb-4"
-                />
-              )
-            }
-            <Message m={m} isUsers={m?.name === username} />
-          </li>
-        ))}
-      </ul>
+        {/*Put the scroll bar always on the bottom*/}
+        <InfiniteScroll
+          dataLength={newMessagesArray.length}
+          next={() => null}
+          style={{
+            display: "flex",
+            gap: "15px",
+            overflowY: "auto",
+            padding: "0 10px",
+            flexDirection: "column-reverse",
+          }} //To put endMessage and loader to the top.
+          inverse={true}
+          hasMore={true}
+          loader={<Loading />}
+          scrollableTarget="scrollableDiv"
+        >
+          {newMessagesArray.map((m, index) => (
+            <div key={m?.createdAt}>
+              {
+                // if the current message is on a new day, add a breakpoint (line) before it
+                areSuccessive(
+                  new Date(state.chats[index - 1]?.createdAt),
+                  new Date(m?.createdAt)
+                ) && (
+                  <div
+                    key={`hr-${index}`}
+                    className="bg-white w-full h-0.5 rounded-full mb-4"
+                  />
+                )
+              }
+              <Message m={m} isUsers={m?.name === username} />
+            </div>
+          ))}
+        </InfiniteScroll>
+      </div>
       <div className="relative w-full flex items-center justify-end shadow-lg pt-4">
         <Input
           onChange={onChange}
