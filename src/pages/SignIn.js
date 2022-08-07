@@ -85,7 +85,7 @@ const SignIn = ({ gun, user }) => {
   };
 
   return (
-    <div className="flex flex-col gap-8 w-full h-full bg-gray-800 p-8 text-center">
+    <div className="flex flex-col gap-6 w-full h-full bg-gray-800 p-8 text-center">
       <div className="text-2xl text-white">Welcome To Dao Chat!</div>
       <div className="bg-white rounded-xl shadow-xl px-4 py-8 flex flex-col gap-4 mx-auto md:w-[50vw]">
         {/* <div

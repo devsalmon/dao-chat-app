@@ -7,7 +7,7 @@
     @apply relative flex items-center justify-center
     h-12 w-12 shadow-lg
     bg-gray-800 text-[#00FFA3]
-    hover:bg-[#00FFA3] hover:text-white
+    hover:bg-[#00FFA3] hover:text-black
     rounded-3xl hover:rounded-xl
     transition-all duration-200 ease-linear
     cursor-pointer;
@@ -17,13 +17,12 @@
 body,
 #root {
   width: 100vw;
+  min-width: 350px;
+  min-height: 600px;
   height: 100vh;
   position: relative;
   margin: 0;
   font-family: "Poppins", sans-serif;
-  /* font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
-    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
-    sans-serif; */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
