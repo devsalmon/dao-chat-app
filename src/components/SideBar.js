@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { BsPlus, BsFillLightningFill } from "react-icons/bs";
+import { BsPlus } from "react-icons/bs";
+import { BiLogOut } from "react-icons/bi";
 import { FiMinus } from "react-icons/fi";
 import { MdOutlineCancel, MdEdit, MdCheck } from "react-icons/md";
 import SearchRealms from "./SearchRealms";
@@ -183,18 +184,19 @@ const Sidebar = ({
               );
             })}
           <SideBarIcon
-            icon={editing ? <MdCheck size="20" /> : <MdEdit size="20" />}
+            icon={editing ? <MdCheck size="22" /> : <MdEdit size="22" />}
             onClick={edit}
           />
+          <SideBarIcon icon={<BiLogOut size="22" />} onClick={signOut} />
         </SortableList>
-        <div className="absolute bottom-0 mx-auto backdrop-blur py-2">
+        {/* <div className="absolute bottom-0 mx-auto backdrop-blur py-2">
           <div
             onClick={signOut}
             className="cursor-pointer text-white text-xs hover:opacity-75"
           >
             Sign out
           </div>
-        </div>
+        </div> */}
       </div>
       <div
         className={`transition-all duration-200 ease-in-out shadow-lg z-50 ${
