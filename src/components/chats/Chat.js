@@ -20,7 +20,7 @@ function reducer(state, action) {
     case "reset":
       return { chats: [] };
     default:
-      return { chats: [...state.chats, action.payload] };
+      return { chats: [action.payload, ...state.chats] };
   }
 }
 
@@ -103,7 +103,7 @@ export default function Chat({
       );
     });
 
-    return formattedMessages.reverse().splice(0, limit);
+    return formattedMessages.splice(0, limit);
   }, [state.chats, limit]);
 
   function onChange(e) {
@@ -146,7 +146,7 @@ export default function Chat({
   };
 
   const areSuccessive = (day1, day2) => {
-    return moment(day1).add(1, "days").date() === moment(day2).date();
+    return moment(day2).add(1, "days").date() === moment(day1).date();
   };
 
   return (
@@ -163,8 +163,8 @@ export default function Chat({
               {
                 // if the current message is on a new day, add a breakpoint (line) before it
                 areSuccessive(
-                  new Date(state.chats[index - 1]?.createdAt),
-                  new Date(m?.createdAt)
+                  new Date(m?.createdAt),
+                  new Date(newMessagesArray[index + 1]?.createdAt)
                 ) && (
                   <div
                     key={`hr-${index}`}
