@@ -41,22 +41,22 @@ const handleTreasury = async (connection, realmId) => {
 export const commands = [
   {
     command: "/treasury",
-    description: "View the treasury balance of the DAO",
+    description: "Return DAO's treasury balance",
     response: handleTreasury,
   },
   {
     command: "/sol",
-    description: "View the current dollar price of Solana",
+    description: "Return Solana price",
     response: handleSol,
   },
   {
     command: "/grape",
-    description: "View the current dollar price of the Grape Protocol token",
+    description: "Return Grape Protocol token price",
     response: handleGrape,
   },
   {
     command: "/ray",
-    description: "View the current dollar price of Raydium",
+    description: "Return Raydium price",
     response: handleRay,
   },
 ];
