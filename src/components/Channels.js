@@ -3,7 +3,6 @@ import { getProposals } from "../api/Proposals";
 import { PublicKey } from "@solana/web3.js";
 import { HiChevronDown, HiChevronUp } from "react-icons/hi";
 import { useNavigate } from "react-router-dom";
-import { click } from "@testing-library/user-event/dist/click";
 
 const ProposalList = ({
   proposals,

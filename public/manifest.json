@@ -9,9 +9,9 @@
   },
   "permissions": ["storage"],
   "icons": {
-    "16": "logo512.png",
-    "48": "logo512.png",
-    "128": "logo512.png"
+    "16": "dao-chat-logo.png",
+    "48": "dao-chat-logo.png",
+    "128": "dao-chat-logo.png"
   },
   "start_url": "/",
   "display": "fullscreen",

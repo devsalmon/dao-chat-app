@@ -1,7 +1,4 @@
-import {
-  getProposalsByGovernance,
-  getAllProposals,
-} from "@solana/spl-governance";
+import { getAllProposals } from "@solana/spl-governance";
 
 export async function getProposals(connection, programId, realmPk) {
   try {
