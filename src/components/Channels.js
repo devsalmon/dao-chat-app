@@ -71,8 +71,8 @@ export default function Channels({
       current = pastProposals.find(
         (p) => p.pubkey.toString() === currentProposalId
       );
-    setCurrentProposal(current);
-  }, []);
+    setCurrentProposal(current ?? currentProposalId);
+  }, [activeProposals, pastProposals]);
 
   useEffect(() => {
     setActiveProposals([]);
@@ -140,7 +140,7 @@ export default function Channels({
         </li>
         <li
           className={` text-gray-500 px-2 hover:text-gray-200 hover:bg-gray-900 ${
-            (currentProposal === "" || currentProposal === null) &&
+            (currentProposal === "" || !currentProposal) &&
             `bg-gray-900 text-gray-200`
           }`}
         >

@@ -22,9 +22,10 @@ export default function RealmInfo({ gun, network, realms }) {
   const [members, setMembers] = useState();
 
   useEffect(() => {
+    console.log(realms);
     setRealm(realms.find((r) => r.realmId?.toString() === realmId));
     getMembers();
-  }, [realmId]);
+  }, [realmId, realms]);
 
   async function getMembers() {
     const realmMembers = await getRealmMembers(

@@ -23,6 +23,8 @@ const Sidebar = ({
   loading,
   currentProposal,
   setCurrentProposal,
+  setShowSidebar,
+  showSidebar,
 }) => {
   const [showSearch, setShowSearch] = useState(false);
   const [showChannel, setShowChannel] = useState(false);
@@ -48,8 +50,10 @@ const Sidebar = ({
       .once((wallet) => {
         setUserWallet(wallet);
       });
-    var myRegexp = /realms\/(.*)\/?/;
-    var match = myRegexp.exec(window.location.href);
+    var regexp = /realms\/(.*)\//;
+    var regexp2 = /realms\/(.*)\/?/;
+    var match =
+      regexp.exec(window.location.href) ?? regexp2.exec(window.location.href);
     if (match) setActiveRealm(match[1]);
   }, []);
 
@@ -139,15 +143,17 @@ const Sidebar = ({
         >
           {network == "devnet" ? "DEVNET" : "MAINNET"}
         </div>
-        <div className="basis-1/12">
-          <SideBarIcon
-            icon={showSearch ? <FiMinus size="28" /> : <BsPlus size="32" />}
-            onClick={searchRealms}
-          />
-        </div>
+        <SideBarIcon
+          icon={!showSidebar ? null : <BsArrowBarLeft size="20" />}
+          onClick={() => setShowSidebar(!showSidebar)}
+        />
+        <SideBarIcon
+          icon={showSearch ? <FiMinus size="28" /> : <BsPlus size="32" />}
+          onClick={searchRealms}
+        />
         <SortableList
           onSortEnd={onSortEnd}
-          className="h-max flex flex-col gap-2 pb-6 select-none"
+          className="h-max flex flex-col gap-2 py-4 select-none"
           allowDrag={editing}
         >
           {loading &&
@@ -183,12 +189,12 @@ const Sidebar = ({
                 )
               );
             })}
-          <SideBarIcon
-            icon={editing ? <MdCheck size="22" /> : <MdEdit size="22" />}
-            onClick={edit}
-          />
-          <SideBarIcon icon={<BiLogOut size="22" />} onClick={signOut} />
         </SortableList>
+        <SideBarIcon
+          icon={editing ? <MdCheck size="22" /> : <MdEdit size="22" />}
+          onClick={edit}
+        />
+        <SideBarIcon icon={<BiLogOut size="22" />} onClick={signOut} />
       </div>
       <div
         className={`transition-all duration-200 ease-in-out shadow-lg z-50 ${
