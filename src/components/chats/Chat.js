@@ -34,6 +34,8 @@ export default function Chat({
   const [state, dispatch] = useReducer(reducer, initialState);
   const [message, setMessage] = useState("");
   const [username, setUsername] = useState("");
+  const [hideAddress, setHideAddress] = useState(false);
+  const [walletAddress, setWalletAddress] = useState("");
   const [limit, setLimit] = useState(10);
   const BOT_NAME = realmName + " bot";
 
@@ -59,6 +61,14 @@ export default function Chat({
       .user()
       .get("alias")
       .once((name) => setUsername(name));
+    gun
+      .user()
+      .get("wallet")
+      .once((wallet) => setWalletAddress(wallet));
+    gun
+      .user()
+      .get("hideAddress")
+      .once((hide) => setHideAddress(hide));
   }, []);
 
   useEffect(() => {
@@ -74,6 +84,7 @@ export default function Chat({
             message: decrypted,
             createdAt: m?.createdAt,
             walletAddress: m.walletAddress,
+            hideAddress: m.hideAddress ?? false,
           },
         });
       });
@@ -102,24 +113,15 @@ export default function Chat({
         })
       );
     });
-
     return formattedMessages.splice(0, limit);
-  }, [state.chats, limit]);
+  }, [state.chats, limit, collectionId]);
 
   function onChange(e) {
     setMessage(e.target.value);
   }
 
   const sendMessage = async (m) => {
-    let userWallet, encrypted, newEncryptedMessage;
-    gun
-      .user()
-      .map()
-      .once(async (data, key) => {
-        if (key === "wallet") {
-          userWallet = data;
-        }
-      });
+    let encrypted, newEncryptedMessage;
     if (m) {
       encrypted = await encrypt(m.message);
       newEncryptedMessage = { ...m, message: encrypted };
@@ -128,8 +130,9 @@ export default function Chat({
       newEncryptedMessage = {
         message: encrypted,
         name: username,
+        walletAddress: walletAddress,
+        hideAddress: hideAddress,
         createdAt: Date.now(),
-        walletAddress: userWallet,
       };
     }
     // newEncryptedMessage is pushed to gun

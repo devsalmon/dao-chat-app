@@ -23,10 +23,15 @@ export default function Message({ m, isUsers }) {
           isUsers && ` ml-auto !mr-0 bg-gray-500`
         }`}
       >
-        <a className="flex-none" href={link} target="_blank" rel="noreferrer">
+        <a
+          className={`flex-none ${m.hideAddress ? `pointer-events-none` : ``}`}
+          href={link}
+          target="_blank"
+          rel="noreferrer"
+        >
           <img
             src={getAvatar(m.isBot || false)}
-            className="w-10 h-10 hover:animate-bounce"
+            className="w-10 h-10 hover:scale-110 transition-all duration-200 ease-in"
             alt="avatar"
           />
         </a>
