@@ -3,6 +3,7 @@ import Sidebar from "./components/Sidebar";
 import { useState } from "react";
 import { Outlet } from "react-router-dom";
 import { AiOutlineMenu, AiOutlineClose } from "react-icons/ai";
+import { BsArrowBarLeft } from "react-icons/bs";
 
 export default function App({
   gun,
@@ -45,7 +46,7 @@ export default function App({
           onClick={() => setShowSidebar(!showSidebar)}
           className="text-gray-300 text-2xl cursor-pointer hover:opacity-75 w-min"
         >
-          {showSidebar ? <AiOutlineClose /> : <AiOutlineMenu />}
+          {showSidebar ? <BsArrowBarLeft /> : <AiOutlineMenu />}
         </div>
         <Outlet />
       </div>

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { BsPlus } from "react-icons/bs";
+import { BsPlus, BsArrowBarLeft } from "react-icons/bs";
 import { BiLogOut } from "react-icons/bi";
 import { FiMinus } from "react-icons/fi";
 import { MdOutlineCancel, MdEdit, MdCheck } from "react-icons/md";
