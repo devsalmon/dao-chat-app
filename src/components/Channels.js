@@ -71,7 +71,7 @@ export default function Channels({
       current = pastProposals.find(
         (p) => p.pubkey.toString() === currentProposalId
       );
-    setCurrentProposal(current ?? currentProposalId);
+    setCurrentProposal(current);
   }, [activeProposals, pastProposals]);
 
   useEffect(() => {

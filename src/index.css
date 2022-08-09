@@ -6,11 +6,73 @@
   .sidebar-icon {
     @apply relative flex items-center justify-center
     h-12 w-12 shadow-lg
-    bg-gray-800 text-[#00FFA3]
-    hover:bg-[#00FFA3] hover:text-black
+    bg-gray-800 text-[#14F195]
+    hover:bg-[#14F195] hover:text-black
     rounded-3xl hover:rounded-xl
     transition-all duration-200 ease-linear
     cursor-pointer;
+  }
+}
+
+.gradient {
+  background: linear-gradient(
+    270deg,
+    #9945ff,
+    #14f195
+  ); /* adjust angle of gradient and color schema*/
+  background-size: 200% 200%;
+  animation: gradient 20s ease infinite;
+  -webkit-animation: gradient 20s ease infinite;
+  -moz-animation: gradient 20s ease infinite;
+  -o-animation: gradient 20s ease infinite;
+  height: 100vh;
+}
+
+@-webkit-keyframes gradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+@-moz-keyframes gradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+@-o-keyframes gradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+@keyframes gradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
   }
 }
 

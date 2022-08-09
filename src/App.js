@@ -43,7 +43,7 @@ export default function App({
           showSidebar={showSidebar}
         />
       </div>
-      <div className="relative flex flex-col gap-4 p-4 w-full break-words">
+      <div className="relative flex flex-col p-4 w-full break-words">
         <div
           onClick={() => setShowSidebar(!showSidebar)}
           className="text-gray-300 text-2xl cursor-pointer hover:opacity-75 w-min"

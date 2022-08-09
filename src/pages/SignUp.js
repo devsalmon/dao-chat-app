@@ -10,7 +10,7 @@ import Toggle from "../components/Toggle";
 // Default styles that can be overridden by your app
 require("@solana/wallet-adapter-react-ui/styles.css");
 
-const SignIn = ({ gun, user }) => {
+const SignUp = ({ gun, user }) => {
   const [username, setUsername] = useState();
   const [password, setPassword] = useState();
   const [walletAddress, setWalletAddress] = useState();
@@ -40,10 +40,31 @@ const SignIn = ({ gun, user }) => {
     });
   };
 
+  // Create user
+  const signUp = async () => {
+    setLoading(true);
+    if (!walletAddress || walletAddress.trim() === "") {
+      toast.error("Connect a wallet to sign up");
+      setLoading(false);
+    } else {
+      user.create(username, password, ({ err }) => {
+        if (err) {
+          toast.error(err);
+          setLoading(false);
+        } else {
+          signIn();
+        }
+      });
+    }
+  };
+
   return (
     <div className="flex flex-col gap-6 w-full h-full gradient p-8 text-center">
       <div className="bg-white rounded-xl shadow-lg shadow-black px-4 py-8 flex flex-col gap-4 m-auto md:w-[50vw]">
-        <div className="text-2xl">Sign In</div>
+        <div className="text-2xl">Welcome To Dao Chat!</div>
+        <div className="mx-auto w-fit">
+          <WalletMultiButton />
+        </div>
         <div>
           <Toggle
             enabled={hideAddress}
@@ -71,23 +92,23 @@ const SignIn = ({ gun, user }) => {
             value={undefined}
           />
         </div>
-        <Button onClick={signIn} colour={undefined}>
+        <Button onClick={signUp} colour={undefined}>
           {loading ? (
             <div className="h-6">
               <Loading />
             </div>
           ) : (
-            "Sign In"
+            "Sign Up"
           )}
         </Button>
         <div>
-          Don't have an account?{" "}
+          Already have an account?{" "}
           <a
             className="underline cursor-pointer hover:opacity-75"
-            href="/sign-up"
+            href="/sign-in"
             rel="noreferrer"
           >
-            Sign Up
+            Sign In
           </a>
         </div>
       </div>
@@ -95,4 +116,4 @@ const SignIn = ({ gun, user }) => {
   );
 };
 
-export default SignIn;
+export default SignUp;
