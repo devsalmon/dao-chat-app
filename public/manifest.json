@@ -12,9 +12,5 @@
     "16": "dao-chat-logo2.png",
     "48": "dao-chat-logo2.png",
     "128": "dao-chat-logo2.png"
-  },
-  "start_url": "/",
-  "display": "fullscreen",
-  "theme_color": "#00FFA3",
-  "background_color": "#36393f"
+  }
 }
