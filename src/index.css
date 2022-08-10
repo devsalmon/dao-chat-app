@@ -83,21 +83,12 @@
 body,
 #root {
   width: 100vw;
-  min-width: 350px;
-  min-height: 600px;
   height: 100vh !important;
   position: relative;
   margin: 0;
   font-family: "Poppins", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-}
-
-@media screen and (min-width: 200px) and (max-width: 349px) {
-  body,
-  #root {
-    min-width: 200px !important;
-  }
 }
 
 code {
