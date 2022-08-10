@@ -80,16 +80,6 @@ const SignIn = ({ gun, user }) => {
             "Sign In"
           )}
         </Button>
-        <div>
-          Don't have an account?{" "}
-          <a
-            className="underline cursor-pointer hover:opacity-75"
-            href="/sign-up"
-            rel="noreferrer"
-          >
-            Sign Up
-          </a>
-        </div>
       </div>
     </div>
   );

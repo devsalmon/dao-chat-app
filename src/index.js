@@ -7,13 +7,13 @@ import reportWebVitals from "./reportWebVitals";
 import Gun from "gun";
 import "gun/sea";
 import SignIn from "./pages/SignIn";
-import SignUp from "./pages/SignUp";
 import { programId } from "./constants.js";
 import {
   BrowserRouter as Router,
   Routes,
   Route,
   Navigate,
+  useNavigate,
 } from "react-router-dom";
 import Realm from "./pages/Realm";
 import { clusterApiUrl, Connection, PublicKey } from "@solana/web3.js";
@@ -68,6 +68,7 @@ function Main() {
   const [realms, setRealms] = useState([]);
   const [loading, setLoading] = useState(true);
   const [currentProposal, setCurrentProposal] = useState();
+  const navigate = useNavigate();
 
   gun.on("auth", (ack) => {
     //console.log(gunUser.get("alias"), " authentication was successful: ", ack);
@@ -125,7 +126,7 @@ function Main() {
       setConnection(new Connection(clusterApiUrl("devnet"), "recent"));
       localStorage.setItem("network", "devnet");
     }
-    window.location.href = "/";
+    navigate("/");
   };
 
   const signOut = () => {
@@ -142,10 +143,6 @@ function Main() {
               <Route
                 path="sign-in"
                 element={<SignIn gun={gun} user={gunUser} setUser={setUser} />}
-              />
-              <Route
-                path="sign-up"
-                element={<SignUp gun={gun} user={gunUser} setUser={setUser} />}
               />
               <Route path="*" element={<Navigate to="/sign-in" replace />} />
             </Routes>
