@@ -2,34 +2,34 @@ import { getTreasuryBalance } from "./Data";
 import axios from "axios";
 const coinGeckoUrl = "https://api.coingecko.com/api/v3/coins/markets";
 
-const handleRay = async () => {
-  let rayPrice = await axios.get(coinGeckoUrl, {
+const coinPrice = async (coinId) => {
+  let price = await axios.get(coinGeckoUrl, {
     params: {
-      ids: "raydium",
+      ids: coinId,
       vs_currency: "usd",
     },
   });
-  return rayPrice.data[0].current_price + " USD";
+  return price.data[0].current_price;
+};
+
+const handleRay = async () => {
+  return coinPrice("raydium") + " USD";
 };
 
 const handleGrape = async () => {
-  let grapePrice = await axios.get(coinGeckoUrl, {
-    params: {
-      ids: "grape-2",
-      vs_currency: "usd",
-    },
-  });
-  return grapePrice.data[0].current_price + " USD";
+  return coinPrice("grape-2") + " USD";
 };
 
 const handleSol = async () => {
-  let solPrice = await axios.get(coinGeckoUrl, {
-    params: {
-      ids: "solana",
-      vs_currency: "usd",
-    },
-  });
-  return solPrice.data[0].current_price + " USD";
+  return coinPrice("solana") + " USD";
+};
+
+const handleMango = async () => {
+  return coinPrice("mango-markets") + "USD";
+};
+
+const handleSerum = async () => {
+  return coinPrice("serum") + "USD";
 };
 
 const handleTreasury = async (connection, realmId) => {
@@ -58,6 +58,16 @@ export const commands = [
     command: "/ray",
     description: "Return Raydium price",
     response: handleRay,
+  },
+  {
+    command: "/mango",
+    description: "Return Mango price",
+    response: handleMango,
+  },
+  {
+    command: "/serum",
+    description: "Return Serum price",
+    response: handleSerum,
   },
 ];
 

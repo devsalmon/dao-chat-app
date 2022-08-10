@@ -41,8 +41,8 @@ const SignIn = ({ gun, user }) => {
   };
 
   return (
-    <div className="flex flex-col gap-6 w-full h-full gradient p-8 text-center">
-      <div className="bg-white rounded-xl shadow-lg shadow-black px-4 py-8 flex flex-col gap-4 m-auto md:w-[50vw]">
+    <div className="flex flex-col gap-6 w-full h-full gradient p-8 text-center text-white">
+      <div className="bg-gray-700 rounded-xl shadow-xl shadow-gray-600 px-4 py-8 flex flex-col gap-4 m-auto md:w-[50vw]">
         <div className="text-2xl">Sign In</div>
         <div>
           <Toggle

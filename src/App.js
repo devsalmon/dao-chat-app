@@ -1,6 +1,6 @@
 import "./App.css";
 import Sidebar from "./components/Sidebar";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Outlet } from "react-router-dom";
 import { AiOutlineMenu, AiOutlineClose } from "react-icons/ai";
 import { BsArrowBarLeft } from "react-icons/bs";
@@ -46,7 +46,7 @@ export default function App({
       <div className="relative flex flex-col p-4 w-full break-words">
         <div
           onClick={() => setShowSidebar(!showSidebar)}
-          className="text-gray-300 text-2xl cursor-pointer hover:opacity-75 w-min"
+          className="text-gray-300 absolute top-2 left-2 z-50 text-2xl cursor-pointer hover:opacity-75 w-min"
         >
           {showSidebar ? null : <AiOutlineMenu />}
         </div>

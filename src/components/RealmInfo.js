@@ -41,7 +41,7 @@ export default function RealmInfo({ gun, network, realms }) {
       <div className="text-white text-xl">
         Welcome to {realm?.displayName ?? realm?.symbol}!
       </div>
-      <div className="rounded-lg flex flex-col gap-4 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 shadow-lg p-3">
+      <div className="rounded-lg flex flex-col gap-4 gradient shadow-lg p-3">
         {realm?.displayName && (
           <InfoLabel label={"Name"} info={realm.displayName} />
         )}

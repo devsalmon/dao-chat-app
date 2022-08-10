@@ -69,16 +69,11 @@ function Main() {
   const [loading, setLoading] = useState(true);
   const [currentProposal, setCurrentProposal] = useState();
 
-  useEffect(() => {
-    gun.on("auth", (ack) => {
-      //console.log(gunUser.get("alias"), " authentication was successful: ", ack);
-      console.log("SIGNED IN");
-      setUser(gunUser?.is);
-    });
+  gun.on("auth", (ack) => {
+    //console.log(gunUser.get("alias"), " authentication was successful: ", ack);
+    console.log("SIGNED IN");
+    setUser(gunUser?.is);
   });
-
-  // The network can be set to 'devnet', 'testnet', or 'mainnet-beta'.
-  // const network = WalletAdapterNetwork.Devnet;
 
   // You can also provide a custom RPC endpoint.
   const endpoint = useMemo(() => clusterApiUrl(network), [network]);

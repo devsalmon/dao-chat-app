@@ -71,7 +71,8 @@ export default function Channels({
       current = pastProposals.find(
         (p) => p.pubkey.toString() === currentProposalId
       );
-    setCurrentProposal(current);
+    if (currentProposalId === "info") setCurrentProposal("info");
+    else setCurrentProposal(current);
   }, [activeProposals, pastProposals]);
 
   useEffect(() => {
@@ -129,6 +130,7 @@ export default function Channels({
         >
           <div
             onClick={() => {
+              if (currentProposal === "info") setShowChannel(false);
               setCurrentProposal("info");
               navigate(`/realms/${realmId.toString()}/info`);
             }}
@@ -148,6 +150,7 @@ export default function Channels({
             className="cursor-pointer flex w-full items-center"
             onClick={() => {
               setCurrentProposal("");
+              if (currentProposal === "") setShowChannel(false);
               navigate(`/realms/${realmId.toString()}`);
             }}
           >
