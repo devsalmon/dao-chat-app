@@ -4,6 +4,7 @@ import ProposalInfo from "../components/proposal/ProposalInfo";
 import { Connection, clusterApiUrl } from "@solana/web3.js";
 import Chat from "../components/chats/Chat";
 import Loading from "../components/Loading";
+import { AiOutlineInfoCircle } from "react-icons/ai";
 
 export default function Realm({ gun, network, realms, currentProposal }) {
   let { realmId, channelId } = useParams();
@@ -17,6 +18,7 @@ export default function Realm({ gun, network, realms, currentProposal }) {
   const [userWallet, setUserWallet] = useState("");
   const [loading, setLoading] = useState(true);
   const [title, setTitle] = useState(realm?.displayName ?? realm?.symbol);
+  const [showInfo, setShowInfo] = useState(false);
 
   useEffect(() => {
     gun
@@ -65,41 +67,34 @@ export default function Realm({ gun, network, realms, currentProposal }) {
     <Loading />
   ) : hasAccess ? (
     <div className="w-full h-full relative flex flex-col">
-      <div className="sticky top-0 z-30 w-full h-1/6 p-4 pt-0 bg-gray-700 flex flex-col justify-center gap-2 items-center">
-        <h1 className="text-center text-white text-xl line-clamp-2">
+      <div className="sticky top-0 text-white z-30 w-full h-[10%] p-4 pt-0 bg-gray-700 flex justify-center gap-2 items-center">
+        <h1 className="text-center text-xl line-clamp-2">
           {!title ? <Loading /> : title}
         </h1>
-        <div className="flex flex-nowrap mx-auto w-max rounded-lg bg-black items-center justify-center text-gray-400">
+        {currentProposal && currentProposal !== "" && (
           <div
-            onClick={() => setActiveTab(0)}
-            className={activeTab === 0 ? styles.tabActive : styles.tabInactive}
+            className="cursor-pointer text-2xl absolute right-2 text-cyan-500"
+            onClick={() => setShowInfo(!showInfo)}
           >
-            Chat
+            <AiOutlineInfoCircle />
           </div>
-          {currentProposal && currentProposal !== "" && (
-            <div
-              onClick={() => setActiveTab(1)}
-              className={
-                activeTab === 1 ? styles.tabActive : styles.tabInactive
-              }
-            >
-              Voting
-            </div>
-          )}
-        </div>
-      </div>
-      <div className={`relative w-full h-5/6`}>
-        {activeTab === 0 && (
-          <Chat
-            gun={gun}
-            collectionId={collectionId}
-            realmId={realmId}
-            connection={new Connection(clusterApiUrl(network), "recent")}
-            realmName={realm?.displayName ?? realm?.symbol}
-          />
         )}
-        {activeTab === 1 && currentProposal && (
-          <div id="voting" className="">
+      </div>
+      <div className={`relative w-full h-[90%]`}>
+        <Chat
+          gun={gun}
+          collectionId={collectionId}
+          realmId={realmId}
+          connection={new Connection(clusterApiUrl(network), "recent")}
+          realmName={realm?.displayName ?? realm?.symbol}
+        />
+        {currentProposal && currentProposal !== "" && (
+          <div
+            id="voting"
+            className={`w-full h-full backdrop-blur transition-all duration-500 ease-in-out ${
+              !showInfo ? `opacity-0 invisible` : `opacity-100 absolute top-0`
+            }`}
+          >
             <ProposalInfo
               realm={realm}
               currentProposal={currentProposal}

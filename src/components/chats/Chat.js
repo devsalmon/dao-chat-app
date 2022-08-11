@@ -1,13 +1,9 @@
 import Input from "../Input";
-import { BiSend } from "react-icons/bi";
 import { useEffect, useReducer, useState, useRef, useMemo } from "react";
 import { ChatCommands } from "../../api/ChatCommands";
 import Gun from "gun";
 import Message from "./Message";
 import moment from "moment";
-import InfiniteScroll from "react-infinite-scroll-component";
-import LazyLoad from "react-lazyload";
-import Loading from "../Loading";
 
 require("gun/sea");
 
@@ -191,7 +187,7 @@ export default function Chat({
           onClick={() => sendMessage()}
           className="absolute p-2 cursor-pointer hover:scale-110 transition-all duration-200"
         >
-          <BiSend />
+          <img src={"/dao-chat-logo6.png"} className="w-4 h-4" alt="" />
         </button>
       </div>
     </div>
