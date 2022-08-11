@@ -16,9 +16,9 @@ export default function App({
   loading,
   currentProposal,
   setCurrentProposal,
-  showSidebar,
-  setShowSidebar,
 }) {
+  const [showSidebar, setShowSidebar] = useState(true);
+
   return (
     <div className="App w-full h-full flex relative bg-gray-700 overflow-hidden">
       <div
@@ -44,7 +44,13 @@ export default function App({
         />
       </div>
       <div className="relative flex flex-col p-4 w-full break-words">
-        <Outlet showSidebar={showSidebar} />
+        <div
+          onClick={() => setShowSidebar(!showSidebar)}
+          className="text-gray-300 absolute top-2 left-2 z-50 text-2xl cursor-pointer hover:opacity-75 w-min"
+        >
+          {showSidebar ? null : <AiOutlineMenu />}
+        </div>
+        <Outlet />
       </div>
     </div>
   );

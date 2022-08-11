@@ -4,16 +4,9 @@ import ProposalInfo from "../components/proposal/ProposalInfo";
 import { Connection, clusterApiUrl } from "@solana/web3.js";
 import Chat from "../components/chats/Chat";
 import Loading from "../components/Loading";
-import { AiOutlineInfoCircle, AiOutlineMenu } from "react-icons/ai";
+import { AiOutlineInfoCircle } from "react-icons/ai";
 
-export default function Realm({
-  gun,
-  network,
-  realms,
-  currentProposal,
-  showSidebar,
-  setShowSidebar,
-}) {
+export default function Realm({ gun, network, realms, currentProposal }) {
   let { realmId, channelId } = useParams();
   const [activeTab, setActiveTab] = useState(0);
   const [collectionId, setCollectionId] = useState();
@@ -74,19 +67,13 @@ export default function Realm({
     <Loading />
   ) : hasAccess ? (
     <div className="w-full h-full relative flex flex-col">
-      <div className="sticky top-0 text-white z-30 w-full h-[10%] p-4 pt-0 bg-gray-700 flex justify-between gap-2 items-center">
-        <div
-          onClick={() => setShowSidebar(!showSidebar)}
-          className="text-gray-300 text-2xl cursor-pointer hover:opacity-75 w-min"
-        >
-          {showSidebar ? null : <AiOutlineMenu />}
-        </div>
+      <div className="sticky top-0 text-white z-30 w-full h-[10%] p-4 pt-0 bg-gray-700 flex justify-center gap-2 items-center">
         <h1 className="text-center text-xl line-clamp-2">
           {!title ? <Loading /> : title}
         </h1>
         {currentProposal && currentProposal !== "" && (
           <div
-            className="cursor-pointer text-2xl text-cyan-500"
+            className="cursor-pointer text-2xl absolute right-2 text-cyan-500"
             onClick={() => setShowInfo(!showInfo)}
           >
             <AiOutlineInfoCircle />
