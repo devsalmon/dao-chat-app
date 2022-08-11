@@ -6,6 +6,7 @@ import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
 import toast from "react-hot-toast";
 import Loading from "../components/Loading";
 import Toggle from "../components/Toggle";
+import Logo from "../components/Logo";
 
 // Default styles that can be overridden by your app
 require("@solana/wallet-adapter-react-ui/styles.css");
@@ -60,60 +61,59 @@ const SignUp = ({ gun, user }) => {
 
   return (
     <div className="flex flex-col gap-6 w-full h-full gradient p-8 text-center text-white">
-      <div className="text-4xl text-black flex flex-col gap-4 items-center">
-        <img src="dao-chat-logo6.png" className="w-28 h-28" alt="logo" />
-        <div>DAO CHAT</div>
-      </div>
-      <div className="bg-gray-700 rounded-xl shadow-xl shadow-gray-600 px-4 py-8 flex flex-col gap-4 mx-auto md:w-[50vw]">
-        <div className="text-2xl">Welcome To Dao Chat!</div>
-        <div className="mx-auto w-fit">
-          <WalletMultiButton />
-        </div>
-        <div>
-          <Toggle
-            enabled={hideAddress}
-            setEnabled={setHideAddress}
-            text={"Hide Address"}
-          />
-        </div>
-        <div className="flex flex-col gap-2">
-          <label>Username</label>
-          <Input
-            onChange={(e) => setUsername(e.target.value)}
-            placeholder="Username"
-            name="name"
-            value={undefined}
-            type={undefined}
-          />
-        </div>
-        <div className="flex flex-col gap-2">
-          <label>Password</label>
-          <Input
-            onChange={(e) => setPassword(e.target.value)}
-            placeholder="Password"
-            name="message"
-            type="password"
-            value={undefined}
-          />
-        </div>
-        <Button onClick={signUp} colour={undefined}>
-          {loading ? (
-            <div className="h-6">
-              <Loading />
-            </div>
-          ) : (
-            "Sign Up"
-          )}
-        </Button>
-        <div>
-          Already have an account?{" "}
-          <a
-            className="underline cursor-pointer hover:opacity-75"
-            href="/sign-in"
-            rel="noreferrer"
-          >
-            Sign In
-          </a>
+      <div className="flex flex-col md:gap-8 gap-4 mx-auto md:w-[50vw]">
+        <Logo />
+        <div className="bg-gray-700 rounded-xl shadow-xl shadow-gray-600 px-4 py-8 flex flex-col gap-6">
+          <div className="md:text-2xl text-lg">Welcome To Dao Chat!</div>
+          <div className="mx-auto w-fit">
+            <WalletMultiButton />
+          </div>
+          <div>
+            <Toggle
+              enabled={hideAddress}
+              setEnabled={setHideAddress}
+              text={"Hide Address"}
+            />
+          </div>
+          <div className="flex flex-col gap-2">
+            <label>Username</label>
+            <Input
+              onChange={(e) => setUsername(e.target.value)}
+              placeholder="Username"
+              name="name"
+              value={undefined}
+              type={undefined}
+            />
+          </div>
+          <div className="flex flex-col gap-2">
+            <label>Password</label>
+            <Input
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="Password"
+              name="message"
+              type="password"
+              value={undefined}
+            />
+          </div>
+          <Button onClick={signUp} colour={undefined}>
+            {loading ? (
+              <div className="h-6">
+                <Loading />
+              </div>
+            ) : (
+              "Sign Up"
+            )}
+          </Button>
+          <div className=" md:text-lg text-sm">
+            Already have an account?{" "}
+            <a
+              className="underline cursor-pointer hover:opacity-75"
+              href="/sign-in"
+              rel="noreferrer"
+            >
+              Sign In
+            </a>
+          </div>
         </div>
       </div>
     </div>
