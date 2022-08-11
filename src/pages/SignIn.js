@@ -44,7 +44,11 @@ const SignIn = ({ gun, user }) => {
   return (
     <div className="flex flex-col gap-6 w-full h-full gradient p-8 text-center text-white">
       <div className="flex flex-col md:gap-8 gap-4 mx-auto md:w-[50vw]">
-        <Logo />
+        {/* <Logo /> */}
+        <div className="lg:text-6xl text-2xl w-full rounded-xl mx-auto flex justify-center gap-6 items-center">
+          <img src="dao-chat-logo2.png" className="w-14 h-14" alt="logo" />
+          <span className="text-black">Dao Chat</span>
+        </div>
         <div className="bg-gray-700 rounded-xl shadow-xl md:!text-lg text-sm shadow-gray-600 px-4 py-8 flex flex-col gap-6">
           <div className="text-2xl">Sign In</div>
           <div>
