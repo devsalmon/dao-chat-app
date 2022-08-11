@@ -187,7 +187,7 @@ export default function Chat({
           onClick={() => sendMessage()}
           className="absolute p-2 cursor-pointer hover:scale-110 transition-all duration-200"
         >
-          <img src={"/dao-chat-logo6.png"} className="w-4 h-4" alt="" />
+          <img src={"/dao-chat-logo2.png"} className="w-4 h-4" alt="" />
         </button>
       </div>
     </div>
