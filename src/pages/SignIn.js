@@ -54,26 +54,20 @@ const SignIn = ({ gun, user }) => {
               text={"Hide Address"}
             />
           </div>
-          <div className="flex flex-col gap-2">
-            <label>Username</label>
-            <Input
-              onChange={(e) => setUsername(e.target.value)}
-              placeholder="Username"
-              name="name"
-              value={undefined}
-              type={undefined}
-            />
-          </div>
-          <div className="flex flex-col gap-2">
-            <label>Password</label>
-            <Input
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="Password"
-              name="message"
-              type="password"
-              value={undefined}
-            />
-          </div>
+          <Input
+            onChange={(e) => setUsername(e.target.value)}
+            placeholder="Username"
+            name="name"
+            value={undefined}
+            type={undefined}
+          />
+          <Input
+            onChange={(e) => setPassword(e.target.value)}
+            placeholder="Password"
+            name="message"
+            type="password"
+            value={undefined}
+          />
           <Button onClick={signIn} colour={undefined}>
             {loading ? (
               <div className="h-6">

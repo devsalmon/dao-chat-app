@@ -86,7 +86,6 @@ body,
   min-width: 400px;
   min-height: 600px;
   height: 100vh !important;
-  overflow: hidden;
   position: relative;
   margin: 0;
   font-family: "Poppins", sans-serif;
