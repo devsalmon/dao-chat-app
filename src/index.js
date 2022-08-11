@@ -68,6 +68,7 @@ function Main() {
   const [realms, setRealms] = useState([]);
   const [loading, setLoading] = useState(true);
   const [currentProposal, setCurrentProposal] = useState();
+  const [showSidebar, setShowSidebar] = useState(true);
 
   gun.on("auth", (ack) => {
     //console.log(gunUser.get("alias"), " authentication was successful: ", ack);
@@ -171,6 +172,8 @@ function Main() {
               loading={loading}
               currentProposal={currentProposal}
               setCurrentProposal={setCurrentProposal}
+              showSidebar={showSidebar}
+              setShowSidebar={setShowSidebar}
             />
           }
         >
@@ -184,6 +187,8 @@ function Main() {
                   realms={realms}
                   currentProposal={currentProposal}
                   setCurrentProposal={setCurrentProposal}
+                  showSidebar={showSidebar}
+                  setShowSidebar={setShowSidebar}
                 />
               }
             />
@@ -202,6 +207,8 @@ function Main() {
                   realms={realms}
                   currentProposal={currentProposal}
                   setCurrentProposal={setCurrentProposal}
+                  showSidebar={showSidebar}
+                  setShowSidebar={setShowSidebar}
                 />
               }
             />
