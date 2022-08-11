@@ -28,8 +28,8 @@ const ProposalList = ({
         >
           <div className="flex w-full items-center">
             <span className="text-xl">#</span>
-            <div className="ml-2" title={x.account.name}>
-              {x.account?.name.substring(0, 10)}
+            <div className="ml-2 line-clamp-1" title={x.account.name}>
+              {x.account?.name}
             </div>
           </div>
         </li>
@@ -121,7 +121,7 @@ export default function Channels({
   };
 
   return (
-    <div className="w-max h-full overflow-auto py-2 text-sm">
+    <div className="w-40 h-full overflow-auto py-2 text-sm">
       <ul className="px-2 py-3">
         <li
           className={`text-gray-500 px-2 hover:text-gray-200 hover:bg-gray-900 ${

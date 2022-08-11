@@ -17,6 +17,9 @@ module.exports = {
       "7xl": "5rem",
     },
     extend: {
+      animation: {
+        "spin-slow": "spin 10s linear infinite",
+      },
       colors: {
         gray: {
           900: "#202225",

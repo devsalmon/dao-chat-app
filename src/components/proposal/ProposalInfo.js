@@ -36,22 +36,30 @@ export default function ProposalInfo({
     setProposal(p);
   }, [realm, currentProposal]);
 
+  const borderColour = useMemo(() => {
+    return getColour(currentProposal.account.state);
+  }, [currentProposal]);
+
+  const textColour = useMemo(() => {
+    return getColour(currentProposal.account.state);
+  }, [currentProposal.account]);
+
   function getColour(proposalState) {
     switch (proposalState) {
       case ProposalState.Cancelled:
-        return "red-500";
+        return "red";
       case ProposalState.Completed:
-        return "green-300";
+        return "#8EFFDD";
       case ProposalState.Defeated:
-        return "red-500";
+        return "red";
       case ProposalState.ExecutingWithErrors:
-        return "red-500";
+        return "red";
       case ProposalState.Executing:
         return "#5DC9EB";
       case ProposalState.Draft:
-        return "gray-200";
+        return "gray";
       case ProposalState.SigningOff:
-        return "gray-400";
+        return "gray";
       case ProposalState.Succeeded:
         return "#5DC9EB";
       case ProposalState.Voting:
@@ -72,12 +80,12 @@ export default function ProposalInfo({
 
   return (
     proposal && (
-      <div className="w-full h-full flex flex-col gap-4 relative">
+      <div className="w-[80%] mx-auto px-10 py-6 h-fit bg-gray-700 rounded-lg shadow-xl top-20 flex flex-col gap-4 relative">
         <div
           className={`p-2 px-4 w-min rounded-full border-2 mx-auto`}
           style={{
-            border: `2px solid ${getColour(currentProposal.account.state)}`,
-            color: `${getColour(currentProposal.account.state)}`,
+            border: `2px solid ${borderColour}`,
+            color: `${textColour}`,
           }}
         >
           {getState(currentProposal.account.state)}

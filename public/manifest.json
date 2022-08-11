@@ -9,8 +9,8 @@
   },
   "permissions": ["storage"],
   "icons": {
-    "16": "dao-chat-logo2.png",
-    "48": "dao-chat-logo2.png",
-    "128": "dao-chat-logo2.png"
+    "16": "dao-chat-logo6.png",
+    "48": "dao-chat-logo6.png",
+    "128": "dao-chat-logo6.png"
   }
 }
