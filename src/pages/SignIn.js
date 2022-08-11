@@ -77,6 +77,16 @@ const SignIn = ({ gun, user }) => {
               "Sign In"
             )}
           </Button>
+          <div className=" md:text-lg text-sm">
+            Don't have an account?{" "}
+            <a
+              className="underline cursor-pointer hover:opacity-75"
+              href="/sign-up"
+              rel="noreferrer"
+            >
+              Sign Up
+            </a>
+          </div>
         </div>
       </div>
     </div>
