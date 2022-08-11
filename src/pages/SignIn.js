@@ -45,7 +45,7 @@ const SignIn = ({ gun, user }) => {
     <div className="flex flex-col gap-6 w-full h-full gradient p-8 text-center text-white">
       <div className="flex flex-col md:gap-8 gap-4 mx-auto md:w-[50vw]">
         <Logo />
-        <div className="bg-gray-700 rounded-xl shadow-xl shadow-gray-600 px-4 py-8 flex flex-col gap-6">
+        <div className="bg-gray-700 rounded-xl shadow-xl md:!text-lg text-sm shadow-gray-600 px-4 py-8 flex flex-col gap-6">
           <div className="text-2xl">Sign In</div>
           <div>
             <Toggle
@@ -77,7 +77,7 @@ const SignIn = ({ gun, user }) => {
               "Sign In"
             )}
           </Button>
-          <div className=" md:text-lg text-sm">
+          <div>
             Don't have an account?{" "}
             <a
               className="underline cursor-pointer hover:opacity-75"

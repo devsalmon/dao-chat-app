@@ -63,7 +63,7 @@ const SignUp = ({ gun, user }) => {
     <div className="flex flex-col gap-6 w-full h-full gradient p-8 text-center text-white">
       <div className="flex flex-col md:gap-8 gap-4 mx-auto md:w-[50vw]">
         <Logo />
-        <div className="bg-gray-700 rounded-xl shadow-xl shadow-gray-600 px-4 py-8 flex flex-col gap-6">
+        <div className="bg-gray-700 rounded-xl shadow-xl md:!text-lg text-sm shadow-gray-600 px-4 py-8 flex flex-col gap-6">
           <div className="md:text-2xl text-lg">Welcome To Dao Chat!</div>
           <div className="mx-auto w-fit">
             <WalletMultiButton />
