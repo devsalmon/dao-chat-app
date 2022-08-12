@@ -13,7 +13,7 @@ yarn start
 
 ## Note
 
-We are still extremely early on in development stages, and have not released our app. Be mindful that new commits or changes to our server can cause authentication issues and persistent chat synchronisation errors as well as other general bugs.
+We are still extremely early on in development stages and have not yet released our app. Be mindful that new commits, or changes to our server can cause authentication issues and persistent chat synchronisation errors as well as other general bugs.
 
 ## Mobile App
 
@@ -25,4 +25,4 @@ Connect wallet to https://dao-chat.vercel.app/sign-in and sign in through your w
 yarn build
 ```
 
-Go to chrome://extensions/ click on 'Load unpacked' and select the build folder.
+Go to chrome://extensions/ click on 'Load unpacked' and select the build folder. You should now be able to view the extension in chrome if you pin it to the browser.
