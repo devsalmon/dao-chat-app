@@ -3,7 +3,7 @@ import axios from "axios";
 const coinGeckoUrl = "https://api.coingecko.com/api/v3/coins/markets";
 
 const coinPrice = async (coinId) => {
-  let price = await axios.get(coinGeckoUrl, {
+  const price = await axios.get(coinGeckoUrl, {
     params: {
       ids: coinId,
       vs_currency: "usd",
@@ -13,23 +13,23 @@ const coinPrice = async (coinId) => {
 };
 
 const handleRay = async () => {
-  return coinPrice("raydium") + " USD";
+  return (await coinPrice("raydium")) + " USD";
 };
 
 const handleGrape = async () => {
-  return coinPrice("grape-2") + " USD";
+  return (await coinPrice("grape-2")) + " USD";
 };
 
 const handleSol = async () => {
-  return coinPrice("solana") + " USD";
+  return (await coinPrice("solana")) + " USD";
 };
 
 const handleMango = async () => {
-  return coinPrice("mango-markets") + "USD";
+  return (await coinPrice("mango-markets")) + "USD";
 };
 
 const handleSerum = async () => {
-  return coinPrice("serum") + "USD";
+  return (await coinPrice("serum")) + "USD";
 };
 
 const handleTreasury = async (connection, realmId) => {
