@@ -25,7 +25,7 @@
   -webkit-animation: gradient 20s ease infinite;
   -moz-animation: gradient 20s ease infinite;
   -o-animation: gradient 20s ease infinite;
-  height: 100vh;
+  /* height: 100vh; */
 }
 
 @-webkit-keyframes gradient {

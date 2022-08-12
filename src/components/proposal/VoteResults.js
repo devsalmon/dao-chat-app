@@ -30,7 +30,9 @@ export default function VoteResults({ proposal, governance }) {
   return (
     <div className="flex items-center space-x-4">
       {proposal ? (
-        <div className={`bg-gray-300 shadow-lg p-3 rounded-lg w-full`}>
+        <div
+          className={`bg-gray-900 text-gray-300 shadow-lg p-3 rounded-lg w-full`}
+        >
           <div className="flex">
             <div className="w-1/2">
               <p>Yes Votes</p>

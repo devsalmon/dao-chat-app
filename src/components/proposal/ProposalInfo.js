@@ -80,7 +80,7 @@ export default function ProposalInfo({
 
   return (
     proposal && (
-      <div className="w-[80%] mx-auto px-10 py-6 h-fit bg-gray-700 rounded-lg shadow-xl top-20 flex flex-col gap-4 relative">
+      <div className="w-[80%] mx-auto px-10 py-6 h-fit bg-gray-600 gradient rounded-lg shadow-xl top-20 flex flex-col gap-4 relative">
         <div
           className={`p-2 px-4 w-min rounded-full border-2 mx-auto`}
           style={{
