@@ -44,7 +44,7 @@ export default function App({
         />
       </div>
       <div className="relative flex flex-col p-4 w-full break-words">
-        <Outlet showSidebar={showSidebar} />
+        <Outlet />
       </div>
     </div>
   );

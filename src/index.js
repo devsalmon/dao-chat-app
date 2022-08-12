@@ -7,7 +7,6 @@ import reportWebVitals from "./reportWebVitals";
 import Gun from "gun";
 import "gun/sea";
 import SignIn from "./pages/SignIn";
-import SignUp from "./pages/SignUp";
 import { programId } from "./constants.js";
 import {
   BrowserRouter as Router,
@@ -126,7 +125,6 @@ function Main() {
       setConnection(new Connection(clusterApiUrl("devnet"), "recent"));
       localStorage.setItem("network", "devnet");
     }
-    window.location.href = "/";
   };
 
   const signOut = () => {
@@ -143,10 +141,6 @@ function Main() {
               <Route
                 path="sign-in"
                 element={<SignIn gun={gun} user={gunUser} setUser={setUser} />}
-              />
-              <Route
-                path="sign-up"
-                element={<SignUp gun={gun} user={gunUser} setUser={setUser} />}
               />
               <Route path="*" element={<Navigate to="/sign-in" replace />} />
             </Routes>
