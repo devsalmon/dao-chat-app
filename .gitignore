@@ -25,6 +25,7 @@ yarn-debug.log*
 yarn-error.log*
 
 src/index.js
+src/index.css
 src/App.js
 src/Pages/SignIn.js
 src/Pages/SignUp.js
