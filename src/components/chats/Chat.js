@@ -88,7 +88,6 @@ export default function Chat({
 
   useEffect(() => {
     chatsRef.current.scrollTop = chatsRef.current.scrollHeight;
-    // if (chatsRef.current.scrollTop === 0)
   }, []);
 
   const onScroll = (e) => {
@@ -117,6 +116,7 @@ export default function Chat({
   }
 
   const sendMessage = async (m) => {
+    // don't pass in event as argument
     let encrypted, newEncryptedMessage;
     if (m) {
       encrypted = await encrypt(m.message);
@@ -136,6 +136,7 @@ export default function Chat({
     collectionChats.set(newEncryptedMessage);
     setMessage("");
     if (!m) ChatCommands(message, connection, realmId, sendMessage, BOT_NAME);
+    chatsRef.current.scrollTop = chatsRef.current.scrollHeight;
   };
 
   const submit = (e) => {
