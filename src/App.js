@@ -1,9 +1,8 @@
 import "./App.css";
 import Sidebar from "./components/Sidebar";
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Outlet } from "react-router-dom";
-import { AiOutlineMenu, AiOutlineClose } from "react-icons/ai";
-import { BsArrowBarLeft } from "react-icons/bs";
+import { AiOutlineMenu } from "react-icons/ai";
 
 export default function App({
   gun,
@@ -19,6 +18,14 @@ export default function App({
   showSidebar,
   setShowSidebar,
 }) {
+  const [inRealm, setInRealm] = useState(false);
+
+  useEffect(() => {
+    if (window !== undefined) {
+      setInRealm(window.location.href.includes("realms"));
+    }
+  }, []);
+
   return (
     <div className="App w-full h-full flex relative bg-gray-700 overflow-hidden">
       <div
@@ -44,6 +51,14 @@ export default function App({
         />
       </div>
       <div className="relative flex flex-col p-4 w-full break-words">
+        {!inRealm && (
+          <div
+            onClick={() => setShowSidebar(!showSidebar)}
+            className="text-gray-300 absolute top-2 left-2 text-2xl cursor-pointer hover:opacity-75 w-min"
+          >
+            {showSidebar ? null : <AiOutlineMenu />}
+          </div>
+        )}
         <Outlet />
       </div>
     </div>
