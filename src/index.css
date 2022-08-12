@@ -76,10 +76,6 @@
   }
 }
 
-.App {
-  min-width: 350px;
-}
-
 body,
 #root {
   width: 100vw;
