@@ -53,6 +53,7 @@ export default function Channels({
   currentProposal,
   setCurrentProposal,
   setShowChannel,
+  show,
 }) {
   const [activeProposals, setActiveProposals] = useState([]);
   const [pastProposals, setPastProposals] = useState([]);
@@ -121,10 +122,14 @@ export default function Channels({
   };
 
   return (
-    <div className="w-40 h-full overflow-auto py-2 text-sm">
-      <ul className="px-2 py-3">
+    <div
+      className={`transition-all w-max duration-300 ease-in-out shadow-lg z-50 overflow-auto text-sm ${
+        show ? `max-w-[300px] px-4 pr-2` : `max-w-0 overflow-hidden`
+      }`}
+    >
+      <ul>
         <li
-          className={`text-gray-500 px-2 hover:text-gray-200 hover:bg-gray-900 ${
+          className={`text-gray-500 hover:text-gray-200 hover:bg-gray-900 ${
             currentProposal === "info" && `bg-gray-900 text-gray-200`
           }`}
         >
@@ -141,7 +146,7 @@ export default function Channels({
           </div>
         </li>
         <li
-          className={` text-gray-500 px-2 hover:text-gray-200 hover:bg-gray-900 ${
+          className={` text-gray-500 hover:text-gray-200 hover:bg-gray-900 ${
             (currentProposal === "" || !currentProposal) &&
             `bg-gray-900 text-gray-200`
           }`}

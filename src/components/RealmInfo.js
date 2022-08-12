@@ -4,6 +4,7 @@ import { getRealmMembers } from "../realms/Realms";
 import { Connection, PublicKey, clusterApiUrl } from "@solana/web3.js";
 import Loading from "./Loading";
 import { commands } from "../api/ChatCommands";
+import { AiOutlineMenu } from "react-icons/ai";
 
 const InfoLabel = ({ label, info }) => {
   return (
@@ -14,7 +15,13 @@ const InfoLabel = ({ label, info }) => {
   );
 };
 
-export default function RealmInfo({ gun, network, realms }) {
+export default function RealmInfo({
+  gun,
+  network,
+  realms,
+  showSidebar,
+  setShowSidebar,
+}) {
   const { realmId } = useParams();
   const [realm, setRealm] = useState(
     realms.find((r) => r.realmId?.toString() === realmId)
@@ -38,8 +45,16 @@ export default function RealmInfo({ gun, network, realms }) {
 
   return (
     <div className="w-full h-full flex flex-col gap-4 relative text-center">
-      <div className="text-white text-xl">
-        Welcome to {realm?.displayName ?? realm?.symbol}!
+      <div className="flex items-center justify-between">
+        <div
+          onClick={() => setShowSidebar(!showSidebar)}
+          className="text-gray-300 text-2xl cursor-pointer hover:opacity-75 w-min"
+        >
+          {showSidebar ? null : <AiOutlineMenu />}
+        </div>
+        <div className="text-white text-xl">
+          Welcome to {realm?.displayName ?? realm?.symbol}!
+        </div>
       </div>
       <div className="rounded-lg flex flex-col gap-4 gradient shadow-lg p-3">
         {realm?.displayName && (

@@ -195,7 +195,13 @@ function Main() {
             <Route
               path=":realmId/info"
               element={
-                <RealmInfo gun={gun} network={network} realms={realms} />
+                <RealmInfo
+                  gun={gun}
+                  network={network}
+                  realms={realms}
+                  showSidebar={showSidebar}
+                  setShowSidebar={setShowSidebar}
+                />
               }
             />
             <Route

@@ -135,13 +135,19 @@ const Sidebar = ({
   };
 
   return (
-    <div className="flex h-full w-full">
-      <div className="h-full overflow-y-scroll scrollbar-hide overflow-x-hidden w-min flex flex-col gap-2 p-2 px-4 items-center justify-start bg-gray-900 shadow-lg text-white rounded-r-xl">
+    <div
+      className={`transition-all flex w-max duration-300 ease-in-out bg-gray-900 ${
+        showSidebar
+          ? `max-w-[700px] overflow-visible p-2`
+          : `max-w-0 overflow-hidden`
+      }`}
+    >
+      <div className="h-full overflow-y-scroll scrollbar-hide overflow-x-hidden w-max flex flex-col gap-2 items-center justify-start shadow-lg text-white rounded-r-xl">
         <div
           className="text-xs text-blue-500 cursor-pointer hover:opacity-75"
           onClick={changeNetwork}
         >
-          {network == "devnet" ? "DEVNET" : "MAINNET"}
+          {network === "devnet" ? "DEVNET" : "MAINNET"}
         </div>
         <SideBarIcon
           icon={!showSidebar ? null : <BsArrowBarLeft size="20" />}
@@ -196,35 +202,25 @@ const Sidebar = ({
         />
         <SideBarIcon icon={<BiLogOut size="22" />} onClick={signOut} />
       </div>
-      <div
-        className={`transition-all duration-200 ease-in-out shadow-lg z-50 ${
-          showSearch ? `max-w-[200px] w-[200px]` : `max-w-0 overflow-hidden`
-        }`}
-      >
-        <SearchRealms
-          gun={gun}
-          realms={realms}
-          addRealm={addRealm}
-          verifying={verifying}
-          loading={loading}
-          getRealmImage={getRealmImage}
-        />
-      </div>
-      <div
-        className={`transition-all duration-200 ease-in-out shadow-lg z-50 ${
-          showChannel ? `max-w-[300px]` : `max-w-0 overflow-hidden`
-        }`}
-      >
-        <Channels
-          gun={gun}
-          realmId={activeRealm}
-          connection={connection}
-          programId={programId}
-          currentProposal={currentProposal}
-          setCurrentProposal={setCurrentProposal}
-          setShowChannel={setShowChannel}
-        />
-      </div>
+      <SearchRealms
+        gun={gun}
+        realms={realms}
+        addRealm={addRealm}
+        verifying={verifying}
+        loading={loading}
+        getRealmImage={getRealmImage}
+        show={showSearch}
+      />
+      <Channels
+        gun={gun}
+        realmId={activeRealm}
+        connection={connection}
+        programId={programId}
+        currentProposal={currentProposal}
+        setCurrentProposal={setCurrentProposal}
+        setShowChannel={setShowChannel}
+        show={showChannel}
+      />
     </div>
   );
 };

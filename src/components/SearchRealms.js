@@ -7,6 +7,7 @@ export default function SearchRealms({
   verifying,
   loading,
   getRealmImage,
+  show,
 }) {
   const [filteredRealms, setFilteredRealms] = useState([]);
 
@@ -24,7 +25,11 @@ export default function SearchRealms({
   };
 
   return (
-    <div className="w-full h-full p-2 z-50">
+    <div
+      className={`transition-all duration-300 ease-in-out shadow-lg w-max z-50 ${
+        show ? `max-w-[300px] px-4 pr-2` : `max-w-0 overflow-hidden`
+      }`}
+    >
       <div className="pb-2">
         <Input
           placeholder="Search Realms"
