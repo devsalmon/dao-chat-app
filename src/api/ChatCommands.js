@@ -78,7 +78,8 @@ export async function ChatCommands(
   sendMessage,
   BOT_NAME
 ) {
-  commands.forEach(async (c) => {
+  for (var index in commands) {
+    const c = commands[index];
     if (newMessage === c.command) {
       // respond to the command with appropriate response
       const response = await c.response(connection, realmId);
@@ -89,5 +90,5 @@ export async function ChatCommands(
         isBot: true,
       });
     }
-  });
+  }
 }
