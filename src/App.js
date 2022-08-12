@@ -18,13 +18,13 @@ export default function App({
   showSidebar,
   setShowSidebar,
 }) {
-  const [inRealm, setInRealm] = useState(false);
+  const [inRealm, setInRealm] = useState(true);
 
   useEffect(() => {
     if (window !== undefined) {
       setInRealm(window.location.href.includes("realms"));
     }
-  }, []);
+  }, [currentProposal]);
 
   return (
     <div className="App w-full h-full flex relative bg-gray-700 overflow-hidden">
