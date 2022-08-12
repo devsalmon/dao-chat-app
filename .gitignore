@@ -23,3 +23,8 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+src/index.js
+src/App.js
+src/Pages/SignIn.js
+src/Pages/SignUp.js
