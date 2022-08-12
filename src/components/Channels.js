@@ -13,7 +13,7 @@ const ProposalList = ({
 }) => {
   return (
     <ul
-      className={`px-2 transition-all duration-200 ease-in-out ${
+      className={`transition-all duration-200 ease-in-out ${
         show ? `max-h-[500px] overflow-auto pb-2` : `max-h-0 overflow-hidden`
       }`}
     >
@@ -124,7 +124,7 @@ export default function Channels({
   return (
     <div
       className={`transition-all w-max duration-300 ease-in-out shadow-lg z-50 overflow-auto text-sm ${
-        show ? `max-w-[300px] px-4 pr-2` : `max-w-0 overflow-hidden`
+        show ? `max-w-[150px] px-4 pr-2` : `max-w-0 overflow-hidden`
       }`}
     >
       <ul>
