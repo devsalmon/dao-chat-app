@@ -153,7 +153,7 @@ export default function Chat({
     <div className="h-full w-full flex flex-col justify-end">
       <div
         id="scrollableDiv"
-        className="gap-4 flex flex-col-reverse w-full overflow-y-auto py-2"
+        className="flex flex-col-reverse w-full overflow-y-auto py-2"
         ref={chatsRef}
         onScroll={onScroll}
       >
