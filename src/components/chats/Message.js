@@ -14,7 +14,7 @@ export default function Message({ m, isUsers }) {
   const link = `https://explorer.solana.com/address/${m.walletAddress ?? ""}`;
 
   return (
-    <div className={`flex flex-col gap-1 ${isUsers ? `items-end` : ``}`}>
+    <div className={`my-2 flex flex-col gap-1 ${isUsers ? `items-end` : ``}`}>
       <div className="text-xxs text-white">
         {formatDate(new Date(m.createdAt))}
       </div>
