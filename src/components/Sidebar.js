@@ -141,7 +141,7 @@ const Sidebar = ({
           : `max-w-0 overflow-hidden`
       }`}
     >
-      <div className="h-full overflow-y-scroll scrollbar-hide overflow-x-hidden w-max flex flex-col gap-2 items-center justify-start shadow-lg text-white rounded-r-xl">
+      <div className="h-full overflow-y-scroll z-20 px-2 relative scrollbar-hide overflow-x-hidden w-max flex flex-col gap-2 items-center justify-start shadow-lg text-white rounded-r-xl">
         <div
           className="text-xs text-blue-500 cursor-pointer hover:opacity-75"
           onClick={changeNetwork}

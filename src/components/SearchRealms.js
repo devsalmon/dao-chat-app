@@ -26,7 +26,7 @@ export default function SearchRealms({
 
   return (
     <div
-      className={`transition-all duration-300 ease-in-out shadow-lg w-max z-50 ${
+      className={`transition-all duration-300 ease-in-out shadow-lg w-max z-10 ${
         show ? `max-w-[300px] px-4 pr-2` : `max-w-0 overflow-hidden`
       }`}
     >
