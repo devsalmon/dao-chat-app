@@ -135,7 +135,7 @@ const Sidebar = ({
 
   return (
     <div
-      className={`transition-all flex w-max duration-300 ease-in-out bg-gray-900 ${
+      className={`transition-all flex w-max duration-100 ease-in-out bg-gray-900 ${
         showSidebar
           ? `max-w-[700px] overflow-visible p-2`
           : `max-w-0 overflow-hidden`
