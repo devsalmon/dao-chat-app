@@ -1,12 +1,14 @@
 {
   "short_name": "Dao Chat",
   "name": "Dao Chat",
+  "description": "Decentralised chats for DAOs",
   "version": "1.0.0",
   "manifest_version": 3,
   "action": {
     "default_popup": "index.html",
     "default_title": "Open the popup"
   },
+  "orientation": "portrait",
   "permissions": ["storage"],
   "icons": [
     {
@@ -16,7 +18,7 @@
     }
   ],
   "start_url": "/",
-  "display": "fullscreen",
+  "display": "standalone",
   "theme_color": "#00FFA3",
-  "background_color": "#36393f"
+  "background_color": "#000000"
 }
