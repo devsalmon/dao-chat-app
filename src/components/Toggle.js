@@ -20,7 +20,7 @@ export default function Toggle({ enabled, setEnabled, text }) {
           <span className="ml-2 text-sm font-medium">{text}</span>
           <div className="ml-2 group">
             <AiOutlineInfoCircle />
-            <div className="opacity-0 group-hover:opacity-100 right-0 bottom-10 absolute w-fit p-2 transition-all duration-200 bg-gray-400 rounded-md text-xs text-black">
+            <div className="invisible group-hover:visible right-0 bottom-10 absolute w-fit p-2 transition-all duration-200 bg-gray-400 rounded-md text-xs text-black">
               Prevent other users from viewing your wallet address
             </div>
           </div>
