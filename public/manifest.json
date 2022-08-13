@@ -9,8 +9,8 @@
   },
   "permissions": ["storage"],
   "icons": {
-    "16": "TwitterPP.png",
-    "48": "TwitterPP.png",
-    "128": "TwitterPP.png"
+    "16": "dao-chat-extension.png",
+    "48": "dao-chat-extension.png",
+    "128": "dao-chat-extension.png"
   }
 }
