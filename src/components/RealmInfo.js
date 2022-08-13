@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { getRealmMembers } from "../realms/Realms";
+import { getRealmMembers } from "../api/Members";
 import { Connection, PublicKey, clusterApiUrl } from "@solana/web3.js";
 import Loading from "./Loading";
 import { commands } from "../api/ChatCommands";

@@ -10,6 +10,8 @@ const ProposalList = ({
   currentProposal,
   loading,
   clickProposal,
+  limit,
+  setLimit,
 }) => {
   return (
     <ul
@@ -17,7 +19,7 @@ const ProposalList = ({
         show ? `max-h-[500px] overflow-auto pb-2` : `max-h-0 overflow-hidden`
       }`}
     >
-      {proposals.map((x) => (
+      {proposals.slice(0, limit).map((x) => (
         <li
           key={x.pubkey?.toString()}
           className={`cursor-pointer text-gray-500 px-2 hover:text-gray-200 hover:bg-gray-900 ${
@@ -41,6 +43,14 @@ const ProposalList = ({
             className="w-full h-6 animate-pulse bg-gray-500 my-2 rounded-full"
           ></div>
         ))}
+      {proposals?.length > limit && (
+        <li
+          className="cursor-pointer text-gray-200 hover:opacity-75"
+          onClick={() => setLimit(limit + limit)}
+        >
+          <div className="mx-auto w-fit">Load more...</div>
+        </li>
+      )}
     </ul>
   );
 };
@@ -60,6 +70,7 @@ export default function Channels({
   const [showActiveProposals, setShowActiveProposals] = useState(true);
   const [showPastProposals, setShowPastProposals] = useState(true);
   const [loading, setLoading] = useState(true);
+  const [proposalLimit, setProposalLimit] = useState(5);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -167,12 +178,12 @@ export default function Channels({
 
       <button
         onClick={() => setShowActiveProposals(!showActiveProposals)}
-        className="flex items-center text-gray-500 hover:text-gray-200 pb-2"
+        className="flex items-start justify-start text-gray-500 hover:text-gray-200 pb-2"
       >
         {showActiveProposals ? <HiChevronUp /> : <HiChevronDown />}
-        <h3 className="uppercase tracking-wide font-semibold text-xs">
+        <div className="uppercase tracking-wide text-left font-semibold text-xs">
           Active Proposals
-        </h3>
+        </div>
       </button>
 
       <ProposalList
@@ -185,12 +196,12 @@ export default function Channels({
 
       <button
         onClick={() => setShowPastProposals(!showPastProposals)}
-        className="flex items-center text-gray-500 hover:text-gray-200 pb-2"
+        className="flex text-gray-500 hover:text-gray-200 pb-2"
       >
         {showPastProposals ? <HiChevronUp /> : <HiChevronDown />}
-        <h3 className="uppercase tracking-wide font-semibold text-xs">
+        <div className="uppercase text-left tracking-wide font-semibold text-xs">
           Past Proposals
-        </h3>
+        </div>
       </button>
       <ProposalList
         proposals={pastProposals}
@@ -198,6 +209,8 @@ export default function Channels({
         show={showPastProposals}
         currentProposal={currentProposal}
         clickProposal={clickProposal}
+        limit={proposalLimit}
+        setLimit={setProposalLimit}
       />
     </div>
   );

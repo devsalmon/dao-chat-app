@@ -6,7 +6,7 @@ import { MdOutlineCancel, MdEdit, MdCheck } from "react-icons/md";
 import SearchRealms from "./SearchRealms";
 import Channels from "./Channels";
 import { useNavigate } from "react-router-dom";
-import { getRealmMembers } from "../realms/Realms.js";
+import { getRealmMembers } from "../api/Members";
 import { PublicKey } from "@solana/web3.js";
 import toast from "react-hot-toast";
 import SortableList, { SortableItem } from "react-easy-sort";
@@ -40,7 +40,6 @@ const Sidebar = ({
     const savedRealms = localStorage.getItem(network + "sidebarRealms");
     if (savedRealms && savedRealms.length > 0)
       setSidebarRealms(JSON.parse(savedRealms));
-    console.log(savedRealms);
   }, [network]);
 
   useEffect(() => {

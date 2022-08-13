@@ -128,20 +128,3 @@ const EXCLUDED_REALMS = new Map([
   ["AxuK6ZGEQS2vrLXwJeK5pZFBAAPamEUyQXptfEEnCHuD", ""],
   ["24pZ9VkpRGTH6wHqjSsySYHpxAKbQL1Tczb6b7zytomZ", ""],
 ]);
-
-// returns wallet addresses of members of a given realm
-export async function getRealmMembers(connection, programId, realmPk) {
-  try {
-    const ownerRecords = await getAllTokenOwnerRecords(
-      connection,
-      programId,
-      realmPk
-    );
-    return ownerRecords.map((record) =>
-      record?.account?.governingTokenOwner.toString()
-    );
-  } catch (e) {
-    console.log(e);
-    return [];
-  }
-}

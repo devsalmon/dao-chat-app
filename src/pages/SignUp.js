@@ -6,7 +6,6 @@ import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
 import toast from "react-hot-toast";
 import Loading from "../components/Loading";
 import Toggle from "../components/Toggle";
-import Logo from "../components/Logo";
 
 // Default styles that can be overridden by your app
 require("@solana/wallet-adapter-react-ui/styles.css");
