@@ -3,7 +3,7 @@ import moment from "moment";
 export default function Message({ m, isUsers }) {
   const getAvatar = (isBot) => {
     return !isBot
-      ? "https://avatars.dicebear.com/api/gridy/" + m.name + ".svg"
+      ? "https://avatars.dicebear.com/api/identicon/" + m.name + ".svg"
       : "https://avatars.dicebear.com/api/bottts/" + m.name + ".svg";
   };
 
@@ -19,12 +19,12 @@ export default function Message({ m, isUsers }) {
         {formatDate(new Date(m.createdAt))}
       </div>
       <div
-        className={`flex relative mr-auto max-w-[90%] py-2 gap-2 px-2 shadow-lg bg-gray-600 rounded-lg text-sm text-gray-400 ${
+        className={`flex relative items-start mr-auto max-w-[90%] gap-2 p-2 shadow-lg bg-gray-600 rounded-lg text-sm text-gray-400 ${
           isUsers && ` ml-auto !mr-0 bg-gray-500`
         }`}
       >
         <a
-          className={`flex-none ${m.hideAddress ? `pointer-events-none` : ``}`}
+          className={`${m.hideAddress ? `pointer-events-none` : ``}`}
           href={link}
           target="_blank"
           rel="noreferrer"
