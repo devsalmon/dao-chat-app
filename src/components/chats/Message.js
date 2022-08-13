@@ -14,7 +14,7 @@ export default function Message({ m, isUsers }) {
   const link = `https://explorer.solana.com/address/${m.walletAddress ?? ""}`;
 
   return (
-    <div className={`my-2 flex flex-col gap-1 ${isUsers ? `items-end` : ``}`}>
+    <div className={`my-1 flex flex-col gap-0.5 ${isUsers ? `items-end` : ``}`}>
       <div className="text-xxs text-white">
         {formatDate(new Date(m.createdAt))}
       </div>
@@ -31,7 +31,7 @@ export default function Message({ m, isUsers }) {
         >
           <img
             src={getAvatar(m.isBot || false)}
-            className="w-10 h-10 hover:scale-110 transition-all duration-200 ease-in"
+            className="h-10 w-10 hover:scale-110 transition-all duration-200 ease-in"
             alt="avatar"
           />
         </a>
