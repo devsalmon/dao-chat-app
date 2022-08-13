@@ -29,7 +29,6 @@ export default function RealmInfo({
   const [members, setMembers] = useState();
 
   useEffect(() => {
-    console.log(realms);
     setRealm(realms.find((r) => r.realmId?.toString() === realmId));
     getMembers();
   }, [realmId, realms]);

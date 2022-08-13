@@ -28,6 +28,7 @@ const SignIn = ({ gun, user }) => {
 
   const signIn = async () => {
     setLoading(true);
+    // some race condition happens here sometimes - gunjs bug (user is not loaded correctly before auth happens, so sometimes user credentials not recognized)
     user.auth(username, password, ({ err }) => {
       if (!err) console.log("SIGNED IN");
       if (walletAddress != null && walletAddress?.trim() !== "") {
@@ -79,16 +80,6 @@ const SignIn = ({ gun, user }) => {
               "Sign In"
             )}
           </Button>
-          <div>
-            Don't have an account?{" "}
-            <a
-              className="underline cursor-pointer hover:opacity-75"
-              href="/sign-up"
-              rel="noreferrer"
-            >
-              Sign Up
-            </a>
-          </div>
         </div>
       </div>
     </div>

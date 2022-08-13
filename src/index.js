@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo } from "react";
+import React, { useState, useMemo } from "react";
 import { createRoot } from "react-dom/client";
 import "./index.css";
 import App from "./App";
@@ -7,7 +7,6 @@ import reportWebVitals from "./reportWebVitals";
 import Gun from "gun";
 import "gun/sea";
 import SignIn from "./pages/SignIn";
-import SignUp from "./pages/SignUp";
 import { programId } from "./constants.js";
 import {
   BrowserRouter as Router,
@@ -16,7 +15,7 @@ import {
   Navigate,
 } from "react-router-dom";
 import Realm from "./pages/Realm";
-import { clusterApiUrl, Connection, PublicKey } from "@solana/web3.js";
+import { clusterApiUrl, Connection } from "@solana/web3.js";
 import {
   getCertifiedRealmInfos,
   getUnchartedRealmInfos,
@@ -24,7 +23,6 @@ import {
 import {
   ConnectionProvider,
   WalletProvider,
-  useWallet,
 } from "@solana/wallet-adapter-react";
 // import { WalletAdapterNetwork } from "@solana/wallet-adapter-base";
 import {
@@ -126,7 +124,6 @@ function Main() {
       setConnection(new Connection(clusterApiUrl("devnet"), "recent"));
       localStorage.setItem("network", "devnet");
     }
-    window.location.href = "/";
   };
 
   const signOut = () => {
@@ -143,10 +140,6 @@ function Main() {
               <Route
                 path="sign-in"
                 element={<SignIn gun={gun} user={gunUser} setUser={setUser} />}
-              />
-              <Route
-                path="sign-up"
-                element={<SignUp gun={gun} user={gunUser} setUser={setUser} />}
               />
               <Route path="*" element={<Navigate to="/sign-in" replace />} />
             </Routes>
