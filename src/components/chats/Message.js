@@ -3,7 +3,7 @@ import moment from "moment";
 export default function Message({ m, isUsers }) {
   const getAvatar = (isBot) => {
     return !isBot
-      ? "https://avatars.dicebear.com/api/identicon/" + m.name + ".svg"
+      ? "https://avatars.dicebear.com/api/male/" + m.name + ".svg"
       : "https://avatars.dicebear.com/api/bottts/" + m.name + ".svg";
   };
 

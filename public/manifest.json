@@ -12,22 +12,22 @@
   "permissions": ["storage"],
   "icons": [
     {
-      "src": "icon64.png",
+      "src": "TwitterPP.png",
       "sizes": "64x64",
       "type": "image/png"
     },
     {
-      "src": "icon128.png",
+      "src": "TwitterPP.png",
       "sizes": "128x128",
       "type": "image/png"
     },
     {
-      "src": "icon256.png",
+      "src": "TwitterPP.png",
       "sizes": "256x256",
       "type": "image/png"
     },
     {
-      "src": "icon.png",
+      "src": "TwitterPP.png",
       "sizes": "512x512",
       "type": "image/png"
     }
