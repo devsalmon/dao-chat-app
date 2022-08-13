@@ -5,6 +5,7 @@ import { Connection, clusterApiUrl } from "@solana/web3.js";
 import Chat from "../components/chats/Chat";
 import Loading from "../components/Loading";
 import { AiOutlineInfoCircle, AiOutlineMenu } from "react-icons/ai";
+import { MdOutlineCancel } from "react-icons/md";
 
 export default function Realm({
   gun,
@@ -15,7 +16,6 @@ export default function Realm({
   setShowSidebar,
 }) {
   let { realmId, channelId } = useParams();
-  const [activeTab, setActiveTab] = useState(0);
   const [collectionId, setCollectionId] = useState();
   const [realm, setRealm] = useState(
     realms.find((r) => r.realmId?.toString() === realmId)
@@ -89,7 +89,7 @@ export default function Realm({
             className="cursor-pointer text-2xl text-cyan-500"
             onClick={() => setShowInfo(!showInfo)}
           >
-            <AiOutlineInfoCircle />
+            {showInfo ? <MdOutlineCancel /> : <AiOutlineInfoCircle />}
           </div>
         )}
       </div>
