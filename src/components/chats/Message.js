@@ -3,7 +3,7 @@ import moment from "moment";
 export default function Message({ m, isUsers }) {
   const getAvatar = (isBot) => {
     return !isBot
-      ? "https://avatars.dicebear.com/api/identicon/" + m.name + ".svg"
+      ? "https://avatars.dicebear.com/api/male/" + m.name + ".svg"
       : "https://avatars.dicebear.com/api/bottts/" + m.name + ".svg";
   };
 
@@ -14,7 +14,7 @@ export default function Message({ m, isUsers }) {
   const link = `https://explorer.solana.com/address/${m.walletAddress ?? ""}`;
 
   return (
-    <div className={`my-2 flex flex-col gap-1 ${isUsers ? `items-end` : ``}`}>
+    <div className={`my-1 flex flex-col gap-0.5 ${isUsers ? `items-end` : ``}`}>
       <div className="text-xxs text-white">
         {formatDate(new Date(m.createdAt))}
       </div>
