@@ -168,7 +168,7 @@ export default function Chat({
                 ) && (
                   <div
                     key={`hr-${index}`}
-                    className="bg-white w-full h-0.5 rounded-full mb-4"
+                    className="bg-white w-full h-0.5 rounded-full mt-1 mb-2"
                   />
                 )
               }
