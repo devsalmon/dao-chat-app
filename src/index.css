@@ -76,6 +76,10 @@
   }
 }
 
+link[rel="manifest"] {
+  --pwacompat-splash-font: 24px "Poppins", sans-serif;
+}
+
 body,
 #root {
   width: 100vw;
