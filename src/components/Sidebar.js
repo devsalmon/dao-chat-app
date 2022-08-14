@@ -178,15 +178,7 @@ const Sidebar = ({
                       active={activeRealm === realmId.toString()}
                       onClick={() => goToRealm(realmId?.toString())}
                       removeRealm={() => removeRealm(realmId?.toString())}
-                      icon={
-                        realm?.ogImage && (
-                          <img
-                            className="p-2"
-                            src={getRealmImage(realm?.ogImage)}
-                            alt=""
-                          />
-                        )
-                      }
+                      src={getRealmImage(realm?.ogImage)}
                       symbol={realm?.symbol.substring(0, 2)}
                       editing={editing}
                     />
@@ -225,13 +217,14 @@ const Sidebar = ({
 };
 
 const SideBarIcon = React.forwardRef(
-  ({ icon, active, onClick, removeRealm, symbol, editing }, ref) => (
+  ({ icon, active, onClick, removeRealm, symbol, editing, src }, ref) => (
     <div ref={ref} className="flex flex-col items-center gap-1 group relative">
       <div
         className={`sidebar-icon ${active && `bg-[#00FFA3] text-black`}`}
         onClick={editing ? () => null : onClick}
+        style={{ backgroundImage: `url(${src})` }}
       >
-        {icon ?? symbol}
+        {!src && (icon ?? symbol)}
       </div>
       {editing && removeRealm && (
         <div

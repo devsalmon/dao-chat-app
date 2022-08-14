@@ -26,7 +26,7 @@ export default function SearchRealms({
 
   return (
     <div
-      className={`transition-all duration-300 ease-in-out shadow-lg w-max z-50 ${
+      className={`transition-all duration-300 ease-in-out shadow-lg w-max z-10 ${
         show ? `max-w-[300px] px-4 pr-2` : `max-w-0 overflow-hidden`
       }`}
     >
@@ -50,14 +50,13 @@ export default function SearchRealms({
                 onClick={() => addRealm(realm.realmId?.toString())}
               >
                 <div className="sidebar-icon flex flex-col items-center text-center gap-2 h-auto w-full p-2 break-all">
-                  <div className="h-12 w-12 flex items-center justify-center relative rounded-full bg-gray-500 p-2">
-                    {getRealmImage(realm?.ogImage) ? (
-                      <img
-                        className="h-full w-full"
-                        src={getRealmImage(realm?.ogImage)}
-                        alt=""
-                      />
-                    ) : (
+                  <div
+                    className="h-12 w-12 flex bg-center bg-cover items-center justify-center relative rounded-full bg-gray-500 p-2"
+                    style={{
+                      backgroundImage: `url(${getRealmImage(realm?.ogImage)})`,
+                    }}
+                  >
+                    {!getRealmImage(realm?.ogImage) && (
                       <div>{realm?.symbol?.substring(0, 2)}</div>
                     )}
                   </div>
