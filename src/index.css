@@ -5,7 +5,7 @@
 @layer components {
   .sidebar-icon {
     @apply relative flex items-center justify-center
-    h-12 w-12 shadow-lg
+    h-12 w-12 shadow-lg bg-center bg-cover bg-no-repeat
     bg-gray-800 text-[#14F195]
     hover:bg-[#14F195] hover:text-black
     rounded-3xl hover:rounded-xl
@@ -76,13 +76,11 @@
   }
 }
 
-link[rel="manifest"] {
-  --pwacompat-splash-font: 24px "Poppins", sans-serif;
-}
-
 body,
 #root {
   width: 100vw;
+  min-width: 400px;
+  min-height: 600px;
   height: 100vh !important;
   position: relative;
   margin: 0;
