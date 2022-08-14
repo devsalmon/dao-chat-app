@@ -19,23 +19,23 @@ export default function Message({ m, isUsers }) {
         {formatDate(new Date(m.createdAt))}
       </div>
       <div
-        className={`flex relative items-start mr-auto max-w-[90%] gap-2 p-2 shadow-lg bg-gray-600 rounded-lg text-sm text-gray-400 ${
+        className={`flex mr-auto max-w-[90%] p-2 shadow-lg bg-gray-600 rounded-lg text-sm text-gray-400 ${
           isUsers && ` ml-auto !mr-0 bg-gray-500`
         }`}
       >
         <a
-          className={`${m.hideAddress ? `pointer-events-none` : ``}`}
+          className={`flex-none ${m.hideAddress ? `pointer-events-none` : ``}`}
           href={link}
           target="_blank"
           rel="noreferrer"
         >
           <img
             src={getAvatar(m.isBot || false)}
-            className="w-10 h-10 hover:scale-110 transition-all duration-200 ease-in"
+            className="h-10 w-10 hover:scale-110 transition-all duration-200 ease-in"
             alt="avatar"
           />
         </a>
-        <div className="w-full relative break-words overflow-auto">
+        <div className="w-full ml-2 relative break-words overflow-auto">
           {m.name && (
             <span className="text-xs text-white" key={m.createdAt}>
               {m.name}
