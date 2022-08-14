@@ -75,7 +75,12 @@ export default function RealmInfo({
             info={
               <div className="flex items-center gap-2 hover:text-gray-300">
                 <AiOutlineLink />
-                <a href={realm.website} target="_blank" rel="noreferrer">
+                <a
+                  href={realm.website}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="whitespace-nowrap"
+                >
                   {realm.website}
                 </a>
               </div>
