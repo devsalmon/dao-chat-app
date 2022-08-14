@@ -4,7 +4,7 @@ import { getRealmMembers } from "../api/Members";
 import { Connection, PublicKey, clusterApiUrl } from "@solana/web3.js";
 import Loading from "./Loading";
 import { commands } from "../api/ChatCommands";
-import { AiOutlineMenu } from "react-icons/ai";
+import { AiOutlineMenu, AiOutlineLink } from "react-icons/ai";
 
 const InfoLabel = ({ label, info }) => {
   return (
@@ -44,7 +44,7 @@ export default function RealmInfo({
   }
 
   return (
-    <div className="w-full h-full flex flex-col gap-4 relative text-center">
+    <div className="w-full h-full flex flex-col gap-4 relative text-center overflow-auto">
       <div className="flex items-center justify-between">
         <div
           onClick={() => setShowSidebar(!showSidebar)}
@@ -69,8 +69,34 @@ export default function RealmInfo({
             info={members ? members.length : <Loading />}
           />
         }
-        {realm?.website && <InfoLabel label={"Website"} info={realm.website} />}
-        {realm?.twitter && <InfoLabel label={"Twitter"} info={realm.twitter} />}
+        {realm?.website && (
+          <InfoLabel
+            label={"Website"}
+            info={
+              <div className="flex items-center gap-2 hover:text-gray-300">
+                <AiOutlineLink />
+                <a href={realm.website} target="_blank" rel="noreferrer">
+                  {realm.website}
+                </a>
+              </div>
+            }
+          />
+        )}
+        {realm?.twitter && (
+          <InfoLabel
+            label={"Twitter"}
+            info={
+              <a
+                href={`https://twitter.com/${realm.twitter}`}
+                target="_blank"
+                rel="noreferrer"
+                className=" hover:text-gray-300"
+              >
+                {realm.twitter}
+              </a>
+            }
+          />
+        )}
         {realm?.programVersion && (
           <InfoLabel label={"Program Version"} info={realm.programVersion} />
         )}
