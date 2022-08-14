@@ -86,17 +86,6 @@ export default function Chat({
       });
   }, [collectionId]);
 
-  useEffect(() => {
-    chatsRef.current.scrollTop = chatsRef.current.scrollHeight;
-  }, []);
-
-  const onScroll = (e) => {
-    if (e.target.scrollTop <= e.target.offsetHeight - e.target.scrollHeight) {
-      console.log("REFRESH");
-      setLimit(limit + 10);
-    }
-  };
-
   // remove duplicate messages
   const newMessagesArray = useMemo(() => {
     const formattedMessages = state.chats.filter((value, index) => {
@@ -110,6 +99,20 @@ export default function Chat({
     });
     return formattedMessages.splice(0, limit);
   }, [state.chats, limit, collectionId]);
+
+  useEffect(() => {
+    chatsRef.current.scrollTop = chatsRef.current.scrollHeight;
+  }, [state.chats]);
+
+  const onScroll = (e) => {
+    if (
+      e.target.scrollTop <=
+      e.target.offsetHeight - e.target.scrollHeight + 50
+    ) {
+      console.log("REFRESH");
+      setLimit(limit + 10);
+    }
+  };
 
   function onChange(e) {
     setMessage(e.target.value);
@@ -136,7 +139,7 @@ export default function Chat({
     collectionChats.set(newEncryptedMessage);
     setMessage("");
     if (!m) ChatCommands(message, connection, realmId, sendMessage, BOT_NAME);
-    chatsRef.current.scrollTop = chatsRef.current.scrollHeight;
+    chatsRef.current.scrollTop = chatsRef.current.scrollHeight + 50;
   };
 
   const submit = (e) => {
