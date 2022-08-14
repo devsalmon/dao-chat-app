@@ -1,10 +1,17 @@
 [
   {
+    "symbol": "SC",
+    "displayName": "SUMMER CAMP",
+    "programId": "GovER5Lthms3bLBqWub97yVrMmEogzX7xNjdXpPPCVZw",
+    "realmId": "E9Sbhu7kxtj3CaWDzoarcTE49SEFA98LPYWoEwCTJX5v",
+    "ogImage": "/realms/SC/images/summercamplogo.png"
+  },
+  {
     "symbol": "DAO_CHAT",
     "displayName": "DAO CHAT",
     "programId": "GovER5Lthms3bLBqWub97yVrMmEogzX7xNjdXpPPCVZw",
     "realmId": "6hNnxbwvZutP6zkALSDHHnnD9XUo8pvhqojKxaSrHUja",
-    "ogImage": "/realms/DAO_CHATimag/TwitterPP.png"
+    "ogImage": "/realms/DAO_CHAT/images/TwitterPP.png"
   },
   {
     "symbol": "UNQ",
