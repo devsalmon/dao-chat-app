@@ -181,7 +181,7 @@ export default function Channels({
         className="flex items-start justify-start text-gray-500 hover:text-gray-200 py-2"
       >
         {showActiveProposals ? <HiChevronUp /> : <HiChevronDown />}
-        <div className="uppercase tracking-wide text-left font-semibold text-xs">
+        <div className="uppercase tracking-wide text-left font-semibold text-xs whitespace-nowrap">
           Active Proposals
         </div>
       </button>
