@@ -1,6 +1,7 @@
 import moment from "moment";
 
 export default function Message({ m, isUsers }) {
+  console.log(m.isBot);
   const getAvatar = (isBot) => {
     return !isBot
       ? "https://avatars.dicebear.com/api/male/" + m.name + ".svg"
