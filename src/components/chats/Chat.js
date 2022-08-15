@@ -81,6 +81,7 @@ export default function Chat({
             createdAt: m?.createdAt,
             walletAddress: m.walletAddress,
             hideAddress: m.hideAddress ?? false,
+            isBot: m.isBot ?? false,
           },
         });
       });
@@ -134,6 +135,7 @@ export default function Chat({
         createdAt: Date.now(),
       };
     }
+    console.log(newEncryptedMessage);
     // newEncryptedMessage is pushed to gun
     const collectionChats = gun.get(collectionId);
     collectionChats.set(newEncryptedMessage);
