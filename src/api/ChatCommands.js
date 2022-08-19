@@ -25,11 +25,11 @@ const handleSol = async () => {
 };
 
 const handleMango = async () => {
-  return (await coinPrice("mango-markets")) + "USD";
+  return (await coinPrice("mango-markets")) + " USD";
 };
 
 const handleSerum = async () => {
-  return (await coinPrice("serum")) + "USD";
+  return (await coinPrice("serum")) + " USD";
 };
 
 const handleTreasury = async (connection, realmId) => {
