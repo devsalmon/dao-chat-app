@@ -87,6 +87,16 @@ export default function Chat({
       });
   }, [collectionId]);
 
+  function compareTimestamp(a, b) {
+    if (a.createdAt < b.createdAt) {
+      return -1;
+    }
+    if (a.createdAt > b.createdAt) {
+      return 1;
+    }
+    return 0;
+  }
+
   // remove duplicate messages
   const newMessagesArray = useMemo(() => {
     const formattedMessages = state.chats.filter((value, index) => {
@@ -98,7 +108,8 @@ export default function Chat({
         })
       );
     });
-    return formattedMessages.splice(0, limit);
+
+    return formattedMessages.sort(compareTimestamp).reverse().splice(0, limit);
   }, [state.chats, limit, collectionId]);
 
   useEffect(() => {
