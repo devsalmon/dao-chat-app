@@ -1,6 +1,12 @@
 module.exports = {
   content: ["./src/**/*.{js,jsx,ts,cjs,tsx}"],
   theme: {
+    backgroundSize: {
+      auto: "auto",
+      cover: "cover",
+      contain: "contain",
+      "80%": "80%",
+    },
     fontSize: {
       xxs: ".5rem",
       xs: ".75rem",

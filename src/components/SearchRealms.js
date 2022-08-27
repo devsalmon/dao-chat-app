@@ -40,7 +40,7 @@ export default function SearchRealms({
         {loading
           ? Array.from(Array(10).keys()).map((item) => (
               <li key={item}>
-                <div className="sidebar-icon w-full animate-pulse " />
+                <div className="sidebar-icon bg-80% w-full animate-pulse " />
               </li>
             ))
           : filteredRealms &&
@@ -49,7 +49,7 @@ export default function SearchRealms({
                 key={realm.realmId?.toString()}
                 onClick={() => addRealm(realm.realmId?.toString())}
               >
-                <div className="sidebar-icon flex flex-col items-center text-center gap-2 h-auto w-full p-2 break-all">
+                <div className="sidebar-icon bg-80% flex flex-col items-center text-center gap-2 h-auto w-full p-2 break-all">
                   <div
                     className="h-12 w-12 flex bg-center bg-cover items-center justify-center relative rounded-full bg-gray-500 p-2"
                     style={{

@@ -63,17 +63,10 @@ export default function Realm({
     setLoading(false);
   }
 
-  const styles = {
-    tabActive:
-      "bg-gray-600 px-8 py-2 cursor-pointer rounded-lg shadow-sm shadow-black",
-    tabInactive:
-      "bg-gray-900 px-8 py-2 cursor-pointer rounded-lg shadow-inner shadow-black",
-  };
-
   return loading ? (
     <Loading />
   ) : hasAccess ? (
-    <div className="w-full h-full relative flex flex-col">
+    <div className="w-[90%] m-auto h-[95%] relative flex flex-col">
       <div className="sticky top-0 text-white z-30 w-full h-[10%] p-4 pt-0 bg-gray-700 flex justify-between gap-2 items-center">
         <div
           onClick={() => setShowSidebar(!showSidebar)}

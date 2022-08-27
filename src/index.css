@@ -5,10 +5,10 @@
 @layer components {
   .sidebar-icon {
     @apply relative flex items-center justify-center
-    h-12 w-12 shadow-lg bg-center bg-cover bg-no-repeat
+    h-12 w-12 shadow-lg bg-center bg-no-repeat
     bg-gray-800 text-[#14F195]
     hover:bg-[#14F195] hover:text-black
-    rounded-3xl hover:rounded-xl
+    rounded-full hover:rounded-xl
     transition-all duration-200 ease-linear
     cursor-pointer;
   }

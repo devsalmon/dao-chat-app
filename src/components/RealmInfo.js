@@ -8,7 +8,7 @@ import { AiOutlineMenu, AiOutlineLink } from "react-icons/ai";
 
 const InfoLabel = ({ label, info }) => {
   return (
-    <div className="flex flex-col items-start gap-1">
+    <div className="flex flex-col items-start justify-start gap-1">
       <div className="font-bold text-gray-700">{label}</div>
       <div className="text-lg">{info}</div>
     </div>
@@ -44,7 +44,7 @@ export default function RealmInfo({
   }
 
   return (
-    <div className="w-full h-full flex flex-col gap-4 relative text-center overflow-auto">
+    <div className="w-[90%] h-[95%] m-auto flex flex-col gap-4 relative text-center overflow-y-auto break-all">
       <div className="flex items-center justify-between">
         <div
           onClick={() => setShowSidebar(!showSidebar)}
@@ -79,7 +79,7 @@ export default function RealmInfo({
                   href={realm.website}
                   target="_blank"
                   rel="noreferrer"
-                  className="whitespace-nowrap"
+                  className="whitespace-prewrap"
                 >
                   {realm.website}
                 </a>

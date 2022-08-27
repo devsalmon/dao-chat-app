@@ -42,7 +42,7 @@ export default function App({
         setShowSidebar={setShowSidebar}
         showSidebar={showSidebar}
       />
-      <div className="relative flex flex-col p-4 w-full break-words">
+      <div className="relative flex flex-col w-full break-words bg-gray-700">
         {!inRealm && (
           <div
             onClick={() => setShowSidebar(!showSidebar)}

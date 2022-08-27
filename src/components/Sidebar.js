@@ -164,7 +164,7 @@ const Sidebar = ({
           {loading &&
             sidebarRealms &&
             sidebarRealms.map((realm, index) => (
-              <div key={index} className="sidebar-icon animate-pulse" />
+              <div key={index} className="sidebar-icon bg-80% animate-pulse" />
             ))}
           {sidebarRealms &&
             sidebarRealms.map((realmId) => {
@@ -220,7 +220,7 @@ const SideBarIcon = React.forwardRef(
   ({ icon, active, onClick, removeRealm, symbol, editing, src }, ref) => (
     <div ref={ref} className="flex flex-col items-center gap-1 group relative">
       <div
-        className={`sidebar-icon ${active && `bg-[#00FFA3] text-black`}`}
+        className={`sidebar-icon bg-80% ${active && `bg-[#00FFA3] text-black`}`}
         onClick={editing ? () => null : onClick}
         style={{ backgroundImage: `url(${src})` }}
       >
