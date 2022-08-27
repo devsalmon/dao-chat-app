@@ -5,7 +5,6 @@ import { useWallet } from "@solana/wallet-adapter-react";
 import toast from "react-hot-toast";
 import Loading from "../components/Loading";
 import Toggle from "../components/Toggle";
-import { Web3Auth } from "@web3auth/web3auth";
 
 // Default styles that can be overridden by your app
 require("@solana/wallet-adapter-react-ui/styles.css");
@@ -18,24 +17,6 @@ const SignIn = ({ gun, user }) => {
   const [hideAddress, setHideAddress] = useState(false);
 
   const myWallet = useWallet();
-
-  useEffect(() => {
-    //Initialize within your constructor
-    async function initWeb3Auth() {
-      const web3auth = new Web3Auth({
-        clientId:
-          "BD0BF_z2CdZdqv5j80TvgWFXGdmgL-UInCmjumNSdri3py05uWN12Rl-mA-ulp5d-JO7RLjt4CZqZpQRvQkEVMQ", // Get your Client ID from Web3Auth Dashboard
-        chainConfig: {
-          chainNamespace: "solana",
-          chainId: "0x2", // Please use 0x1 for Mainnet, 0x2 for Testnet, 0x3 for Devnet
-        },
-      });
-
-      await web3auth.initModal();
-    }
-
-    initWeb3Auth();
-  }, []);
 
   useEffect(() => {
     if (myWallet.connected) {
