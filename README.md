@@ -1,5 +1,7 @@
 # Dao Chat App
 
+https://youtu.be/Z7ayg-v7euE?si=D1iwldEbQPePiBLt
+
 Use main branch for mobile app, and chrome-extension for the extension.
 
 ## Start
